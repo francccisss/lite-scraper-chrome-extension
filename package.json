@@ -1,0 +1,16 @@
+{
+  "name": "lite-scraper-chrome-extension",
+  "version": "1.0.0",
+  "description": "A Front-end chrome extension for consuming the web scraping service API.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chrome-types": "^0.1.283",
+    "typescript": "^5.4.5"
+  }
+}
