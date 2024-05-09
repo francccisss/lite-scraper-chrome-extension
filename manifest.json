@@ -4,6 +4,6 @@
   "description": "A minimal web scraping tool to gather insights for your business",
   "version": "1.0",
   "action": {
-    "default_popup": "./dist/index.html",
+    "default_popup": "/dist/index.html"
   }
 }
