@@ -1,6 +1,7 @@
 "use strict";
 const sidebar = document.getElementById("sidebar");
-function create_task_component(container) {
+const add_task_btn = document.getElementById("add-task");
+function create_task_component() {
     const task_container = document.createElement("div");
     const task_icon = document.createElement("span");
     const task_title = document.createElement("p");
@@ -8,6 +9,8 @@ function create_task_component(container) {
     task_title.textContent = "ROOMMATES";
     task_container.append(task_icon);
     task_container.append(task_title);
-    container.prepend(task_container);
+    return task_container;
 }
-create_task_component(sidebar);
+add_task_btn?.addEventListener("click", (e) => {
+    sidebar.prepend(create_task_component());
+});

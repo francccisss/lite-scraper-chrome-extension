@@ -1,6 +1,7 @@
 const sidebar = document.getElementById("sidebar");
+const add_task_btn = document.getElementById("add-task");
 
-function create_task_component(container: HTMLElement) {
+function create_task_component(): HTMLElement {
   const task_container = document.createElement("div");
   const task_icon = document.createElement("span");
   const task_title = document.createElement("p");
@@ -10,7 +11,9 @@ function create_task_component(container: HTMLElement) {
   task_container.append(task_icon);
   task_container.append(task_title);
 
-  container.prepend(task_container);
+  return task_container;
 }
 
-create_task_component(sidebar as HTMLElement);
+add_task_btn?.addEventListener("click", (e) => {
+  (sidebar as HTMLElement).prepend(create_task_component());
+});
