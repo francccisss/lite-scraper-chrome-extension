@@ -1,11 +1,14 @@
 :root {
   --black: #1d1d1d;
+  --sb-black: #212121;
   --white: #ffffff;
   --primary: #e76f51;
   --orange: #f4a261;
   --yellow: #e9c46a;
   --green: #2a9d8f;
   --green-light: #264653;
+  --task-border: #383737;
+  --input-field: #3a3a3a46;
 }
 
 body {
@@ -18,7 +21,7 @@ body {
   }
 }
 #content-container {
-  min-width: 500px;
+  min-width: 600px;
   height: 20em;
   display: flex;
   align-items: center;
@@ -71,4 +74,52 @@ body {
   background-color: var(--primary);
   color: var(--black);
   font-weight: 500;
+}
+
+#task-list-container {
+  height: 100%;
+  flex: 1;
+  display: flex;
+}
+
+#sidebar {
+  width: 12em;
+  background-color: var(--sb-black);
+}
+
+.item {
+  padding: 20px 10px;
+  display: flex;
+  font-size: 0.8rem;
+  align-items: center;
+  gap: 10px;
+  p {
+    line-height: 1rem;
+  }
+}
+
+.task-item {
+  border-bottom: var(--task-border) solid 1px;
+  p {
+    font-weight: 400;
+  }
+  span {
+    background-image: url("./assets/item-icon-alt.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.task-item.active {
+  background-color: var(--primary);
+  p {
+    font-weight: 600;
+    color: var(--black);
+  }
+  span {
+    background-image: url("./assets/item-icon.svg");
+  }
 }
