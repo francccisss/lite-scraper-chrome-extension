@@ -12,14 +12,15 @@ function create_task_component() {
     return task_container;
 }
 function set_task_active() { }
-function lol() { }
 add_task_btn?.addEventListener("click", (e) => {
     sidebar.prepend(create_task_component());
-    Event_Signal.subscribe("new", lol);
-    Event_Signal.subscribe("old", set_task_active);
-    console.log(Event_Signal.events);
+    function cb(data) {
+        console.log(data);
+    }
+    Event_Signal.subscribe("new", cb);
 });
 sidebar?.addEventListener("click", (e) => {
+    Event_Signal.publish("new", "gago");
     const target = e.target;
     if (target.classList.contains("task-item")) {
         target.classList.contains("active") ? null : target.classList.add("active");

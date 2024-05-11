@@ -17,8 +17,12 @@ class PubSub {
         }
         this.events[event] = [cb];
     }
+    publish(event, data) {
+        if (!Object.keys(this.events).find((e) => e === event)) {
+            return;
+        }
+        this.events[event].forEach((cb) => cb(data));
+    }
 }
 const Event_Signal = new PubSub().get_instance();
 export default Event_Signal;
-function cb() { }
-Event_Signal.subscribe("new", cb);
