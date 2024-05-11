@@ -1,3 +1,4 @@
+import Event_Signal from "./utils/pubsub.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 
@@ -14,6 +15,16 @@ function create_task_component(): HTMLElement {
   return task_container;
 }
 
+function set_task_active() {}
+function lol() {}
 add_task_btn?.addEventListener("click", (e) => {
   (sidebar as HTMLElement).prepend(create_task_component());
+});
+
+sidebar?.addEventListener("click", (e) => {
+  const target = e.target as HTMLElement;
+  if (target.classList.contains("task-item")) {
+    target.classList.contains("active") ? null : target.classList.add("active");
+    console.log(target);
+  }
 });
