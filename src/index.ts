@@ -6,7 +6,6 @@ function set_task_active(data: {
   target: HTMLElement;
   task_list: Array<HTMLElement>;
 }) {
-  const target_index = data.task_list.indexOf(data.target);
   const current_active_task = data.task_list.find((i) =>
     i.classList.contains("active")
   );
