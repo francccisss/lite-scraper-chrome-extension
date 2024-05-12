@@ -156,7 +156,6 @@ button:not(button[disabled]) {
 form {
   input:not([type="checkbox"]) {
     appearance: none;
-    border: none;
   }
 
   div.form-input-container {
@@ -173,6 +172,7 @@ form {
       font-weight: 600;
     }
     input {
+      border: none;
       border-radius: var(--input-rounded-corner);
       color: white;
       background-color: var(--task-border);
@@ -221,28 +221,29 @@ form {
     label {
       font-size: 0.9rem;
     }
-    .task-schema-input {
-      display: flex;
-      input {
-        padding: 5px 10px;
-        border-radius: 3px;
-        flex: 1;
-        background-color: transparent;
-        border: 1px solid var(--task-border);
-      }
-    }
-    input[id="key"] {
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
-      border-right: none;
-    }
-    input[id="value"] {
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
-    }
-    *:not(input) {
-      margin-top: 6px;
-    }
+  }
+}
+
+.key-value-input {
+  display: flex;
+  input {
+    color: var(--white);
+    margin-top: 6px;
+    border: 1px solid var(--task-border);
+    padding: 5px 10px;
+    border-radius: 3px;
+    flex: 1;
+    background-color: transparent;
+  }
+
+  input[id*="key"] {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: none;
+  }
+  input[id*="value"] {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
   }
 }
 
