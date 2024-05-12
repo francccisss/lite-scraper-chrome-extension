@@ -38,12 +38,17 @@
           <h3>Amazon phone items</h3>
           <form>
             <div class="form-input-container" id="web-url-container">
-              <label for="websiteURL">Website URL</label>
-              <input id="websiteURL" name="websiteURL" type="text" />
+              <label for="websiteURL">Website URL :</label>
+              <input
+                id="websiteURL"
+                name="websiteURL"
+                type="text"
+                value="https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031"
+              />
             </div>
 
             <div class="form-input-container" id="multipage-container">
-              <label for="multipageToggle">Multipage</label>
+              <label for="multipageToggle">Multipage :</label>
               <input
                 id="multipageToggle"
                 name="multipageToggle"
@@ -52,19 +57,23 @@
             </div>
 
             <div class="form-input-container" id="task-schema-container">
-              <div class="task-chema-input">
+              <div class="task-schema-input">
                 <input id="key" name="" placeholder="key" type="text" />
                 <input id="value" name="" placeholder="value" type="text" />
               </div>
-              <div class="task-chema-input">
+              <div class="task-schema-input">
                 <input id="key" name="" placeholder="key" type="text" />
                 <input id="value" name="" placeholder="value" type="text" />
               </div>
               <button id="add-field-btn" type="button">Add Field</button>
             </div>
 
-            <button id="scrape-data" type="button">Scrape</button>
-            <button disabled id="download-data" type="button">Download</button>
+            <div class="form-input-container">
+              <button id="scrape-data" type="button">Scrape</button>
+              <button disabled id="download-data" type="button">
+                Download
+              </button>
+            </div>
           </form>
         </section>
       </div>

@@ -9,6 +9,7 @@
   --green-light: #264653;
   --task-border: #383737;
   --input-field: #3a3a3a46;
+  --input-rounded-corner: 2px;
 }
 
 body {
@@ -138,4 +139,62 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  h3 {
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+}
+
+form {
+  input {
+    appearance: none;
+    border: none;
+  }
+  div#web-url-container {
+    position: relative;
+    label {
+      color: white;
+      display: inline;
+      padding: 5px 10px;
+      position: absolute;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    input {
+      border-radius: var(--input-rounded-corner);
+      color: white;
+      background-color: var(--task-border);
+      padding: 20px 10px 8px 10px;
+      box-sizing: border-box;
+      min-width: 100%;
+    }
+  }
+
+  div.form-input-container {
+    margin-top: 1em;
+  }
+  #task-schema-container {
+    .task-schema-input {
+      display: flex;
+      input {
+        padding: 5px 10px;
+        border-radius: 3px;
+        flex: 1;
+        background-color: transparent;
+        border: 1px solid var(--task-border);
+      }
+    }
+    input[id="key"] {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      border-right: none;
+    }
+    input[id="value"] {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+    *:not(input) {
+      margin-top: 0.4em;
+    }
+  }
 }
