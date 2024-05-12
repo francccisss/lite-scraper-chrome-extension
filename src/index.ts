@@ -1,4 +1,5 @@
 import Event_Signal from "./utils/pubsub.js";
+import uid from "./utils/uid/dist/index.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 
@@ -20,6 +21,7 @@ function create_task_component(): HTMLElement {
   const task_title = document.createElement("p");
 
   task_container.setAttribute("class", "task-item item");
+  task_container.dataset.taskID = uid(16);
   task_title.textContent = "ROOMMATES";
   task_container.append(task_icon);
   task_container.append(task_title);
