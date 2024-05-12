@@ -42,7 +42,7 @@ button:not(button[disabled]) {
 }
 
 #welcome-box {
-  display: flex;
+  display: none;
   flex-direction: column;
   height: 42%;
   justify-content: space-between;
@@ -121,10 +121,13 @@ button:not(button[disabled]) {
   border-bottom: var(--task-border) solid 1px;
   p {
     font-weight: 400;
+    max-width: 80%;
+    box-sizing: border-box;
   }
   span {
     background-image: url("./assets/item-icon-alt.svg");
     background-size: 10px;
+    width: 15px;
   }
 }
 
@@ -215,6 +218,9 @@ form {
   }
 
   div#task-schema-container {
+    label {
+      font-size: 0.9rem;
+    }
     .task-schema-input {
       display: flex;
       input {
