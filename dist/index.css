@@ -21,8 +21,13 @@ body {
     font-style: normal;
   }
 }
+
+button:not(button[disabled]) {
+  cursor: pointer;
+}
+
 #content-container {
-  min-width: 600px;
+  min-width: 650px;
   height: 20em;
   display: flex;
   align-items: center;
@@ -146,7 +151,7 @@ body {
 }
 
 form {
-  input {
+  input:not([type="checkbox"]) {
     appearance: none;
     border: none;
   }
@@ -174,7 +179,42 @@ form {
     }
   }
 
-  #task-schema-container {
+  div#multipage-container {
+    max-width: fit-content;
+    label {
+      cursor: pointer;
+      font-size: 0.9rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    input {
+      cursor: pointer;
+      appearance: none;
+      position: relative;
+    }
+    #checkmark {
+      cursor: pointer;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-color: var(--task-border);
+      border-radius: 50px;
+    }
+
+    #checkmark:hover {
+      background-color: var(--input-field);
+    }
+    input:checked ~ #checkmark {
+      background-color: var(--primary);
+    }
+  }
+
+  div#task-schema-container {
     .task-schema-input {
       display: flex;
       input {
@@ -195,7 +235,7 @@ form {
       border-bottom-left-radius: 0px;
     }
     *:not(input) {
-      margin-top: 10px;
+      margin-top: 6px;
     }
   }
 }
@@ -206,7 +246,7 @@ form {
   span:last-of-type {
     display: flex;
     align-items: center;
-    gap: 0.8em;
+    gap: 0.4em;
     button {
       margin-top: 0px !important;
       cursor: pointer;
