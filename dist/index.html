@@ -19,7 +19,7 @@
     <main id="content-container" class="main-container">
       <div id="task-list-container">
         <div id="sidebar">
-          <!-- <div class="task-item item">
+          <div class="task-item item">
             <span></span>
             <p>Amazon phone items</p>
           </div>
@@ -27,14 +27,46 @@
           <div class="task-item item">
             <span></span>
             <p>G2A Best sellers with discounts</p>
-          </div> -->
+          </div>
 
           <div id="add-task" class="item">
             <span></span>
             <p>Add task</p>
           </div>
         </div>
-        <section id="task-contents"></section>
+        <section id="task-contents">
+          <h3>Amazon phone items</h3>
+          <form>
+            <div class="form-input-container" id="web-url-container">
+              <label for="websiteURL">Website URL</label>
+              <input id="websiteURL" name="websiteURL" type="text" />
+            </div>
+
+            <div class="form-input-container" id="multipage-container">
+              <label for="multipageToggle">Multipage</label>
+              <input
+                id="multipageToggle"
+                name="multipageToggle"
+                type="checkbox"
+              />
+            </div>
+
+            <div class="form-input-container" id="task-schema-container">
+              <div class="task-chema-input">
+                <input id="key" name="" placeholder="key" type="text" />
+                <input id="value" name="" placeholder="value" type="text" />
+              </div>
+              <div class="task-chema-input">
+                <input id="key" name="" placeholder="key" type="text" />
+                <input id="value" name="" placeholder="value" type="text" />
+              </div>
+              <button id="add-field-btn" type="button">Add Field</button>
+            </div>
+
+            <button id="scrape-data" type="button">Scrape</button>
+            <button disabled id="download-data" type="button">Download</button>
+          </form>
+        </section>
       </div>
       <!-- <div id="welcome-box">
         <h1>Lite <span>Scraper</span></h1>
