@@ -11,17 +11,25 @@ export function create_task_component() {
     task_container.append(task_title);
     return task_container;
 }
-export function multipage_inputs(parent) {
-    const multipage_input_container = document.createElement("div");
-    multipage_input_container.setAttribute("id", "multipage-input-container");
-    function create() {
+export function multipage_inputs() {
+    const multipage_container = document.querySelector("#multipage-container");
+    let multipage_input_container = document.getElementById("multipage-input-container");
+    if (!multipage_input_container) {
+        multipage_input_container = document.createElement("div");
+        multipage_input_container.setAttribute("id", "multipage-input-container");
+    }
+    const create = () => {
         const multipage_keys = Object.keys(multipageConfig);
         ["Starting Page", "End Page", "Next Element"].forEach((key, i) => {
             const config_input = document.createElement("span");
             const key_input = document.createElement("input");
             const value_input = document.createElement("input");
             key_input.value = key;
+            key_input.readOnly = true;
             key_input.disabled;
+            key_input.style.outline = "none";
+            key_input.style.cursor = "default";
+            value_input.setAttribute("type", "text");
             config_input.classList.add("key-value-input");
             key_input.setAttribute("id", `${multipage_keys[i]}-key`);
             value_input.setAttribute("id", `${multipage_keys[i]}-value`);
@@ -29,11 +37,11 @@ export function multipage_inputs(parent) {
             config_input.append(value_input);
             multipage_input_container.append(config_input);
         });
-        parent.append(multipage_input_container);
-    }
-    function destroy() {
-        parent.removeChild(multipage_input_container);
-    }
+        multipage_container?.append(multipage_input_container);
+    };
+    const destroy = () => {
+        multipage_container?.removeChild(multipage_input_container);
+    };
     return {
         create,
         destroy,

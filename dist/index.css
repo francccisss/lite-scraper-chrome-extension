@@ -147,6 +147,8 @@ button:not(button[disabled]) {
   display: flex;
   flex-direction: column;
   padding: 20px;
+
+  overflow-y: auto;
   h3 {
     font-weight: 500;
     font-size: 1.2rem;
@@ -156,10 +158,11 @@ button:not(button[disabled]) {
 form {
   input:not([type="checkbox"]) {
     appearance: none;
+    cursor: text;
   }
 
   div.form-input-container {
-    margin-top: 0.8em;
+    margin-top: 1.2em;
   }
   div#web-url-container {
     position: relative;
@@ -185,6 +188,7 @@ form {
   div#multipage-container {
     max-width: fit-content;
     label {
+      margin-bottom: 10px;
       cursor: pointer;
       font-size: 0.9rem;
       position: relative;
@@ -195,7 +199,7 @@ form {
       -ms-user-select: none;
       user-select: none;
     }
-    input {
+    input[type="checkbox"] {
       cursor: pointer;
       appearance: none;
       position: relative;
@@ -217,7 +221,15 @@ form {
     }
   }
 
+  div#multipage-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   div#task-schema-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     label {
       font-size: 0.9rem;
     }
@@ -228,7 +240,6 @@ form {
   display: flex;
   input {
     color: var(--white);
-    margin-top: 6px;
     border: 1px solid var(--task-border);
     padding: 5px 10px;
     border-radius: 3px;
@@ -255,7 +266,6 @@ form {
     align-items: center;
     gap: 0.4em;
     button {
-      margin-top: 0px !important;
       cursor: pointer;
       border: none;
       appearance: none;
@@ -279,7 +289,8 @@ form {
   }
 }
 
-.add-btn {
+.add-field {
+  margin-top: 10px;
   cursor: pointer;
   position: relative;
   display: flex;
@@ -293,7 +304,7 @@ form {
   border: none;
 }
 
-.add-btn::before {
+.add-field::before {
   display: inline-block;
   content: "";
   width: 15px;

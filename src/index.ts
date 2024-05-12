@@ -1,8 +1,12 @@
 import Event_Signal from "./utils/pubsub.js";
-import { update_config_ui } from "./form_input_handlers.js";
+import {
+  toggle_multipage_input,
+  update_config_ui,
+} from "./form_input_handlers.js";
 import { create_task_component } from "./ui.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
+const multipage_toggle_btn = document.getElementById("multipageToggle");
 
 function set_task_active(data: {
   target: HTMLElement;
@@ -18,6 +22,8 @@ function set_task_active(data: {
 
 Event_Signal.subscribe("update_task_ui", set_task_active);
 Event_Signal.subscribe("new_current_task", update_config_ui);
+
+multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
 
 add_task_btn?.addEventListener("click", (e) => {
   (sidebar as HTMLElement).prepend(create_task_component());
