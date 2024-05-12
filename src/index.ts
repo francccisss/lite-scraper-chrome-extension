@@ -1,5 +1,6 @@
 import Event_Signal from "./utils/pubsub.js";
-import uid from "./utils/uid/dist/index.js";
+import { update_config_ui } from "./form_input_handlers.js";
+import { create_task_component } from "./ui.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 
@@ -15,21 +16,8 @@ function set_task_active(data: {
   console.log(data.target);
 }
 
-function create_task_component(): HTMLElement {
-  const task_container = document.createElement("div");
-  const task_icon = document.createElement("span");
-  const task_title = document.createElement("p");
-
-  task_container.setAttribute("class", "task-item item");
-  task_container.dataset.taskID = uid(16);
-  task_title.textContent = "ROOMMATES";
-  task_container.append(task_icon);
-  task_container.append(task_title);
-
-  return task_container;
-}
-
 Event_Signal.subscribe("update_task_ui", set_task_active);
+Event_Signal.subscribe("new_current_task", update_config_ui);
 
 add_task_btn?.addEventListener("click", (e) => {
   (sidebar as HTMLElement).prepend(create_task_component());
@@ -45,6 +33,7 @@ sidebar?.addEventListener("click", (e) => {
         sidebar?.querySelectorAll("div.task-item") as NodeListOf<HTMLElement>
       );
       Event_Signal.publish("update_task_ui", { target, task_list });
+      Event_Signal.publish("new_current_task", "ching chong");
     }
   }
 });
