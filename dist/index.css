@@ -150,6 +150,10 @@ form {
     appearance: none;
     border: none;
   }
+
+  div.form-input-container {
+    margin-top: 0.8em;
+  }
   div#web-url-container {
     position: relative;
     label {
@@ -170,9 +174,6 @@ form {
     }
   }
 
-  div.form-input-container {
-    margin-top: 1em;
-  }
   #task-schema-container {
     .task-schema-input {
       display: flex;
@@ -194,7 +195,65 @@ form {
       border-bottom-left-radius: 0px;
     }
     *:not(input) {
-      margin-top: 0.4em;
+      margin-top: 10px;
     }
   }
+}
+
+.task-schema-input-container {
+  display: flex;
+  gap: 5px;
+  span:last-of-type {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    button {
+      margin-top: 0px !important;
+      cursor: pointer;
+      border: none;
+      appearance: none;
+      background-color: transparent;
+      width: 20px;
+      height: 20px;
+      background-size: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    button:first-of-type {
+      background-image: url("./assets/target.svg");
+    }
+
+    button:last-of-type {
+      background-color: transparent;
+      background-size: 30px;
+      background-image: url("./assets/trash.svg");
+    }
+  }
+}
+
+.add-btn {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: red solid 1px;
+  appearance: none;
+  background-color: transparent;
+  color: var(--white);
+  font-weight: 300;
+  font-size: 0.8rem;
+  border: none;
+}
+
+.add-btn::before {
+  display: inline-block;
+  content: "";
+  width: 15px;
+  height: 15px;
+  background-image: url("./assets/add-icon.svg");
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 0.8em;
 }
