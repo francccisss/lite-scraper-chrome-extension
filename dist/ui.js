@@ -40,7 +40,7 @@ export function multipage_inputs() {
         multipage_container?.append(multipage_input_container);
     };
     const destroy = () => {
-        multipage_container?.removeChild(multipage_input_container);
+        multipage_input_container.remove();
     };
     return {
         create,

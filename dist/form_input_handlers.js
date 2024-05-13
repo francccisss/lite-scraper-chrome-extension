@@ -46,7 +46,7 @@ export function remove_field_handler(e) {
     const container = e.currentTarget;
     const target = e.target;
     if (target.classList.contains("delete-field")) {
-        const target_parent = find_top_parent(target, "task-schema-input-containe");
-        console.log(target_parent);
+        const target_parent = find_top_parent(target, "task-schema-input-container");
+        target_parent?.remove();
     }
 }

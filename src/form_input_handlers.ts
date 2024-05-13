@@ -74,6 +74,6 @@ export function remove_field_handler(e: Event) {
       target,
       "task-schema-input-container"
     );
-    console.log(target_parent);
+    target_parent?.remove();
   }
 }
