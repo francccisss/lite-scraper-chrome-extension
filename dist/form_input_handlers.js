@@ -1,4 +1,4 @@
-import { multipage_inputs } from "./ui.js";
+import { create_input_field, multipage_inputs } from "./ui.js";
 // triggered when a new task is clicked
 export function update_config_ui(data) {
     const form = document.querySelector("form");
@@ -19,9 +19,17 @@ export function update_config_ui(data) {
 }
 export function toggle_multipage_input(e) {
     const target = e.target;
+    const inputs = multipage_inputs();
     if (target.checked) {
-        multipage_inputs().create();
+        inputs.create();
         return;
     }
-    multipage_inputs().destroy();
+    inputs.destroy();
+}
+export function add_field_handler(e) {
+    const task_schema_container = document.getElementById("task-schema-container");
+    const target = e.currentTarget;
+    const new_input_field = create_input_field().querySelector(".task-schema-input-container");
+    console.log(new_input_field);
+    task_schema_container?.insertBefore(new_input_field, task_schema_container.children[1]);
 }

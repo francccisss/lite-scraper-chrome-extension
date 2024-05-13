@@ -47,3 +47,20 @@ export function multipage_inputs() {
         destroy,
     };
 }
+// i give up
+export function create_input_field() {
+    const parser = new DOMParser();
+    const input_field_string = `
+  <div class="task-schema-input-container" >
+      <span class="task-schema-input key-value-input">
+        <input id="key" name="" placeholder="key" type="text">
+        <input id="value" name="" placeholder="value" type="text">
+      </span>
+      <span>
+        <button type="button" class="target-btn"></button>
+        <button type="button" class="delete-field"></button>
+      </span>
+   </div>`;
+    const parsed_input_field = parser.parseFromString(input_field_string, "text/html");
+    return parsed_input_field;
+}

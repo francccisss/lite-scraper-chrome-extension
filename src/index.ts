@@ -1,12 +1,14 @@
 import Event_Signal from "./utils/pubsub.js";
 import {
+  add_field_handler,
   toggle_multipage_input,
   update_config_ui,
 } from "./form_input_handlers.js";
-import { create_task_component } from "./ui.js";
+import { create_input_field, create_task_component } from "./ui.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const multipage_toggle_btn = document.getElementById("multipageToggle");
+const add_field_btn = document.getElementById("add-field-btn");
 
 function set_task_active(data: {
   target: HTMLElement;
@@ -43,3 +45,5 @@ sidebar?.addEventListener("click", (e) => {
     }
   }
 });
+
+add_field_btn?.addEventListener("click", add_field_handler);
