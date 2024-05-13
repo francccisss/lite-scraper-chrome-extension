@@ -1,4 +1,5 @@
 import { create_input_field, multipage_inputs } from "./ui.js";
+import { find_top_parent } from "./utils/find_top_parent.js";
 // triggered when a new task is clicked
 export function update_config_ui(data) {
     const form = document.querySelector("form");
@@ -32,18 +33,7 @@ export function add_field_handler(e) {
     console.log(new_input_field);
     task_schema_container?.insertBefore(new_input_field, task_schema_container.children[1]);
 }
-function find_top_parent(element, parent_css_selector) {
-    let parent = element.parentElement;
-    if (!parent)
-        return null;
-    if (parent?.classList.contains(parent_css_selector) ||
-        parent?.id === parent_css_selector) {
-        return parent;
-    }
-    return find_top_parent(parent, parent_css_selector);
-}
 export function remove_field_handler(e) {
-    const container = e.currentTarget;
     const target = e.target;
     if (target.classList.contains("delete-field")) {
         const target_parent = find_top_parent(target, "task-schema-input-container");

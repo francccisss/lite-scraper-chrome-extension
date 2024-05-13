@@ -3,6 +3,9 @@
   "name": "Lite Scraper",
   "description": "A minimal web scraping tool to gather insights for your business",
   "version": "1.0",
+  "permission": [
+    "storage"
+  ],
   "action": {
     "default_popup": "/dist/index.html"
   }

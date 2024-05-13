@@ -290,6 +290,7 @@ form {
 }
 
 .add-field {
+  max-width: max-content;
   margin-top: 10px;
   cursor: pointer;
   position: relative;
