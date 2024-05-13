@@ -1,14 +1,16 @@
 import Event_Signal from "./utils/pubsub.js";
 import {
   add_field_handler,
+  remove_field_handler,
   toggle_multipage_input,
   update_config_ui,
 } from "./form_input_handlers.js";
-import { create_input_field, create_task_component } from "./ui.js";
+import { create_task_component } from "./ui.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const multipage_toggle_btn = document.getElementById("multipageToggle");
 const add_field_btn = document.getElementById("add-field-btn");
+const task_schema_container = document.getElementById("task-schema-container");
 
 function set_task_active(data: {
   target: HTMLElement;
@@ -26,11 +28,9 @@ Event_Signal.subscribe("update_task_ui", set_task_active);
 Event_Signal.subscribe("new_current_task", update_config_ui);
 
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
-
 add_task_btn?.addEventListener("click", (e) => {
   (sidebar as HTMLElement).prepend(create_task_component());
 });
-
 sidebar?.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   if (target.classList.contains("task-item")) {
@@ -47,3 +47,4 @@ sidebar?.addEventListener("click", (e) => {
 });
 
 add_field_btn?.addEventListener("click", add_field_handler);
+task_schema_container?.addEventListener("click", remove_field_handler);

@@ -41,7 +41,6 @@ export function add_field_handler(e: Event) {
   const task_schema_container = document.getElementById(
     "task-schema-container"
   );
-  const target = e.currentTarget as HTMLButtonElement;
   const new_input_field = create_input_field().querySelector(
     ".task-schema-input-container"
   );
@@ -50,4 +49,31 @@ export function add_field_handler(e: Event) {
     new_input_field as Element,
     task_schema_container.children[1]
   );
+}
+
+function find_top_parent(
+  element: HTMLElement,
+  parent_css_selector: string
+): HTMLElement | null {
+  let parent = element.parentElement;
+  if (!parent) return null;
+  if (
+    parent?.classList.contains(parent_css_selector) ||
+    parent?.id === parent_css_selector
+  ) {
+    return parent;
+  }
+  return find_top_parent(parent, parent_css_selector);
+}
+
+export function remove_field_handler(e: Event) {
+  const container = e.currentTarget as HTMLElement;
+  const target = e.target as HTMLElement;
+  if (target.classList.contains("delete-field")) {
+    const target_parent = find_top_parent(
+      target,
+      "task-schema-input-container"
+    );
+    console.log(target_parent);
+  }
 }

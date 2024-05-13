@@ -28,8 +28,25 @@ export function toggle_multipage_input(e) {
 }
 export function add_field_handler(e) {
     const task_schema_container = document.getElementById("task-schema-container");
-    const target = e.currentTarget;
     const new_input_field = create_input_field().querySelector(".task-schema-input-container");
     console.log(new_input_field);
     task_schema_container?.insertBefore(new_input_field, task_schema_container.children[1]);
+}
+function find_top_parent(element, parent_css_selector) {
+    let parent = element.parentElement;
+    if (!parent)
+        return null;
+    if (parent?.classList.contains(parent_css_selector) ||
+        parent?.id === parent_css_selector) {
+        return parent;
+    }
+    return find_top_parent(parent, parent_css_selector);
+}
+export function remove_field_handler(e) {
+    const container = e.currentTarget;
+    const target = e.target;
+    if (target.classList.contains("delete-field")) {
+        const target_parent = find_top_parent(target, "task-schema-input-containe");
+        console.log(target_parent);
+    }
 }
