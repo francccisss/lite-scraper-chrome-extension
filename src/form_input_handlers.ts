@@ -1,4 +1,5 @@
 import { create_input_field, multipage_inputs } from "./ui.js";
+import { find_top_parent } from "./utils/find_top_parent.js";
 import { t_task } from "./utils/types/project_types";
 
 // triggered when a new task is clicked
@@ -51,23 +52,7 @@ export function add_field_handler(e: Event) {
   );
 }
 
-function find_top_parent(
-  element: HTMLElement,
-  parent_css_selector: string
-): HTMLElement | null {
-  let parent = element.parentElement;
-  if (!parent) return null;
-  if (
-    parent?.classList.contains(parent_css_selector) ||
-    parent?.id === parent_css_selector
-  ) {
-    return parent;
-  }
-  return find_top_parent(parent, parent_css_selector);
-}
-
 export function remove_field_handler(e: Event) {
-  const container = e.currentTarget as HTMLElement;
   const target = e.target as HTMLElement;
   if (target.classList.contains("delete-field")) {
     const target_parent = find_top_parent(
