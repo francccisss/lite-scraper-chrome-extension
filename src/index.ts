@@ -7,12 +7,26 @@ import {
   set_task_active,
 } from "./input_handlers.js";
 import { create_task_component } from "./ui.js";
-import { init_session } from "./services/chrome_storage_api.js";
+import api_routes from "./utils/api_routes.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const multipage_toggle_btn = document.getElementById("multipageToggle");
 const add_field_btn = document.getElementById("add-field-btn");
 const task_schema_container = document.getElementById("task-schema-container");
+const get_started_btn = document.getElementById("get-started-btn");
+
+get_started_btn?.addEventListener("click", async () => {
+  console.log("Initialize new user session");
+  try {
+    const create_session = await fetch(`${api_routes.index}`, {
+      credentials: "include",
+    });
+    console.log(await create_session.json());
+  } catch (er) {
+    console.error("Unable to create a new session");
+    console.log(er);
+  }
+});
 
 // ***** TODO ********
 // When deleting a task schema input field
@@ -27,10 +41,6 @@ const task_schema_container = document.getElementById("task-schema-container");
 //  removes all of the input fields and reads the keys that exist on the database
 //  for the current task, and iterates through each to create the updated input field UI.
 // ***** TODO ********
-
-window.addEventListener("load", () => {
-  init_session();
-});
 
 Event_Signal.subscribe("update_task_ui", set_task_active);
 Event_Signal.subscribe("new_current_task", update_config_ui);
