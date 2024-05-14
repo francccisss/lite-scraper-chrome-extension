@@ -1,108 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Lite Scraper</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
-    <link href="./cssreset.css" rel="stylesheet" />
-    <link href="./index.css" rel="stylesheet" />
-    <script type="module" defer="true" src="index.js"></script>
-  </head>
 
-  <body>
-    <main id="content-container" class="main-container">
-      <div id="task-list-container">
-        <div id="sidebar">
-          <div class="task-item item">
-            <span></span>
-            <p>Amazon phone items</p>
-          </div>
+<head>
+  <title>Lite Scraper</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet" />
+  <link href="./cssreset.css" rel="stylesheet" />
+  <link href="./index.css" rel="stylesheet" />
+  <script type="module" defer="true" src="index.js"></script>
+</head>
 
-          <div class="task-item item">
-            <span></span>
-            <p>G2A Best sellers with discounts</p>
-          </div>
-
-          <div id="add-task" class="item">
-            <span></span>
-            <p>Add task</p>
-          </div>
+<body>
+  <main id="content-container" class="main-container home">
+    <div id="task-list-container">
+      <div id="sidebar">
+        <div class="task-item item">
+          <span></span>
+          <p>Amazon phone items</p>
         </div>
-        <section id="task-contents">
-          <h3>Amazon phone items</h3>
-          <form>
-            <div class="form-input-container" id="web-url-container">
-              <label for="websiteURL">Website URL :</label>
-              <input
-                id="websiteURL"
-                name="websiteURL"
-                type="text"
-                value="https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031"
-              />
-            </div>
 
-            <div class="form-input-container" id="multipage-container">
-              <label for="multipageToggle">
-                Multipage :
-                <input
-                  id="multipageToggle"
-                  name="multipageToggle"
-                  type="checkbox" />
-                <span id="checkmark"></span
-              ></label>
-            </div>
-            <div class="form-input-container" id="task-schema-container">
-              <label>Task Schema :</label>
-              <div class="task-schema-input-container">
-                <span class="task-schema-input key-value-input">
-                  <input id="key" name="" placeholder="key" type="text" />
-                  <input id="value" name="" placeholder="value" type="text" />
-                </span>
-                <span>
-                  <button type="button" class="target-btn"></button>
-                  <button type="button" class="delete-field"></button>
-                </span>
-              </div>
-              <div class="task-schema-input-container">
-                <span class="task-schema-input key-value-input">
-                  <input id="key" name="" placeholder="key" type="text" />
-                  <input id="value" name="" placeholder="value" type="text" />
-                </span>
-                <span>
-                  <button type="button" class="target-btn"></button>
-                  <button type="button" class="delete-field"></button>
-                </span>
-              </div>
-              <button id="add-field-btn" class="add-field" type="button">
-                Add Field
-              </button>
-            </div>
+        <div class="task-item item">
+          <span></span>
+          <p>G2A Best sellers with discounts</p>
+        </div>
 
-            <div class="form-input-container">
-              <button id="scrape-data" type="button">Scrape</button>
-              <button disabled id="download-data" type="button">
-                Download
-              </button>
-            </div>
-          </form>
-        </section>
-      </div>
-      <div id="welcome-box">
-        <h1>Lite <span>Scraper</span></h1>
-        <p>
-          A minimal user-friendly web scraping service for gathering insights
-          for your business.
-        </p>
-        <div id="welcome-box-btn-container" class="btn-container">
-          <button class="big-button">Get Started</button>
+        <div id="add-task" class="item">
+          <span></span>
+          <p>Add task</p>
         </div>
       </div>
-    </main>
-  </body>
+      <section id="task-contents">
+        <h3>Amazon phone items</h3>
+        <form>
+          <div class="form-input-container" id="web-url-container">
+            <label for="websiteURL">Website URL :</label>
+            <input id="websiteURL" name="websiteURL" type="text"
+              value="https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031" />
+          </div>
+
+          <div class="form-input-container" id="multipage-container">
+            <label for="multipageToggle">
+              Multipage :
+              <input id="multipageToggle" name="multipageToggle" type="checkbox" />
+              <span id="checkmark"></span></label>
+          </div>
+          <div class="form-input-container" id="task-schema-container">
+            <label>Task Schema :</label>
+            <div class="task-schema-input-container">
+              <span class="task-schema-input key-value-input">
+                <input id="key" name="" placeholder="key" type="text" />
+                <input id="value" name="" placeholder="value" type="text" />
+              </span>
+              <span>
+                <button type="button" class="target-btn"></button>
+                <button type="button" class="delete-field"></button>
+              </span>
+            </div>
+            <div class="task-schema-input-container">
+              <span class="task-schema-input key-value-input">
+                <input id="key" name="" placeholder="key" type="text" />
+                <input id="value" name="" placeholder="value" type="text" />
+              </span>
+              <span>
+                <button type="button" class="target-btn"></button>
+                <button type="button" class="delete-field"></button>
+              </span>
+            </div>
+            <button id="add-field-btn" class="add-field" type="button">
+              Add Field
+            </button>
+          </div>
+
+          <div class="form-input-container">
+            <button id="scrape-data" type="button">Scrape</button>
+            <button disabled id="download-data" type="button">
+              Download
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div id="welcome-box">
+      <h1>Lite <span>Scraper</span></h1>
+      <p>
+        A minimal user-friendly web scraping service for gathering insights
+        for your business.
+      </p>
+      <div id="welcome-box-btn-container" class="btn-container">
+        <button class="big-button">Get Started</button>
+      </div>
+    </div>
+  </main>
+</body>
+
 </html>
