@@ -21,7 +21,7 @@ export function multipage_inputs(): {
 } {
   const multipage_container = document.querySelector("#multipage-container");
   let multipage_input_container = document.getElementById(
-    "multipage-input-container"
+    "multipage-input-container",
   );
   if (!multipage_input_container) {
     multipage_input_container = document.createElement("div");
@@ -77,7 +77,7 @@ export function create_input_field() {
    </div>`;
   const parsed_input_field = parser.parseFromString(
     input_field_string,
-    "text/html"
+    "text/html",
   );
   return parsed_input_field;
 }
