@@ -1,6 +1,37 @@
-import { set_task_active } from "./input_handlers.js";
+import {
+  set_current_active_task_config,
+  set_task_active,
+} from "./input_handlers.js";
 import uid from "./utils/packages/dist/index.js";
 import { t_task_ui, t_task } from "./utils/types/project_types.js";
+
+export function populate_task_config({
+  websiteURL,
+  isMultipage,
+  taskSchema,
+}: t_task) {
+  const form = document.querySelector("form") as HTMLFormElement;
+  const websiteURL_input = form.querySelector(
+    "#websiteURL",
+  ) as HTMLInputElement;
+  const task_schema_inputs = Array.from(
+    form?.querySelectorAll(".task-schema-input") as NodeListOf<HTMLElement>,
+  );
+  const multipage_toggle = document.querySelector(
+    `input#multipageToggle`,
+  ) as HTMLInputElement;
+
+  websiteURL_input.value = websiteURL;
+  multipage_toggle.checked = isMultipage;
+
+  console.log({
+    webURL: websiteURL,
+    multipage_toggle: isMultipage,
+    task_schema_inputs: task_schema_inputs.map(
+      (inputs_container) => inputs_container.children,
+    ),
+  });
+}
 
 export function create_task_component({
   taskID,
@@ -28,13 +59,15 @@ export function add_task() {
 export async function init_tasks_ui(tasks: Array<t_task>) {
   try {
     const sidebar = document.getElementById("sidebar") as HTMLElement;
-    if (tasks === undefined) throw new Error("Tasks is undefined");
+    if (tasks === undefined) throw new Error("Unable to setup storage.");
+    if (tasks.length === 0) return; // try to render something
     tasks.forEach((task: t_task) => {
       sidebar.prepend(
         create_task_component({ taskID: task.taskID, title: task.title }),
       );
     });
     set_task_active(sidebar.children[0] as HTMLElement);
+    set_current_active_task_config();
   } catch (err) {
     console.log(err);
   }

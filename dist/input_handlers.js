@@ -1,4 +1,4 @@
-import { create_input_field, multipage_inputs } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import Event_Signal from "./utils/pubsub.js";
@@ -13,29 +13,32 @@ export function set_task_active(data) {
     console.log(State_Manager.get_state());
 }
 // triggered when a new task is clicked
-export function set_current_active_task_config(data) {
-    console.log(data);
-    const form = document.querySelector("form");
-    const websiteURL_input = form?.querySelector("#websiteURL");
-    const multipage_toggle = form?.querySelector(`input#multipageToggle`);
-    const task_schema_inputs = Array.from(form?.querySelectorAll(".task-schema-input"));
-    console.log({
-        webURL: websiteURL_input,
-        multipage_toggle: multipage_toggle.checked,
-        task_schema_inputs: task_schema_inputs.map((inputs_container) => inputs_container.children),
-    });
-    const multipage_input_initializer = multipage_inputs();
-    if (multipage_toggle.checked &&
-        multipage_input_initializer.input_container !== null) {
-        return;
+export async function set_current_active_task_config() {
+    try {
+        const { tasks } = await chrome.storage.local.get("tasks");
+        const state_task_id = State_Manager.get_state("current_active_task");
+        const current_active_task = tasks.find((task) => task.taskID === state_task_id);
+        if (current_active_task === undefined) {
+            console.log("Dont render anything");
+            return;
+        }
+        populate_task_config(current_active_task);
+        const multipage_input_initializer = multipage_inputs();
+        if (current_active_task.isMultipage &&
+            multipage_input_initializer.input_container !== null) {
+            return;
+        }
+        else if (current_active_task.isMultipage &&
+            multipage_input_initializer.input_container === null) {
+            multipage_input_initializer.create();
+        }
+        else if (!current_active_task.isMultipage &&
+            multipage_input_initializer.input_container !== null) {
+            multipage_input_initializer.destroy();
+        }
     }
-    else if (multipage_toggle.checked &&
-        multipage_input_initializer.input_container === null) {
-        multipage_input_initializer.create();
-    }
-    else if (!multipage_toggle.checked &&
-        multipage_input_initializer.input_container !== null) {
-        multipage_input_initializer.destroy();
+    catch (err) {
+        console.error(err);
     }
 }
 export function toggle_multipage_input(e) {

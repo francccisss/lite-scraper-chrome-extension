@@ -1,8 +1,4 @@
-import {
-  create_input_field,
-  multipage_inputs,
-  populate_task_config,
-} from "./ui.js";
+import { create_input_field, multipage_inputs } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import Event_Signal from "./utils/pubsub.js";
@@ -35,7 +31,6 @@ export async function set_current_active_task_config() {
       console.log("Dont render anything");
       return;
     }
-    populate_task_config(current_active_task);
 
     const multipage_input_initializer = multipage_inputs();
     if (
