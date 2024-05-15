@@ -18,16 +18,16 @@ export function create_task_component(): HTMLElement {
 export function multipage_inputs(): {
   create: () => void;
   destroy: () => void;
+  input_container: HTMLElement;
 } {
   const multipage_container = document.querySelector("#multipage-container");
   let multipage_input_container = document.getElementById(
     "multipage-input-container",
-  );
-  if (!multipage_input_container) {
+  ) as HTMLElement;
+
+  const create = () => {
     multipage_input_container = document.createElement("div");
     multipage_input_container.setAttribute("id", "multipage-input-container");
-  }
-  const create = () => {
     const multipage_keys = Object.keys(multipageConfig);
     ["Starting Page", "End Page", "Next Element"].forEach((key, i) => {
       const config_input = document.createElement("span");
@@ -52,13 +52,11 @@ export function multipage_inputs(): {
     });
     multipage_container?.append(multipage_input_container);
   };
+
   const destroy = () => {
     multipage_input_container.remove();
   };
-  return {
-    create,
-    destroy,
-  };
+  return { create, destroy, input_container: multipage_input_container };
 }
 
 // i give up

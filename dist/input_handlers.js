@@ -20,11 +20,18 @@ export function set_current_active_task_config(data) {
         task_schema_inputs: task_schema_inputs.map((inputs_container) => inputs_container.children),
     });
     const multipage_input_initializer = multipage_inputs();
-    if (!multipage_toggle.checked) {
-        multipage_input_initializer.destroy();
+    if (multipage_toggle.checked &&
+        multipage_input_initializer.input_container !== null) {
         return;
     }
-    multipage_input_initializer.create();
+    else if (multipage_toggle.checked &&
+        multipage_input_initializer.input_container === null) {
+        multipage_input_initializer.create();
+    }
+    else if (!multipage_toggle.checked &&
+        multipage_input_initializer.input_container !== null) {
+        multipage_input_initializer.destroy();
+    }
 }
 export function toggle_multipage_input(e) {
     const target = e.target;

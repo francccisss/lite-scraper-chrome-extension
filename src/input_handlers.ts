@@ -35,11 +35,23 @@ export function set_current_active_task_config(data: t_task) {
   });
 
   const multipage_input_initializer = multipage_inputs();
-  if (!multipage_toggle.checked) {
-    multipage_input_initializer.destroy();
+
+  if (
+    multipage_toggle.checked &&
+    multipage_input_initializer.input_container !== null
+  ) {
     return;
+  } else if (
+    multipage_toggle.checked &&
+    multipage_input_initializer.input_container === null
+  ) {
+    multipage_input_initializer.create();
+  } else if (
+    !multipage_toggle.checked &&
+    multipage_input_initializer.input_container !== null
+  ) {
+    multipage_input_initializer.destroy();
   }
-  multipage_input_initializer.create();
 }
 
 export function toggle_multipage_input(e: Event) {

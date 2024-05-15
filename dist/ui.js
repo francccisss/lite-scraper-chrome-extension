@@ -14,11 +14,9 @@ export function create_task_component() {
 export function multipage_inputs() {
     const multipage_container = document.querySelector("#multipage-container");
     let multipage_input_container = document.getElementById("multipage-input-container");
-    if (!multipage_input_container) {
+    const create = () => {
         multipage_input_container = document.createElement("div");
         multipage_input_container.setAttribute("id", "multipage-input-container");
-    }
-    const create = () => {
         const multipage_keys = Object.keys(multipageConfig);
         ["Starting Page", "End Page", "Next Element"].forEach((key, i) => {
             const config_input = document.createElement("span");
@@ -42,10 +40,7 @@ export function multipage_inputs() {
     const destroy = () => {
         multipage_input_container.remove();
     };
-    return {
-        create,
-        destroy,
-    };
+    return { create, destroy, input_container: multipage_input_container };
 }
 // i give up
 export function create_input_field() {
@@ -63,4 +58,12 @@ export function create_input_field() {
    </div>`;
     const parsed_input_field = parser.parseFromString(input_field_string, "text/html");
     return parsed_input_field;
+}
+export function transition_signed_in(data) {
+    const welcome_page = document.getElementById("welcome-box");
+    const task_list_container = document.getElementById("task-list-container");
+    if (data.can_sign_in) {
+        welcome_page.style.display = "none";
+        task_list_container.style.display = "flex";
+    }
 }
