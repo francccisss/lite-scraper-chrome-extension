@@ -36,7 +36,7 @@ Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler);
 Event_Signal.subscribe("create_session", transition_signed_in);
 Event_Signal.subscribe("update_task_ui", set_task_active);
-Event_Signal.subscribe("new_current_task", set_current_active_task_config);
+Event_Signal.subscribe("update_task_ui", set_current_active_task_config);
 
 get_started_btn?.addEventListener("click", get_started_btn_handler);
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
@@ -47,11 +47,7 @@ sidebar?.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   if (target.classList.contains("task-item")) {
     if (!target.classList.contains("active")) {
-      const task_list = Array.from(
-        sidebar?.querySelectorAll("div.task-item") as NodeListOf<HTMLElement>,
-      );
-      Event_Signal.publish("update_task_ui", { target, task_list });
-      Event_Signal.publish("new_current_task", "ching chong");
+      Event_Signal.publish("update_task_ui", target);
     }
   }
 });

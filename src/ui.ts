@@ -7,7 +7,7 @@ export function create_task_component(): HTMLElement {
   const task_title = document.createElement("p");
 
   task_container.setAttribute("class", "task-item item");
-  task_container.dataset.taskID = uid(16);
+  task_container.dataset.task = uid(16);
   task_title.textContent = "ROOMMATES";
   task_container.append(task_icon);
   task_container.append(task_title);

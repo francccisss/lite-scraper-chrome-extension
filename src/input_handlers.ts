@@ -2,22 +2,26 @@ import { create_input_field, multipage_inputs } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import Event_Signal from "./utils/pubsub.js";
+import State_Manager from "./utils/state_manager.js";
 import { t_task } from "./utils/types/project_types";
 
-export function set_task_active(data: {
-  target: HTMLElement;
-  task_list: Array<HTMLElement>;
-}) {
-  const current_active_task = data.task_list.find((i) =>
+export function set_task_active(data: HTMLElement) {
+  const sidebar = document.getElementById("sidebar");
+  const task_list = Array.from(
+    sidebar?.querySelectorAll("div.task-item") as NodeListOf<HTMLElement>,
+  );
+  const current_active_task = task_list.find((i) =>
     i.classList.contains("active"),
   );
   current_active_task?.classList.remove("active");
-  data.target.classList.add("active");
-  console.log(data.target);
+  data.classList.add("active");
+  State_Manager.set_state("current_active_task", data.dataset.task);
+  console.log(State_Manager.get_state());
 }
 
 // triggered when a new task is clicked
 export function set_current_active_task_config(data: t_task) {
+  console.log(data);
   const form = document.querySelector("form");
   const websiteURL_input = form?.querySelector("#websiteURL");
   const multipage_toggle = form?.querySelector(
