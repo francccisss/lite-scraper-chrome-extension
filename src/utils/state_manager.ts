@@ -9,7 +9,7 @@ class StateManager {
     return this.instance;
   }
   get_state(key?: string) {
-    return key !== undefined ? { key: this.states[key] } : this.states;
+    return key !== undefined ? this.states[key] : this.states;
   }
 
   set_state(key: string, value: any) {
