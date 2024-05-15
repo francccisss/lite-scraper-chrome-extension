@@ -7,7 +7,12 @@ import {
   set_task_active,
   get_started_btn_handler,
 } from "./input_handlers.js";
-import { create_task_component, transition_signed_in } from "./ui.js";
+import {
+  add_task,
+  create_task_component,
+  init_tasks_ui,
+  transition_signed_in,
+} from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
 import { set_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar");
@@ -30,8 +35,12 @@ window.addEventListener("load", async () => {
     },
   );
   try {
-    await set_storage();
-  } catch (e) {}
+    const user_storage = await set_storage();
+    console.log(user_storage);
+    init_tasks_ui(user_storage.tasks);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // accept array of function declarations
@@ -43,9 +52,7 @@ Event_Signal.subscribe("update_task_ui", set_current_active_task_config);
 
 get_started_btn?.addEventListener("click", get_started_btn_handler);
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
-add_task_btn?.addEventListener("click", () => {
-  (sidebar as HTMLElement).prepend(create_task_component());
-});
+add_task_btn?.addEventListener("click", add_task);
 sidebar?.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   if (target.classList.contains("task-item")) {

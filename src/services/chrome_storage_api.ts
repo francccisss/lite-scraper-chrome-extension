@@ -11,6 +11,7 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
     await chrome.storage.local.set({
       tasks: [
         {
+          title: "Amazon Phones",
           taskID: uid(16),
           websiteURL:
             "https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031",
@@ -19,6 +20,7 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
         },
 
         {
+          title: "Epoch Converter",
           taskID: uid(16),
           websiteURL: "https://www.epochconverter.com/",
           isMultipage: true,
@@ -26,6 +28,7 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
         },
 
         {
+          title: "Haru",
           taskID: uid(16),
           websiteURL: "https://www.youtube.com/watch?v=Ki6_VnABBBQ",
           isMultipage: false,

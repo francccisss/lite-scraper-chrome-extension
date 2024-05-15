@@ -11,7 +11,6 @@ export function set_task_active(data) {
     data.classList.add("active");
     State_Manager.set_state("current_active_task", data.dataset.task);
     console.log(State_Manager.get_state());
-    console.log(data);
 }
 // triggered when a new task is clicked
 export function set_current_active_task_config(data) {

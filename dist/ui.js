@@ -1,15 +1,30 @@
 import uid from "./utils/packages/dist/index.js";
-import { multipageConfig } from "./utils/task_config.js";
-export function create_task_component() {
+export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");
     const task_icon = document.createElement("span");
     const task_title = document.createElement("p");
     task_container.setAttribute("class", "task-item item");
-    task_container.dataset.task = uid(16);
-    task_title.textContent = "ROOMMATES";
+    task_container.dataset.task = taskID;
+    task_title.textContent = title;
     task_container.append(task_icon);
     task_container.append(task_title);
     return task_container;
+}
+export function add_task() {
+    const sidebar = document.getElementById("sidebar");
+    const placeholders = { taskID: uid(16), title: "New Task" };
+    sidebar.prepend(create_task_component({ ...placeholders }));
+}
+export async function init_tasks_ui(tasks) {
+    try {
+        const sidebar = document.getElementById("sidebar");
+        tasks.forEach((task) => {
+            sidebar.prepend(create_task_component({ taskID: task.taskID, title: task.title }));
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 export function multipage_inputs() {
     const multipage_container = document.querySelector("#multipage-container");
@@ -17,7 +32,11 @@ export function multipage_inputs() {
     const create = () => {
         multipage_input_container = document.createElement("div");
         multipage_input_container.setAttribute("id", "multipage-input-container");
-        const multipage_keys = Object.keys(multipageConfig);
+        const multipage_keys = Object.keys({
+            starting_page: "",
+            end_page: "",
+            next_element: "",
+        });
         ["Starting Page", "End Page", "Next Element"].forEach((key, i) => {
             const config_input = document.createElement("span");
             const key_input = document.createElement("input");
