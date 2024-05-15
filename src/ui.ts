@@ -81,3 +81,14 @@ export function create_input_field() {
   );
   return parsed_input_field;
 }
+
+export function transition_signed_in(data: any) {
+  const welcome_page = document.getElementById("welcome-box") as HTMLElement;
+  const task_list_container = document.getElementById(
+    "task-list-container",
+  ) as HTMLElement;
+  if (data.can_sign_in) {
+    welcome_page.style.display = "none";
+    task_list_container.style.display = "flex";
+  }
+}

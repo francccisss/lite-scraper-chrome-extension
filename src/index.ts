@@ -7,7 +7,7 @@ import {
   set_task_active,
   get_started_btn_handler,
 } from "./input_handlers.js";
-import { create_task_component } from "./ui.js";
+import { create_task_component, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
@@ -17,6 +17,7 @@ const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 
 Event_Signal.subscribe("create_session", create_session_handler);
+Event_Signal.subscribe("create_session", transition_signed_in);
 Event_Signal.subscribe("update_task_ui", set_task_active);
 Event_Signal.subscribe("new_current_task", set_current_active_task_config);
 

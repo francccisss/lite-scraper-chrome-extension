@@ -9,6 +9,14 @@ const add_field_btn = document.getElementById("add-field-btn");
 const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 Event_Signal.subscribe("create_session", create_session_handler);
+Event_Signal.subscribe("create_session", (data) => {
+    const welcome_page = document.getElementById("welcome-box");
+    const task_list_container = document.getElementById("task-list-container");
+    if (data.can_sign_in) {
+        welcome_page.style.display = "none";
+        task_list_container.style.display = "flex";
+    }
+});
 Event_Signal.subscribe("update_task_ui", set_task_active);
 Event_Signal.subscribe("new_current_task", set_current_active_task_config);
 get_started_btn?.addEventListener("click", get_started_btn_handler);
