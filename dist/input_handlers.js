@@ -1,5 +1,7 @@
 import { create_input_field, multipage_inputs } from "./ui.js";
+import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
+import Event_Signal from "./utils/pubsub.js";
 export function set_task_active(data) {
     const current_active_task = data.task_list.find((i) => i.classList.contains("active"));
     current_active_task?.classList.remove("active");
@@ -7,7 +9,7 @@ export function set_task_active(data) {
     console.log(data.target);
 }
 // triggered when a new task is clicked
-export function update_config_ui(data) {
+export function set_current_active_task_config(data) {
     const form = document.querySelector("form");
     const websiteURL_input = form?.querySelector("#websiteURL");
     const multipage_toggle = form?.querySelector(`input#multipageToggle`);
@@ -44,5 +46,21 @@ export function remove_field_handler(e) {
     if (target.classList.contains("delete-field")) {
         const target_parent = find_top_parent(target, "task-schema-input-container");
         target_parent?.remove();
+    }
+}
+export async function get_started_btn_handler() {
+    try {
+        Event_Signal.publish("create_session", { can_sign_in: false });
+        const create_session = await fetch(`${api_routes.index}`, {
+            credentials: "include",
+        });
+        const parse_response = await create_session.json();
+        Event_Signal.publish("create_session", parse_response);
+        Event_Signal.unsubscribe("create_session");
+    }
+    catch (er) {
+        Event_Signal.publish("create_session", { can_sign_in: false });
+        console.error("Unable to create a new session");
+        console.log(er);
     }
 }

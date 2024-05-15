@@ -1,5 +1,7 @@
 import { create_input_field, multipage_inputs } from "./ui.js";
+import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
+import Event_Signal from "./utils/pubsub.js";
 import { t_task } from "./utils/types/project_types";
 
 export function set_task_active(data: {
@@ -15,7 +17,7 @@ export function set_task_active(data: {
 }
 
 // triggered when a new task is clicked
-export function update_config_ui(data: t_task) {
+export function set_current_active_task_config(data: t_task) {
   const form = document.querySelector("form");
   const websiteURL_input = form?.querySelector("#websiteURL");
   const multipage_toggle = form?.querySelector(
@@ -72,5 +74,21 @@ export function remove_field_handler(e: Event) {
       "task-schema-input-container",
     );
     target_parent?.remove();
+  }
+}
+
+export async function get_started_btn_handler() {
+  try {
+    Event_Signal.publish("create_session", { can_sign_in: false });
+    const create_session = await fetch(`${api_routes.index}`, {
+      credentials: "include",
+    });
+    const parse_response = await create_session.json();
+    Event_Signal.publish("create_session", parse_response);
+    Event_Signal.unsubscribe("create_session");
+  } catch (er) {
+    Event_Signal.publish("create_session", { can_sign_in: false });
+    console.error("Unable to create a new session");
+    console.log(er);
   }
 }
