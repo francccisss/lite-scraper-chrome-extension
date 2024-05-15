@@ -23,6 +23,14 @@ class PubSub {
         }
         this.events[event].forEach((cb) => cb(data));
     }
+    unsubscribe(event) {
+        for (let existing_event in this.events) {
+            if (existing_event === event) {
+                delete this.events[existing_event];
+                console.log(this.events);
+            }
+        }
+    }
 }
 const Event_Signal = new PubSub().get_instance();
 export default Event_Signal;

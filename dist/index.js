@@ -11,34 +11,25 @@ const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 get_started_btn?.addEventListener("click", async () => {
     try {
+        Event_Signal.publish("init_session", false);
         const create_session = await fetch(`${api_routes.index}`, {
             credentials: "include",
         });
         const parse_response = await create_session.json();
-        console.log(parse_response);
-        State_Manager.set_state("current_session", parse_response);
+        Event_Signal.publish("init_session", true);
         Event_Signal.publish("signed_in", parse_response);
+        Event_Signal.unsubscribe("init_session");
     }
     catch (er) {
         console.error("Unable to create a new session");
         console.log(er);
     }
 });
-// ***** TODO ********
-// When deleting a task schema input field
-// it sends a notification about thhat input field
-// mainly the key that is stored within it, this notification
-//
-// Updating the input fields Data:
-//  sends a signal to update the current task in the chrome's local storage
-//  also sends another signal to update the input fields,
-//
-// Updating the input fields UI:
-//  removes all of the input fields and reads the keys that exist on the database
-//  for the current task, and iterates through each to create the updated input field UI.
-// ***** TODO ********
+Event_Signal.subscribe("init_session", (data) => {
+    console.log({ fetching_status: data });
+});
 Event_Signal.subscribe("signed_in", (data) => {
-    console.log(data);
+    State_Manager.set_state("current_session", data);
     console.log(State_Manager.get_state());
 });
 Event_Signal.subscribe("update_task_ui", set_task_active);
