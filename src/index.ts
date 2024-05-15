@@ -9,8 +9,7 @@ import {
 } from "./input_handlers.js";
 import { create_task_component, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
-import State_Manager from "./utils/state_manager.js";
-import api_routes from "./utils/api_routes.js";
+import { set_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const multipage_toggle_btn = document.getElementById("multipageToggle");
@@ -30,8 +29,12 @@ window.addEventListener("load", async () => {
       });
     },
   );
+  try {
+    await set_storage();
+  } catch (e) {}
 });
 
+// accept array of function declarations
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler);
 Event_Signal.subscribe("create_session", transition_signed_in);
