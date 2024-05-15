@@ -27,6 +27,7 @@ export function add_task() {
 export async function init_tasks_ui(tasks: Array<t_task>) {
   try {
     const sidebar = document.getElementById("sidebar") as HTMLElement;
+    if (!tasks !== undefined) throw new Error("Easks is undefined");
     tasks.forEach((task: t_task) => {
       sidebar.prepend(
         create_task_component({ taskID: task.taskID, title: task.title }),
