@@ -1,3 +1,4 @@
+import { set_task_active } from "./input_handlers.js";
 import uid from "./utils/packages/dist/index.js";
 export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");
@@ -18,9 +19,12 @@ export function add_task() {
 export async function init_tasks_ui(tasks) {
     try {
         const sidebar = document.getElementById("sidebar");
+        if (tasks === undefined)
+            throw new Error("Tasks is undefined");
         tasks.forEach((task) => {
             sidebar.prepend(create_task_component({ taskID: task.taskID, title: task.title }));
         });
+        set_task_active(sidebar.children[0]);
     }
     catch (err) {
         console.log(err);

@@ -10,7 +10,6 @@ const add_field_btn = document.getElementById("add-field-btn");
 const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 window.addEventListener("load", async () => {
-    // chrome.storage.local.clear();
     chrome.cookies.get({
         url: "https://localhost:3005/",
         name: "connect.sid",
