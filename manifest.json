@@ -4,7 +4,12 @@
   "description": "A minimal web scraping tool to gather insights for your business",
   "version": "1.0",
   "permissions": [
-    "storage"
+    "storage",
+    "cookies",
+    "https://localhost:3005/"
+  ],
+  "host_permissions": [
+    "https://localhost:3005/"
   ],
   "action": {
     "default_popup": "/dist/index.html"
