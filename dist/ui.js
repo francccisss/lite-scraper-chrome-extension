@@ -1,8 +1,6 @@
 import { set_current_active_task_config, set_task_active, } from "./input_handlers.js";
-import uid from "./utils/packages/dist/index.js";
 function remove_task_input_fields() {
     const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
-    console.log(task_schema_input_containers);
     task_schema_input_containers.forEach((input) => input.remove());
 }
 export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
@@ -27,11 +25,6 @@ export function create_task_component({ taskID, title, }) {
     task_container.append(task_icon);
     task_container.append(task_title);
     return task_container;
-}
-export function add_task() {
-    const sidebar = document.getElementById("sidebar");
-    const placeholders = { taskID: uid(16), title: "New Task" };
-    sidebar.prepend(create_task_component({ ...placeholders }));
 }
 export async function init_tasks_ui(tasks) {
     try {

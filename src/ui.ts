@@ -9,7 +9,6 @@ function remove_task_input_fields() {
   const task_schema_input_containers = document.querySelectorAll(
     ".task-schema-input-container",
   );
-  console.log(task_schema_input_containers);
   task_schema_input_containers.forEach((input) => input.remove());
 }
 
@@ -56,12 +55,6 @@ export function create_task_component({
   task_container.append(task_title);
 
   return task_container;
-}
-
-export function add_task() {
-  const sidebar = document.getElementById("sidebar") as HTMLElement;
-  const placeholders = { taskID: uid(16), title: "New Task" };
-  sidebar.prepend(create_task_component({ ...placeholders }));
 }
 
 export async function init_tasks_ui(tasks: Array<t_task>) {

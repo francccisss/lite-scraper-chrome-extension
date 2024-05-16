@@ -6,8 +6,9 @@ import {
   set_current_active_task_config,
   set_task_active,
   get_started_btn_handler,
+  add_task,
 } from "./input_handlers.js";
-import { add_task, init_tasks_ui, transition_signed_in } from "./ui.js";
+import { init_tasks_ui, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
 import { set_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar");

@@ -1,13 +1,33 @@
+import { add_task_local_storage } from "./services/chrome_storage_api.js";
 import {
   create_input_field,
   multipage_inputs,
   populate_task_config,
+  create_task_component,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
+import { uid } from "./utils/packages/dist/index.mjs";
 import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 import { t_task } from "./utils/types/project_types";
+
+export async function add_task() {
+  const new_task: t_task = {
+    websiteURL: "",
+    taskID: uid(16),
+    title: "New Task",
+    isMultipage: false,
+    taskSchema: {
+      title: ".placeholder",
+      description: ".placeholder-desc",
+    },
+  };
+  await add_task_local_storage(new_task);
+  const sidebar = document.getElementById("sidebar") as HTMLElement;
+  const placeholders = { taskID: new_task.taskID, title: new_task.title };
+  sidebar.prepend(create_task_component({ ...placeholders }));
+}
 
 export function set_task_active(data: HTMLElement) {
   const sidebar = document.getElementById("sidebar");

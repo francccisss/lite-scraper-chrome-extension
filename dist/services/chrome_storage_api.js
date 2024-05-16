@@ -1,7 +1,7 @@
 import { uid } from "../utils/packages/dist/index.mjs";
 export async function set_storage() {
     const user_storage = await chrome.storage.local.get();
-    if (Object.keys(user_storage).length === 0) {
+    if (Object.keys(user_storage).length !== 0) {
         await chrome.storage.local.set({
             tasks: [
                 {
@@ -42,7 +42,13 @@ export async function set_storage() {
             ],
             scrape_calls: 0,
         });
+        console.log(user_storage);
         return user_storage;
     }
     return user_storage;
+}
+export async function add_task_local_storage(new_task) {
+    const { tasks } = await chrome.storage.local.get("tasks");
+    console.log(tasks);
+    await chrome.storage.local.set({ tasks: [new_task, ...tasks] });
 }
