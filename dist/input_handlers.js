@@ -23,18 +23,17 @@ export async function set_current_active_task_config() {
             return;
         }
         populate_task_config(current_active_task);
-        const multipage_input_initializer = multipage_inputs();
         if (current_active_task.isMultipage &&
-            multipage_input_initializer.input_container !== null) {
+            multipage_inputs().input_container !== null) {
             return;
         }
         else if (current_active_task.isMultipage &&
-            multipage_input_initializer.input_container === null) {
-            multipage_input_initializer.create();
+            multipage_inputs().input_container === null) {
+            multipage_inputs().create();
         }
         else if (!current_active_task.isMultipage &&
-            multipage_input_initializer.input_container !== null) {
-            multipage_input_initializer.destroy();
+            multipage_inputs().input_container !== null) {
+            multipage_inputs().destroy();
         }
     }
     catch (err) {
@@ -52,8 +51,10 @@ export function toggle_multipage_input(e) {
 }
 export function add_field_handler(e) {
     const task_schema_container = document.getElementById("task-schema-container");
-    const new_input_field = create_input_field().querySelector(".task-schema-input-container");
-    console.log(new_input_field);
+    const new_input_field = create_input_field({
+        key: "",
+        value: "",
+    });
     task_schema_container?.insertBefore(new_input_field, task_schema_container.children[1]);
 }
 export function remove_field_handler(e) {

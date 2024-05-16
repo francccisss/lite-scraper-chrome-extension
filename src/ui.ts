@@ -14,8 +14,8 @@ export function populate_task_config({
   const websiteURL_input = form.querySelector(
     "#websiteURL",
   ) as HTMLInputElement;
-  const task_schema_inputs = Array.from(
-    form?.querySelectorAll(".task-schema-input") as NodeListOf<HTMLElement>,
+  const task_schema_container = document.getElementById(
+    "task-schema-container",
   );
   const multipage_toggle = document.querySelector(
     `input#multipageToggle`,
@@ -24,13 +24,15 @@ export function populate_task_config({
   websiteURL_input.value = websiteURL;
   multipage_toggle.checked = isMultipage;
 
-  console.log({
-    webURL: websiteURL,
-    multipage_toggle: isMultipage,
-    task_schema_inputs: task_schema_inputs.map(
-      (inputs_container) => inputs_container.children,
-    ),
-  });
+  console.log(taskSchema);
+  for (const [key, value] of Object.entries(taskSchema)) {
+    console.log({ key, value });
+    task_schema_container?.insertBefore(
+      create_input_field({ key, value }) as HTMLElement,
+      task_schema_container.children[1],
+    );
+  }
+  console.log(task_schema_container);
 }
 
 export function create_task_component({
@@ -121,14 +123,19 @@ export function multipage_inputs(): {
   return { create, destroy, input_container: multipage_input_container };
 }
 
-// i give up
-export function create_input_field() {
+export function create_input_field({
+  key,
+  value,
+}: {
+  key: string;
+  value: string;
+}) {
   const parser = new DOMParser();
   const input_field_string = `
   <div class="task-schema-input-container" >
       <span class="task-schema-input key-value-input">
-        <input id="key" name="" placeholder="key" type="text">
-        <input id="value" name="" placeholder="value" type="text">
+        <input id="key" value=${key} name=${key} placeholder="key" type="text">
+        <input id="value" value=${value} name=${value} placeholder="value" type="text">
       </span>
       <span>
         <button type="button" class="target-btn"></button>
@@ -139,7 +146,7 @@ export function create_input_field() {
     input_field_string,
     "text/html",
   );
-  return parsed_input_field;
+  return parsed_input_field.querySelector(".task-schema-input-container");
 }
 
 export function transition_signed_in(data: any) {

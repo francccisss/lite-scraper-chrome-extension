@@ -3,15 +3,16 @@ import uid from "./utils/packages/dist/index.js";
 export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
     const form = document.querySelector("form");
     const websiteURL_input = form.querySelector("#websiteURL");
-    const task_schema_inputs = Array.from(form?.querySelectorAll(".task-schema-input"));
+    const task_schema_container = document.getElementById("task-schema-container");
     const multipage_toggle = document.querySelector(`input#multipageToggle`);
     websiteURL_input.value = websiteURL;
     multipage_toggle.checked = isMultipage;
-    console.log({
-        webURL: websiteURL,
-        multipage_toggle: isMultipage,
-        task_schema_inputs: task_schema_inputs.map((inputs_container) => inputs_container.children),
-    });
+    console.log(taskSchema);
+    for (const [key, value] of Object.entries(taskSchema)) {
+        console.log({ key, value });
+        task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
+    }
+    console.log(task_schema_container);
 }
 export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");
@@ -81,14 +82,13 @@ export function multipage_inputs() {
     };
     return { create, destroy, input_container: multipage_input_container };
 }
-// i give up
-export function create_input_field() {
+export function create_input_field({ key, value, }) {
     const parser = new DOMParser();
     const input_field_string = `
   <div class="task-schema-input-container" >
       <span class="task-schema-input key-value-input">
-        <input id="key" name="" placeholder="key" type="text">
-        <input id="value" name="" placeholder="value" type="text">
+        <input id="key" value=${key} name=${key} placeholder="key" type="text">
+        <input id="value" value=${value} name=${value} placeholder="value" type="text">
       </span>
       <span>
         <button type="button" class="target-btn"></button>
@@ -96,7 +96,7 @@ export function create_input_field() {
       </span>
    </div>`;
     const parsed_input_field = parser.parseFromString(input_field_string, "text/html");
-    return parsed_input_field;
+    return parsed_input_field.querySelector(".task-schema-input-container");
 }
 export function transition_signed_in(data) {
     const welcome_page = document.getElementById("welcome-box");
