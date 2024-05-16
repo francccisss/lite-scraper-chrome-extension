@@ -28,12 +28,12 @@ export function set_task_active(data) {
     current_active_task?.classList.remove("active");
     data.classList.add("active");
     State_Manager.set_state("current_active_task", data.dataset.task);
-    console.log(State_Manager.get_state());
 }
 // triggered when a new task is clicked
 export async function set_current_active_task_config() {
     try {
         const { tasks } = await chrome.storage.local.get("tasks");
+        const i = await chrome.storage.local.get("tasks");
         const state_task_id = State_Manager.get_state("current_active_task");
         const current_active_task = tasks.find((task) => task.taskID === state_task_id);
         if (current_active_task === undefined) {
