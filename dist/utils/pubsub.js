@@ -10,12 +10,14 @@ class PubSub {
         }
         return this.instance;
     }
-    subscribe(event, cb) {
+    subscribe(event, ...args) {
         if (Object.keys(this.events).find((e) => e === event)) {
-            this.events[event].push(cb);
+            args.forEach((cb) => {
+                this.events[event].push(cb);
+            });
             return;
         }
-        this.events[event] = [cb];
+        this.events[event] = [...args];
     }
     publish(event, data) {
         if (!Object.keys(this.events).find((e) => e === event)) {

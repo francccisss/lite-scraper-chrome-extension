@@ -1,6 +1,6 @@
 import { set_current_active_task_config, set_task_active, } from "./input_handlers.js";
 import uid from "./utils/packages/dist/index.js";
-export function populate_task_config({ websiteURL, isMultipage, taskID, taskSchema, }) {
+export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
     const form = document.querySelector("form");
     const websiteURL_input = form.querySelector("#websiteURL");
     const task_schema_inputs = Array.from(form?.querySelectorAll(".task-schema-input"));

@@ -29,10 +29,8 @@ window.addEventListener("load", async () => {
 });
 // accept array of function declarations
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
-Event_Signal.subscribe("create_session", create_session_handler);
-Event_Signal.subscribe("create_session", transition_signed_in);
-Event_Signal.subscribe("update_task_ui", set_task_active);
-Event_Signal.subscribe("update_task_ui", set_current_active_task_config);
+Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
+Event_Signal.subscribe("update_task_ui", set_task_active, set_current_active_task_config);
 get_started_btn?.addEventListener("click", get_started_btn_handler);
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
 add_task_btn?.addEventListener("click", add_task);
