@@ -1,4 +1,4 @@
-import { add_task_local_storage } from "./services/chrome_storage_api.js";
+import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
 import { create_input_field, multipage_inputs, populate_task_config, create_task_component, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -32,12 +32,10 @@ export function set_task_active(data) {
 // triggered when a new task is clicked
 export async function set_current_active_task_config() {
     try {
-        const { tasks } = await chrome.storage.local.get("tasks");
-        const i = await chrome.storage.local.get("tasks");
-        const state_task_id = State_Manager.get_state("current_active_task");
-        const current_active_task = tasks.find((task) => task.taskID === state_task_id);
-        if (current_active_task === undefined) {
+        const current_active_task = await get_current_active_task();
+        if (current_active_task === null) {
             console.log("Dont render anything");
+            console.error("Task Does not exist.");
             return;
         }
         populate_task_config(current_active_task);
@@ -67,13 +65,26 @@ export function toggle_multipage_input(e) {
     }
     inputs.destroy();
 }
-export function add_field_handler(e) {
-    const task_schema_container = document.getElementById("task-schema-container");
-    const new_input_field = create_input_field({
-        key: "",
-        value: "",
-    });
-    task_schema_container?.insertBefore(new_input_field, task_schema_container.children[1]);
+export async function add_field_handler() {
+    try {
+        const active_task = await get_current_active_task();
+        if (active_task === null) {
+            throw new Error("Task does not exist");
+        }
+        await update_task_local_storage({
+            ...active_task,
+            taskSchema: { ...active_task.taskSchema, "": "" },
+        });
+        const task_schema_container = document.getElementById("task-schema-container");
+        const new_input_field = create_input_field({
+            key: "",
+            value: "",
+        });
+        task_schema_container.insertBefore(new_input_field, task_schema_container.children[1]);
+    }
+    catch (err) {
+        console.error(err);
+    }
 }
 export function remove_field_handler(e) {
     const target = e.target;

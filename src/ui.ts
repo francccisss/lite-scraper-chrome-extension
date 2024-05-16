@@ -16,8 +16,13 @@ export function populate_task_config({
   websiteURL,
   isMultipage,
   taskSchema,
+  title,
 }: t_task) {
   const form = document.querySelector("form") as HTMLFormElement;
+  const header = document.querySelector(
+    "#task-contents >h3",
+  ) as HTMLHeadingElement;
+  header.textContent = title;
   const websiteURL_input = form.querySelector(
     "#websiteURL",
   ) as HTMLInputElement;
@@ -133,8 +138,8 @@ export function create_input_field({
   const input_field_string = `
   <div class="task-schema-input-container" >
       <span class="task-schema-input key-value-input">
-        <input id="key" value=${key} name=${key} placeholder="key" type="text">
-        <input id="value" value=${value} name=${value} placeholder="value" type="text">
+        <input id="key" required ${key && `value=${key}`} ${key && `name=${key}`} placeholder="key" type="text">
+        <input id="value" required ${value && `value=${value}`} ${value && `name=${value}`} placeholder="value" type="text">
       </span>
       <span>
         <button type="button" class="target-btn"></button>

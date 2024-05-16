@@ -3,8 +3,10 @@ function remove_task_input_fields() {
     const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
     task_schema_input_containers.forEach((input) => input.remove());
 }
-export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
+export function populate_task_config({ websiteURL, isMultipage, taskSchema, title, }) {
     const form = document.querySelector("form");
+    const header = document.querySelector("#task-contents >h3");
+    header.textContent = title;
     const websiteURL_input = form.querySelector("#websiteURL");
     const task_schema_container = document.getElementById("task-schema-container");
     const multipage_toggle = document.querySelector(`input#multipageToggle`);
@@ -83,8 +85,8 @@ export function create_input_field({ key, value, }) {
     const input_field_string = `
   <div class="task-schema-input-container" >
       <span class="task-schema-input key-value-input">
-        <input id="key" value=${key} name=${key} placeholder="key" type="text">
-        <input id="value" value=${value} name=${value} placeholder="value" type="text">
+        <input id="key" required ${key && `value=${key}`} ${key && `name=${key}`} placeholder="key" type="text">
+        <input id="value" required ${value && `value=${value}`} ${value && `name=${value}`} placeholder="value" type="text">
       </span>
       <span>
         <button type="button" class="target-btn"></button>
