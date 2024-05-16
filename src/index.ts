@@ -29,18 +29,21 @@ window.addEventListener("load", async () => {
       name: "connect.sid",
     },
     async (cookie) => {
+      const eval_cookie = cookie !== null ? true : false;
       Event_Signal.publish("load_existing_session", {
-        can_sign_in: cookie !== null ? true : false,
+        can_sign_in: eval_cookie,
       });
+      if (eval_cookie) {
+        try {
+          const user_storage = await set_storage();
+          console.log(user_storage);
+          init_tasks_ui(user_storage.tasks);
+        } catch (err) {
+          console.error(err);
+        }
+      }
     },
   );
-  try {
-    const user_storage = await set_storage();
-    console.log(user_storage);
-    init_tasks_ui(user_storage.tasks);
-  } catch (err) {
-    console.error(err);
-  }
 });
 
 // accept array of function declarations
