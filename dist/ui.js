@@ -1,5 +1,10 @@
 import { set_current_active_task_config, set_task_active, } from "./input_handlers.js";
 import uid from "./utils/packages/dist/index.js";
+function remove_task_input_fields() {
+    const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
+    console.log(task_schema_input_containers);
+    task_schema_input_containers.forEach((input) => input.remove());
+}
 export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
     const form = document.querySelector("form");
     const websiteURL_input = form.querySelector("#websiteURL");
@@ -7,12 +12,10 @@ export function populate_task_config({ websiteURL, isMultipage, taskSchema, }) {
     const multipage_toggle = document.querySelector(`input#multipageToggle`);
     websiteURL_input.value = websiteURL;
     multipage_toggle.checked = isMultipage;
-    console.log(taskSchema);
+    remove_task_input_fields();
     for (const [key, value] of Object.entries(taskSchema)) {
-        console.log({ key, value });
         task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
     }
-    console.log(task_schema_container);
 }
 export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");

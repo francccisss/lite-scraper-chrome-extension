@@ -5,6 +5,14 @@ import {
 import uid from "./utils/packages/dist/index.js";
 import { t_task_ui, t_task } from "./utils/types/project_types.js";
 
+function remove_task_input_fields() {
+  const task_schema_input_containers = document.querySelectorAll(
+    ".task-schema-input-container",
+  );
+  console.log(task_schema_input_containers);
+  task_schema_input_containers.forEach((input) => input.remove());
+}
+
 export function populate_task_config({
   websiteURL,
   isMultipage,
@@ -24,15 +32,13 @@ export function populate_task_config({
   websiteURL_input.value = websiteURL;
   multipage_toggle.checked = isMultipage;
 
-  console.log(taskSchema);
+  remove_task_input_fields();
   for (const [key, value] of Object.entries(taskSchema)) {
-    console.log({ key, value });
     task_schema_container?.insertBefore(
       create_input_field({ key, value }) as HTMLElement,
       task_schema_container.children[1],
     );
   }
-  console.log(task_schema_container);
 }
 
 export function create_task_component({

@@ -1,6 +1,6 @@
 import Event_Signal from "./utils/pubsub.js";
 import { add_field_handler, remove_field_handler, toggle_multipage_input, set_current_active_task_config, set_task_active, get_started_btn_handler, } from "./input_handlers.js";
-import { add_task, init_tasks_ui, transition_signed_in, } from "./ui.js";
+import { add_task, init_tasks_ui, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
 import { set_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar");
@@ -18,17 +18,15 @@ window.addEventListener("load", async () => {
         Event_Signal.publish("load_existing_session", {
             can_sign_in: eval_cookie,
         });
-        if (eval_cookie) {
-            try {
-                const user_storage = await set_storage();
-                console.log(user_storage);
-                init_tasks_ui(user_storage.tasks);
-            }
-            catch (err) {
-                console.error(err);
-            }
-        }
     });
+    try {
+        const user_storage = await set_storage();
+        console.log(user_storage);
+        init_tasks_ui(user_storage.tasks);
+    }
+    catch (err) {
+        console.error(err);
+    }
 });
 // accept array of function declarations
 // Create a loading ui
