@@ -106,7 +106,6 @@ export function transition_signed_in(data) {
 }
 export function is_input_field_empty() {
     const input_field = document.querySelector('.task-schema-input > input[id*="key"]:not([value])');
-    console.log(input_field.value);
     if (input_field === null)
         return null;
     if (input_field.value === "") {

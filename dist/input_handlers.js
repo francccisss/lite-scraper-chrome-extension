@@ -88,11 +88,21 @@ export async function add_field_handler() {
         console.error(err);
     }
 }
-export function remove_field_handler(e) {
+export async function remove_field_handler(e) {
     const target = e.target;
     if (target.classList.contains("delete-field")) {
         const target_parent = find_top_parent(target, "task-schema-input-container");
-        target_parent?.remove();
+        const key_input = target_parent.querySelector("input#key");
+        const current_active_task = (await get_current_active_task());
+        const updated_taskSchema = {
+            ...current_active_task.taskSchema,
+        };
+        delete updated_taskSchema[key_input.value];
+        await update_task_local_storage({
+            ...current_active_task,
+            taskSchema: updated_taskSchema,
+        });
+        target_parent.remove();
     }
 }
 export async function get_started_btn_handler() {

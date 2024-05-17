@@ -168,7 +168,6 @@ export function is_input_field_empty(): boolean | null {
   const input_field = document.querySelector(
     '.task-schema-input > input[id*="key"]:not([value])',
   ) as HTMLInputElement;
-  console.log(input_field.value);
   if (input_field === null) return null;
   if (input_field.value === "") {
     create_popup_message({
