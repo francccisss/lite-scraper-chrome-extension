@@ -8,6 +8,7 @@ import {
   multipage_inputs,
   populate_task_config,
   create_task_component,
+  is_input_field_empty,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -89,6 +90,7 @@ export function toggle_multipage_input(e: Event) {
 
 export async function add_field_handler() {
   try {
+    if (is_input_field_empty() === true) return;
     const active_task = await get_current_active_task();
     if (active_task === null) {
       throw new Error("Task does not exist");

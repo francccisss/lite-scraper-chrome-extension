@@ -41,8 +41,6 @@ window.addEventListener("load", async () => {
   }
 });
 
-// accept array of function declarations
-// Create a loading ui
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe(
   "create_session",

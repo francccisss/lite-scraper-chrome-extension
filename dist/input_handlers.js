@@ -1,5 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
-import { create_input_field, multipage_inputs, populate_task_config, create_task_component, } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, create_task_component, is_input_field_empty, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/dist/index.mjs";
@@ -67,6 +67,8 @@ export function toggle_multipage_input(e) {
 }
 export async function add_field_handler() {
     try {
+        if (is_input_field_empty() === true)
+            return;
         const active_task = await get_current_active_task();
         if (active_task === null) {
             throw new Error("Task does not exist");

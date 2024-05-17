@@ -28,8 +28,6 @@ window.addEventListener("load", async () => {
         console.error(err);
     }
 });
-// accept array of function declarations
-// Create a loading ui
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
 Event_Signal.subscribe("update_task_ui", set_task_active, set_current_active_task_config);

@@ -163,3 +163,46 @@ export function transition_signed_in(data: any) {
     task_list_container.style.display = "flex";
   }
 }
+
+export function is_input_field_empty(): boolean | null {
+  const input_field = document.querySelector(
+    '.task-schema-input > input[id*="key"]:not([value])',
+  ) as HTMLInputElement;
+  console.log(input_field.value);
+  if (input_field === null) return null;
+  if (input_field.value === "") {
+    create_popup_message({
+      message:
+        'Please fill up the empty "KEY" input, before adding another field.',
+      target: input_field,
+    });
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function create_popup_message({
+  message,
+  target,
+}: {
+  [key: string]: any;
+  message: string;
+  target: HTMLInputElement;
+}) {
+  console.log(message);
+  const popup_container = document.createElement("span");
+  popup_container.setAttribute("id", "popup-message-reveal");
+  target.before(popup_container);
+  popup_container.textContent = message;
+  const computed_style = getComputedStyle(popup_container);
+  const animation_duration = computed_style.animationDuration.split(",");
+  const [durations_milliseconds] = animation_duration.map((duration) => {
+    const durationInSeconds = parseFloat(duration.trim());
+    return durationInSeconds * 1000;
+  });
+
+  setTimeout(() => {
+    popup_container.remove();
+  }, durations_milliseconds);
+}
