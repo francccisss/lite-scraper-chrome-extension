@@ -10,7 +10,11 @@ import {
 } from "./input_handlers.js";
 import { init_tasks_ui, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
-import { set_storage } from "./services/chrome_storage_api.js";
+import { t_task } from "./utils/types/project_types";
+import {
+  get_current_active_task,
+  set_storage,
+} from "./services/chrome_storage_api.js";
 import State_Manager from "./utils/state_manager.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
@@ -55,8 +59,26 @@ Event_Signal.subscribe(
 );
 Event_Signal.subscribe(
   "update_task_schema_input",
-  ({ old_value, new_value }: { old_value: string; new_value: string }) => {
-    console.log({ old_value, new_value });
+  async (buffer: { old: string; key?: string; value?: string }) => {
+    const buffer_keys = Object.keys(buffer);
+    let updated_task_schema = {};
+    const { taskSchema } = (await get_current_active_task()) as t_task;
+    for (let [key, value] of Object.entries(taskSchema)) {
+      switch (buffer_keys[1]) {
+        case "key": {
+          if (buffer.old === key) {
+            console.log("replace key");
+            break;
+          }
+        }
+        case "value": {
+          if (buffer.old === value) {
+            console.log("replace value");
+            break;
+          }
+        }
+      }
+    }
   },
 );
 
@@ -77,7 +99,9 @@ task_schema_container?.addEventListener("click", remove_field_handler);
 task_schema_container?.addEventListener("focusin", (e) => {
   const target = e.target as HTMLInputElement;
   if (target.id === "key" || target.id === "value") {
-    State_Manager.set_state("input_buffer", { old_value: target.value });
+    State_Manager.set_state("input_buffer", {
+      old: target.value,
+    });
     console.log(State_Manager.get_state("input_buffer"));
   }
 });
@@ -88,7 +112,7 @@ task_schema_container?.addEventListener("keypress", (e) => {
     const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
     State_Manager.set_state("input_buffer", {
       ...input_buffer,
-      new_value: target.value,
+      [target.id]: target.value,
     });
     console.log(State_Manager.get_state("input_buffer"));
   }
