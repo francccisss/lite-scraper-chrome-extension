@@ -14,6 +14,7 @@ import { t_task } from "./utils/types/project_types";
 import {
   get_current_active_task,
   set_storage,
+  update_task_local_storage,
 } from "./services/chrome_storage_api.js";
 import State_Manager from "./utils/state_manager.js";
 const sidebar = document.getElementById("sidebar");
@@ -60,24 +61,52 @@ Event_Signal.subscribe(
 Event_Signal.subscribe(
   "update_task_schema_input",
   async (buffer: { old: string; key?: string; value?: string }) => {
-    const buffer_keys = Object.keys(buffer);
+    // if (buffer.key === undefined || buffer.value === undefined) return;
     let updated_task_schema = {};
-    const { taskSchema } = (await get_current_active_task()) as t_task;
-    for (let [key, value] of Object.entries(taskSchema)) {
+    const buffer_keys = Object.keys(buffer);
+    const current_task = (await get_current_active_task()) as t_task;
+    for (let [key, value] of Object.entries(current_task.taskSchema)) {
       switch (buffer_keys[1]) {
         case "key": {
-          if (buffer.old === key) {
-            console.log("replace key");
+          if (buffer.old !== key) {
+            updated_task_schema = {
+              ...updated_task_schema,
+              [key]: value,
+            };
             break;
           }
+          console.log("replace key");
+          updated_task_schema = {
+            ...updated_task_schema,
+            [buffer.key as string]: value,
+          };
+          break;
         }
         case "value": {
-          if (buffer.old === value) {
-            console.log("replace value");
+          if (buffer.old !== value) {
+            updated_task_schema = {
+              ...updated_task_schema,
+              [key]: value,
+            };
             break;
           }
+          console.log("replace value");
+          updated_task_schema = {
+            ...updated_task_schema,
+            [key]: buffer.value,
+          };
+          break;
         }
       }
+    }
+    try {
+      console.log(updated_task_schema);
+      await update_task_local_storage({
+        ...current_task,
+        taskSchema: updated_task_schema,
+      });
+    } catch (err) {
+      console.error(err);
     }
   },
 );
@@ -106,7 +135,7 @@ task_schema_container?.addEventListener("focusin", (e) => {
   }
 });
 
-task_schema_container?.addEventListener("keypress", (e) => {
+task_schema_container?.addEventListener("keyup", (e) => {
   const target = e.target as HTMLInputElement;
   if (target.id === "key" || target.id === "value") {
     const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
