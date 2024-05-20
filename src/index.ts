@@ -53,6 +53,12 @@ Event_Signal.subscribe(
   set_task_active,
   set_current_active_task_config,
 );
+Event_Signal.subscribe(
+  "update_task_schema_input",
+  ({ old_value, new_value }: { old_value: string; new_value: string }) => {
+    console.log({ old_value, new_value });
+  },
+);
 
 get_started_btn?.addEventListener("click", get_started_btn_handler);
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
@@ -73,5 +79,25 @@ task_schema_container?.addEventListener("focusin", (e) => {
   if (target.id === "key" || target.id === "value") {
     State_Manager.set_state("input_buffer", { old_value: target.value });
     console.log(State_Manager.get_state("input_buffer"));
+  }
+});
+
+task_schema_container?.addEventListener("keypress", (e) => {
+  const target = e.target as HTMLInputElement;
+  if (target.id === "key" || target.id === "value") {
+    const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
+    State_Manager.set_state("input_buffer", {
+      ...input_buffer,
+      new_value: target.value,
+    });
+    console.log(State_Manager.get_state("input_buffer"));
+  }
+});
+
+task_schema_container?.addEventListener("focusout", (e) => {
+  const target = e.target as HTMLInputElement;
+  if (target.id === "key" || target.id === "value") {
+    const input_buffer = State_Manager.get_state("input_buffer");
+    Event_Signal.publish("update_task_schema_input", input_buffer);
   }
 });

@@ -52,3 +52,15 @@ task_schema_container?.addEventListener("focusin", (e) => {
         console.log(State_Manager.get_state("input_buffer"));
     }
 });
+task_schema_container?.addEventListener("keypress", (e) => {
+    const target = e.target;
+    if (target.id === "key" || target.id === "value") {
+        console.log(target.value);
+        const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
+        State_Manager.set_state("input_buffer", {
+            ...input_buffer,
+            new_value: target.value,
+        });
+        console.log(State_Manager.get_state("input_buffer"));
+    }
+});
