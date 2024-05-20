@@ -61,10 +61,11 @@ Event_Signal.subscribe(
 Event_Signal.subscribe(
   "update_task_schema_input",
   async (buffer: { old: string; key?: string; value?: string }) => {
-    // if (buffer.key === undefined || buffer.value === undefined) return;
-    let updated_task_schema = {};
     const buffer_keys = Object.keys(buffer);
+    console.log(buffer_keys);
+    if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
     const current_task = (await get_current_active_task()) as t_task;
+    let updated_task_schema = {};
     for (let [key, value] of Object.entries(current_task.taskSchema)) {
       switch (buffer_keys[1]) {
         case "key": {
@@ -151,6 +152,7 @@ task_schema_container?.addEventListener("focusout", (e) => {
   const target = e.target as HTMLInputElement;
   if (target.id === "key" || target.id === "value") {
     const input_buffer = State_Manager.get_state("input_buffer");
+    console.log(input_buffer);
     Event_Signal.publish("update_task_schema_input", input_buffer);
   }
 });
