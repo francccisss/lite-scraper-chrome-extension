@@ -157,3 +157,7 @@ export async function get_started_btn_handler() {
     console.log(er);
   }
 }
+
+export async function task_input_handler(e: any) {
+  const target = e.target as HTMLInputElement;
+}

@@ -90,9 +90,11 @@ export async function add_field_handler() {
 }
 export async function remove_field_handler(e) {
     const target = e.target;
-    if (target.classList.contains("delete-field")) {
-        const target_parent = find_top_parent(target, "task-schema-input-container");
-        const key_input = target_parent.querySelector("input#key");
+    if (!target.classList.contains("delete-field"))
+        return;
+    const target_parent = find_top_parent(target, "task-schema-input-container");
+    const key_input = target_parent.querySelector("input#key");
+    try {
         const current_active_task = (await get_current_active_task());
         const updated_taskSchema = {
             ...current_active_task.taskSchema,
@@ -103,6 +105,9 @@ export async function remove_field_handler(e) {
             taskSchema: updated_taskSchema,
         });
         target_parent.remove();
+    }
+    catch (err) {
+        console.error(err);
     }
 }
 export async function get_started_btn_handler() {
@@ -120,4 +125,7 @@ export async function get_started_btn_handler() {
         console.error("Unable to create a new session");
         console.log(er);
     }
+}
+export async function task_input_handler(e) {
+    const target = e.target;
 }

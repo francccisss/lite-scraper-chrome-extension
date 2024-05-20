@@ -11,6 +11,7 @@ import {
 import { init_tasks_ui, transition_signed_in } from "./ui.js";
 import { create_session_handler } from "./services/server_session.js";
 import { set_storage } from "./services/chrome_storage_api.js";
+import State_Manager from "./utils/state_manager.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const multipage_toggle_btn = document.getElementById("multipageToggle");
@@ -67,3 +68,10 @@ sidebar?.addEventListener("click", (e) => {
 
 add_field_btn?.addEventListener("click", add_field_handler);
 task_schema_container?.addEventListener("click", remove_field_handler);
+task_schema_container?.addEventListener("focusin", (e) => {
+  const target = e.target as HTMLInputElement;
+  if (target.id === "key" || target.id === "value") {
+    State_Manager.set_state("input_buffer", { old_value: target.value });
+    console.log(State_Manager.get_state("input_buffer"));
+  }
+});
