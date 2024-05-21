@@ -95,13 +95,16 @@ export async function add_field_handler() {
     if (active_task === null) {
       throw new Error("Task does not exist");
     }
+
     await update_task_local_storage({
       ...active_task,
       taskSchema: { ...active_task.taskSchema, "": "" },
     });
+
     const task_schema_container = document.getElementById(
       "task-schema-container",
     ) as HTMLElement;
+
     const new_input_field = create_input_field({
       key: "",
       value: "",
@@ -109,7 +112,7 @@ export async function add_field_handler() {
 
     task_schema_container.insertBefore(
       new_input_field as Element,
-      task_schema_container.children[1],
+      task_schema_container.children[task_schema_container.children.length - 1],
     );
   } catch (err) {
     console.error(err);

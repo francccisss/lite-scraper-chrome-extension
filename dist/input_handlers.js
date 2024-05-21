@@ -82,7 +82,7 @@ export async function add_field_handler() {
             key: "",
             value: "",
         });
-        task_schema_container.insertBefore(new_input_field, task_schema_container.children[1]);
+        task_schema_container.insertBefore(new_input_field, task_schema_container.children[task_schema_container.children.length - 1]);
     }
     catch (err) {
         console.error(err);
