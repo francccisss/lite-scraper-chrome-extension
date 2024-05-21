@@ -1,5 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
-import { create_input_field, multipage_inputs, populate_task_config, create_task_component, is_input_field_empty, } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/dist/index.mjs";
@@ -39,18 +39,22 @@ export async function set_current_active_task_config() {
             return;
         }
         populate_task_config(current_active_task);
-        if (current_active_task.isMultipage &&
-            multipage_inputs().input_container !== null) {
-            return;
-        }
-        else if (current_active_task.isMultipage &&
-            multipage_inputs().input_container === null) {
-            multipage_inputs().create();
-        }
-        else if (!current_active_task.isMultipage &&
-            multipage_inputs().input_container !== null) {
-            multipage_inputs().destroy();
-        }
+        // if (
+        //   current_active_task.isMultipage &&
+        //   multipage_inputs().input_container !== null
+        // ) {
+        //   return;
+        // } else if (
+        //   current_active_task.isMultipage &&
+        //   multipage_inputs().input_container === null
+        // ) {
+        //   multipage_inputs().create();
+        // } else if (
+        //   !current_active_task.isMultipage &&
+        //   multipage_inputs().input_container !== null
+        // ) {
+        //   multipage_inputs().destroy();
+        // }
     }
     catch (err) {
         console.error(err);
@@ -126,6 +130,70 @@ export async function get_started_btn_handler() {
         console.log(er);
     }
 }
-export async function task_input_handler(e) {
-    const target = e.target;
+export function is_input_field_empty() {
+    const input_field = document.querySelector('.task-schema-input > input[id*="key"]:not([value])');
+    if (input_field === null)
+        return null;
+    if (input_field.value === "") {
+        create_popup_message({
+            message: 'Please fill up the empty "KEY" input, before adding another field.',
+            target: input_field,
+        });
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+export async function update_task_schema_input(buffer) {
+    const buffer_keys = Object.keys(buffer);
+    console.log(buffer_keys);
+    if (buffer_keys.length < 2)
+        return; // if there are no new inputs then do nothing
+    const current_task = (await get_current_active_task());
+    let updated_task_schema = {};
+    for (let [key, value] of Object.entries(current_task.taskSchema)) {
+        switch (buffer_keys[1]) {
+            case "key": {
+                if (buffer.old !== key) {
+                    updated_task_schema = {
+                        ...updated_task_schema,
+                        [key]: value,
+                    };
+                    break;
+                }
+                console.log("replace key");
+                updated_task_schema = {
+                    ...updated_task_schema,
+                    [buffer.key]: value,
+                };
+                break;
+            }
+            case "value": {
+                if (buffer.old !== value) {
+                    updated_task_schema = {
+                        ...updated_task_schema,
+                        [key]: value,
+                    };
+                    break;
+                }
+                console.log("replace value");
+                updated_task_schema = {
+                    ...updated_task_schema,
+                    [key]: buffer.value,
+                };
+                break;
+            }
+        }
+    }
+    try {
+        console.log(updated_task_schema);
+        await update_task_local_storage({
+            ...current_task,
+            taskSchema: updated_task_schema,
+        });
+    }
+    catch (err) {
+        console.error(err);
+    }
 }

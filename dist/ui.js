@@ -11,7 +11,7 @@ export function populate_task_config({ websiteURL, isMultipage, taskSchema, titl
     const task_schema_container = document.getElementById("task-schema-container");
     const multipage_toggle = document.querySelector(`input#multipageToggle`);
     websiteURL_input.value = websiteURL;
-    multipage_toggle.checked = isMultipage;
+    // multipage_toggle.checked = isMultipage;
     remove_task_input_fields();
     for (const [key, value] of Object.entries(taskSchema)) {
         task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
@@ -104,22 +104,7 @@ export function transition_signed_in(data) {
         task_list_container.style.display = "flex";
     }
 }
-export function is_input_field_empty() {
-    const input_field = document.querySelector('.task-schema-input > input[id*="key"]:not([value])');
-    if (input_field === null)
-        return null;
-    if (input_field.value === "") {
-        create_popup_message({
-            message: 'Please fill up the empty "KEY" input, before adding another field.',
-            target: input_field,
-        });
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-function create_popup_message({ message, target, }) {
+export function create_popup_message({ message, target, }) {
     console.log(message);
     const popup_container = document.createElement("span");
     popup_container.setAttribute("id", "popup-message-reveal");

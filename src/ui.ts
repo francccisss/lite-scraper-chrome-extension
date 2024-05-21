@@ -34,7 +34,7 @@ export function populate_task_config({
   ) as HTMLInputElement;
 
   websiteURL_input.value = websiteURL;
-  multipage_toggle.checked = isMultipage;
+  // multipage_toggle.checked = isMultipage;
 
   remove_task_input_fields();
   for (const [key, value] of Object.entries(taskSchema)) {
