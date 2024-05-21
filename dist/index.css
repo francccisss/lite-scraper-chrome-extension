@@ -69,7 +69,6 @@ button:not(button[disabled]) {
   height: 100%;
   flex: 1;
   display: flex;
-  /* display: none; */
 }
 
 .big-button {
@@ -354,4 +353,19 @@ form {
     transform: translateY(0px);
     opacity: 0;
   }
+}
+
+#json-sample-container {
+  margin-top: 1.5em;
+}
+
+#json-sample-display {
+  border-radius: var(--input-rounded-corner);
+  margin-bottom: 1em;
+  background-color: #3a3a3a;
+  min-width: 100%;
+  height: 200px;
+  opacity: 1;
+  /* text-wrap: pretty; */
+  /* padding: 30px; */
 }
