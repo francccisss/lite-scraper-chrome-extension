@@ -2,7 +2,6 @@ import {
   set_current_active_task_config,
   set_task_active,
 } from "./input_handlers.js";
-import uid from "./utils/packages/dist/index.js";
 import { t_task_ui, t_task } from "./utils/types/project_types.js";
 
 function remove_task_input_fields() {
@@ -35,7 +34,7 @@ export function populate_task_config({
   ) as HTMLInputElement;
 
   websiteURL_input.value = websiteURL;
-  // multipage_toggle.checked = isMultipage;
+  multipage_toggle.checked = isMultipage;
 
   remove_task_input_fields();
   for (const [key, value] of Object.entries(taskSchema)) {
