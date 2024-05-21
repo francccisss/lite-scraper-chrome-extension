@@ -164,24 +164,7 @@ export function transition_signed_in(data: any) {
   }
 }
 
-export function is_input_field_empty(): boolean | null {
-  const input_field = document.querySelector(
-    '.task-schema-input > input[id*="key"]:not([value])',
-  ) as HTMLInputElement;
-  if (input_field === null) return null;
-  if (input_field.value === "") {
-    create_popup_message({
-      message:
-        'Please fill up the empty "KEY" input, before adding another field.',
-      target: input_field,
-    });
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function create_popup_message({
+export function create_popup_message({
   message,
   target,
 }: {

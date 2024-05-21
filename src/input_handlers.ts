@@ -8,7 +8,7 @@ import {
   multipage_inputs,
   populate_task_config,
   create_task_component,
-  is_input_field_empty,
+  create_popup_message,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -161,6 +161,73 @@ export async function get_started_btn_handler() {
   }
 }
 
-export async function task_input_handler(e: any) {
-  const target = e.target as HTMLInputElement;
+export function is_input_field_empty(): boolean | null {
+  const input_field = document.querySelector(
+    '.task-schema-input > input[id*="key"]:not([value])',
+  ) as HTMLInputElement;
+  if (input_field === null) return null;
+  if (input_field.value === "") {
+    create_popup_message({
+      message:
+        'Please fill up the empty "KEY" input, before adding another field.',
+      target: input_field,
+    });
+    return true;
+  } else {
+    return false;
+  }
+}
+export async function update_task_schema_input(buffer: {
+  old: string;
+  key?: string;
+  value?: string;
+}) {
+  const buffer_keys = Object.keys(buffer);
+  console.log(buffer_keys);
+  if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
+  const current_task = (await get_current_active_task()) as t_task;
+  let updated_task_schema = {};
+  for (let [key, value] of Object.entries(current_task.taskSchema)) {
+    switch (buffer_keys[1]) {
+      case "key": {
+        if (buffer.old !== key) {
+          updated_task_schema = {
+            ...updated_task_schema,
+            [key]: value,
+          };
+          break;
+        }
+        console.log("replace key");
+        updated_task_schema = {
+          ...updated_task_schema,
+          [buffer.key as string]: value,
+        };
+        break;
+      }
+      case "value": {
+        if (buffer.old !== value) {
+          updated_task_schema = {
+            ...updated_task_schema,
+            [key]: value,
+          };
+          break;
+        }
+        console.log("replace value");
+        updated_task_schema = {
+          ...updated_task_schema,
+          [key]: buffer.value,
+        };
+        break;
+      }
+    }
+  }
+  try {
+    console.log(updated_task_schema);
+    await update_task_local_storage({
+      ...current_task,
+      taskSchema: updated_task_schema,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
