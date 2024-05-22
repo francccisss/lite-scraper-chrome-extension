@@ -17,6 +17,15 @@ import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 import { t_task } from "./utils/types/project_types";
 
+export function change_current_task(e: any) {
+  const target = e.target as HTMLElement;
+  if (target.classList.contains("task-item")) {
+    if (!target.classList.contains("active")) {
+      Event_Signal.publish("update_sidebar_tasks_ui", target);
+    }
+  }
+}
+
 export async function add_task() {
   const new_task: t_task = {
     websiteURL: "",
@@ -173,7 +182,6 @@ export async function update_task_schema_input(buffer: {
   value?: string;
 }) {
   const buffer_keys = Object.keys(buffer);
-  console.log(buffer_keys);
   if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
   const active_task = (await get_current_active_task()) as t_task;
   let updated_task_schema = {};
@@ -231,7 +239,6 @@ export async function update_website_url(buffer: {
   websiteURL: string;
 }) {
   const buffer_keys = Object.keys(buffer);
-  console.log(buffer);
   if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
   const active_task = (await get_current_active_task()) as t_task;
   try {
@@ -245,5 +252,36 @@ export async function update_website_url(buffer: {
     });
   } catch (err) {
     console.error(err);
+  }
+}
+
+export function init_input_buffer(e: any) {
+  const target = e.target as HTMLInputElement;
+  if (target.tagName.toLowerCase() === "input") {
+    State_Manager.set_state("input_buffer", {
+      old: target.value,
+    });
+  }
+}
+
+export function save_input_buffer(e: any) {
+  const target = e.target as HTMLInputElement;
+  if (target.tagName.toLowerCase() === "input") {
+    const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
+    State_Manager.set_state("input_buffer", {
+      ...input_buffer,
+      [target.className]: target.value,
+    });
+  }
+}
+
+export function eval_input_buffer(e: any) {
+  const target = e.target as HTMLInputElement;
+  const input_buffer = State_Manager.get_state("input_buffer");
+  if (target.classList.contains("key") || target.classList.contains("value")) {
+    Event_Signal.publish("update_task_schema_input", input_buffer);
+  }
+  if (target.id === "websiteURL") {
+    Event_Signal.publish("update_webURL_input", input_buffer);
   }
 }
