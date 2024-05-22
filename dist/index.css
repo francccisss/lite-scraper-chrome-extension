@@ -250,12 +250,12 @@ form {
     background-color: transparent;
   }
 
-  input[id*="key"] {
+  input[class*="key"] {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-right: none;
   }
-  input[id*="value"] {
+  input[class*="value"] {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }
