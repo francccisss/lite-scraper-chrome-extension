@@ -80,15 +80,23 @@ export function toggle_multipage_input(e: Event) {
   inputs.destroy();
 }
 
+// is_input_field_empty()
+// after evaluating the first input if it was empty or not, it does so
+// correctly when filling it with texts or when its empty.
+// Then after adding another input field, it always
+// evaluates to false (input.value is not empty) so it adds another
+// input field even though it is empty.
 export async function add_field_handler() {
+  // look for an input that is an input with a class of key
+  // that has no value.
+  const is_empty = is_input_field_empty(
+    '.task-schema-input > input[class*="key"]:not([value])',
+    'Please fill up the empty "KEY" input, before adding another field.',
+  );
+  console.log(is_empty);
+
+  if (is_empty) return;
   try {
-    if (
-      is_input_field_empty(
-        '.task-schema-input > input[class*="key"]:not([value])',
-        'Please fill up the empty "KEY" input, before adding another field.',
-      ) === true
-    )
-      return;
     const active_task = await get_current_active_task();
     if (active_task === null) {
       throw new Error("Task does not exist");
@@ -117,6 +125,23 @@ export async function add_field_handler() {
     });
   } catch (err) {
     console.error(err);
+  }
+}
+
+export function is_input_field_empty(
+  css_selector: string,
+  message: string,
+): boolean {
+  const input_field = document.querySelector(css_selector) as HTMLInputElement;
+  if (input_field === null) return false;
+  if (input_field.value === "") {
+    create_popup_message({
+      message: message,
+      target: input_field,
+    });
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -166,22 +191,6 @@ export async function get_started_btn_handler() {
   }
 }
 
-export function is_input_field_empty(
-  css_selector: string,
-  message: string,
-): boolean | null {
-  const input_field = document.querySelector(css_selector) as HTMLInputElement;
-  if (input_field === null) return null;
-  if (input_field.value === "") {
-    create_popup_message({
-      message: message,
-      target: input_field,
-    });
-    return true;
-  } else {
-    return false;
-  }
-}
 export async function update_task_schema_input(buffer: {
   old: string;
   key?: string;

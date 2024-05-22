@@ -1,4 +1,4 @@
-import { uid } from "../utils/packages/dist/index.mjs";
+import { uid } from "../utils/packages/uid/index.mjs";
 import State_Manager from "../utils/state_manager.js";
 export async function set_storage() {
     await chrome.storage.local.set({
@@ -7,7 +7,6 @@ export async function set_storage() {
                 title: "Amazon Phones",
                 taskID: uid(16),
                 websiteURL: "https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031",
-                isMultipage: false,
                 taskSchema: {
                     item: ".item-name",
                     itemDescription: ".item-desc",
@@ -20,7 +19,6 @@ export async function set_storage() {
                 title: "Epoch Converter",
                 taskID: uid(16),
                 websiteURL: "https://www.epochconverter.com/",
-                isMultipage: true,
                 taskSchema: {
                     title: ".title",
                     description: ".desc",
@@ -31,7 +29,6 @@ export async function set_storage() {
                 title: "Haru",
                 taskID: uid(16),
                 websiteURL: "https://www.youtube.com/watch?v=Ki6_VnABBBQ",
-                isMultipage: false,
                 taskSchema: {
                     youtubeTitle: ".yt-title",
                     description: ".desc",

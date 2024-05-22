@@ -10,7 +10,6 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
         taskID: uid(16),
         websiteURL:
           "https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031",
-        isMultipage: false,
         taskSchema: {
           item: ".item-name",
           itemDescription: ".item-desc",
@@ -24,8 +23,6 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
         title: "Epoch Converter",
         taskID: uid(16),
         websiteURL: "https://www.epochconverter.com/",
-        isMultipage: true,
-
         taskSchema: {
           title: ".title",
           description: ".desc",
@@ -37,7 +34,6 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
         title: "Haru",
         taskID: uid(16),
         websiteURL: "https://www.youtube.com/watch?v=Ki6_VnABBBQ",
-        isMultipage: false,
         taskSchema: {
           youtubeTitle: ".yt-title",
           description: ".desc",

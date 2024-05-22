@@ -52,7 +52,7 @@ get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);
 sidebar.addEventListener("click", change_current_task);
 add_field_btn.addEventListener("click", add_field_handler);
-task_schema_container?.addEventListener("click", remove_field_handler);
+task_schema_container.addEventListener("click", remove_field_handler);
 form.addEventListener("focusin", init_input_buffer);
 form.addEventListener("keyup", save_input_buffer);
 form.addEventListener("focusout", eval_input_buffer);

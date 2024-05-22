@@ -2,7 +2,7 @@ import { add_task_local_storage, get_current_active_task, update_task_local_stor
 import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
-import { uid } from "./utils/packages/dist/index.mjs";
+import { uid } from "./utils/packages/uid/index.mjs";
 import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 export function change_current_task(e) {
@@ -60,10 +60,20 @@ export function toggle_multipage_input(e) {
     }
     inputs.destroy();
 }
+// is_input_field_empty()
+// after evaluating the first input if it was empty or not, it does so
+// correctly when filling it with texts or when its empty.
+// Then after adding another input field, it always
+// evaluates to false (input.value is not empty) so it adds another
+// input field even though it is empty.
 export async function add_field_handler() {
+    // look for an input that is an input with a class of key
+    // that has no value.
+    const is_empty = is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.');
+    console.log(is_empty);
+    if (is_empty)
+        return;
     try {
-        if (is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.') === true)
-            return;
         const active_task = await get_current_active_task();
         if (active_task === null) {
             throw new Error("Task does not exist");
@@ -85,6 +95,22 @@ export async function add_field_handler() {
     }
     catch (err) {
         console.error(err);
+    }
+}
+export function is_input_field_empty(css_selector, message) {
+    const input_field = document.querySelector(css_selector);
+    if (input_field === null)
+        return false;
+    if (input_field.value === "") {
+        create_popup_message({
+            message: message,
+            target: input_field,
+        });
+        return true;
+    }
+    else {
+        console.log(input_field);
+        return false;
     }
 }
 export async function remove_field_handler(e) {
@@ -127,21 +153,6 @@ export async function get_started_btn_handler() {
         Event_Signal.publish("create_session", { can_sign_in: false });
         console.error("Unable to create a new session");
         console.log(er);
-    }
-}
-export function is_input_field_empty(css_selector, message) {
-    const input_field = document.querySelector(css_selector);
-    if (input_field === null)
-        return null;
-    if (input_field.value === "") {
-        create_popup_message({
-            message: message,
-            target: input_field,
-        });
-        return true;
-    }
-    else {
-        return false;
     }
 }
 export async function update_task_schema_input(buffer) {
