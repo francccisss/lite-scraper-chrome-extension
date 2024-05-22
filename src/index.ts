@@ -8,6 +8,7 @@ import {
   get_started_btn_handler,
   add_task,
   update_task_schema_input,
+  update_website_url,
 } from "./input_handlers.js";
 import { transition_signed_in, update_json_display } from "./ui.js";
 import {
@@ -21,6 +22,7 @@ const multipage_toggle_btn = document.getElementById("multipageToggle");
 const add_field_btn = document.getElementById("add-field-btn");
 const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
+const form = document.querySelector("form") as HTMLFormElement;
 
 window.addEventListener("load", start_session);
 
@@ -36,6 +38,7 @@ Event_Signal.subscribe(
   set_current_active_task_config,
 );
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
+Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_task_config_ui", update_json_display);
 
 get_started_btn?.addEventListener("click", get_started_btn_handler);
@@ -52,30 +55,33 @@ sidebar?.addEventListener("click", (e) => {
 
 add_field_btn?.addEventListener("click", add_field_handler);
 task_schema_container?.addEventListener("click", remove_field_handler);
-task_schema_container?.addEventListener("focusin", (e) => {
+form.addEventListener("focusin", (e) => {
   const target = e.target as HTMLInputElement;
-  if (target.id === "key" || target.id === "value") {
+  if (target.tagName.toLowerCase() === "input") {
     State_Manager.set_state("input_buffer", {
       old: target.value,
     });
   }
 });
 
-task_schema_container?.addEventListener("keyup", (e) => {
+form.addEventListener("keyup", (e) => {
   const target = e.target as HTMLInputElement;
-  if (target.id === "key" || target.id === "value") {
+  if (target.tagName.toLowerCase() === "input") {
     const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
     State_Manager.set_state("input_buffer", {
       ...input_buffer,
-      [target.id]: target.value,
+      [target.className]: target.value,
     });
   }
 });
 
-task_schema_container?.addEventListener("focusout", (e) => {
+form.addEventListener("focusout", (e) => {
   const target = e.target as HTMLInputElement;
-  if (target.id === "key" || target.id === "value") {
-    const input_buffer = State_Manager.get_state("input_buffer");
+  const input_buffer = State_Manager.get_state("input_buffer");
+  if (target.classList.contains("key") || target.classList.contains("value")) {
     Event_Signal.publish("update_task_schema_input", input_buffer);
+  }
+  if (target.id === "websiteURL") {
+    Event_Signal.publish("update_webURL_input", input_buffer);
   }
 });

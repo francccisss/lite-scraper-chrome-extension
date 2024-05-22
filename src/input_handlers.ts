@@ -225,3 +225,25 @@ export async function update_task_schema_input(buffer: {
     console.error(err);
   }
 }
+
+export async function update_website_url(buffer: {
+  old: string;
+  websiteURL: string;
+}) {
+  const buffer_keys = Object.keys(buffer);
+  console.log(buffer);
+  if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
+  const active_task = (await get_current_active_task()) as t_task;
+  try {
+    await update_task_local_storage({
+      ...active_task,
+      websiteURL: buffer.websiteURL,
+    });
+    Event_Signal.publish("update_task_config_ui", {
+      ...active_task,
+      websiteURL: buffer.websiteURL,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}

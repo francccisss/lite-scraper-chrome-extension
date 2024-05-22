@@ -84,8 +84,8 @@ export function create_input_field({ key, value, }) {
     const input_field_string = `
   <div class="task-schema-input-container" >
       <span class="task-schema-input key-value-input">
-        <input id="key" required ${key && `value=${key}`} ${key && `name=${key}`} placeholder="key" type="text">
-        <input id="value" required ${value && `value=${value}`} ${value && `name=${value}`} placeholder="value" type="text">
+        <input class="key" required ${key && `value=${key}`} ${key && `name=${key}`} placeholder="key" type="text">
+        <input class="value" required ${value && `value=${value}`} ${value && `name=${value}`} placeholder="value" type="text">
       </span>
       <span>
         <button type="button" class="target-btn"></button>
