@@ -14,7 +14,7 @@ export function populate_task_config({ websiteURL, taskSchema, title, taskID, })
     for (const [key, value] of Object.entries(taskSchema)) {
         task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
     }
-    update_json_display(JSON.stringify({ websiteURL, taskID, taskSchema }, null, 4));
+    update_json_display({ websiteURL, title, taskID, taskSchema });
 }
 export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");
@@ -119,7 +119,7 @@ export function create_popup_message({ message, target, }) {
         popup_container.remove();
     }, durations_milliseconds);
 }
-export function update_json_display(sample_json = "JSon data") {
+export function update_json_display(task) {
     const json_display = document.getElementById("json-sample-display");
-    json_display.innerHTML = `<pre>${sample_json}</pre>`;
+    json_display.innerHTML = `<pre>${JSON.stringify(task, null, 4)}</pre>`;
 }

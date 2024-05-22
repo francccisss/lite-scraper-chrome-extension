@@ -38,9 +38,7 @@ export function populate_task_config({
       task_schema_container.children[1],
     );
   }
-  update_json_display(
-    JSON.stringify({ websiteURL, taskID, taskSchema }, null, 4),
-  );
+  update_json_display({ websiteURL, title, taskID, taskSchema });
 }
 
 export function create_task_component({
@@ -187,9 +185,9 @@ export function create_popup_message({
   }, durations_milliseconds);
 }
 
-export function update_json_display(sample_json: string = "JSon data") {
+export function update_json_display(task: t_task) {
   const json_display = document.getElementById(
     "json-sample-display",
   ) as HTMLDivElement;
-  json_display.innerHTML = `<pre>${sample_json}</pre>`;
+  json_display.innerHTML = `<pre>${JSON.stringify(task, null, 4)}</pre>`;
 }

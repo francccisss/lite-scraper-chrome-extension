@@ -9,7 +9,7 @@ import {
   add_task,
   update_task_schema_input,
 } from "./input_handlers.js";
-import { transition_signed_in } from "./ui.js";
+import { transition_signed_in, update_json_display } from "./ui.js";
 import {
   create_session_handler,
   start_session,
@@ -31,11 +31,12 @@ Event_Signal.subscribe(
   transition_signed_in,
 );
 Event_Signal.subscribe(
-  "update_task_ui",
+  "update_sidebar_tasks_ui",
   set_task_active,
   set_current_active_task_config,
 );
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
+Event_Signal.subscribe("update_task_config_ui", update_json_display);
 
 get_started_btn?.addEventListener("click", get_started_btn_handler);
 multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
@@ -44,7 +45,7 @@ sidebar?.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   if (target.classList.contains("task-item")) {
     if (!target.classList.contains("active")) {
-      Event_Signal.publish("update_task_ui", target);
+      Event_Signal.publish("update_sidebar_tasks_ui", target);
     }
   }
 });

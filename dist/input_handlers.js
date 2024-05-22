@@ -10,7 +10,6 @@ export async function add_task() {
         websiteURL: "",
         taskID: uid(16),
         title: "New Task",
-        isMultipage: false,
         taskSchema: {
             title: ".placeholder",
             description: ".placeholder-desc",
@@ -71,6 +70,10 @@ export async function add_field_handler() {
             value: "",
         });
         task_schema_container.insertBefore(new_input_field, task_schema_container.children[task_schema_container.children.length - 1]);
+        Event_Signal.publish("update_task_config_ui", {
+            ...active_task,
+            taskSchema: { ...active_task.taskSchema, "": "" },
+        });
     }
     catch (err) {
         console.error(err);
@@ -83,16 +86,20 @@ export async function remove_field_handler(e) {
     const target_parent = find_top_parent(target, "task-schema-input-container");
     const key_input = target_parent.querySelector("input#key");
     try {
-        const current_active_task = (await get_current_active_task());
+        const active_task = (await get_current_active_task());
         const updated_taskSchema = {
-            ...current_active_task.taskSchema,
+            ...active_task.taskSchema,
         };
         delete updated_taskSchema[key_input.value];
         await update_task_local_storage({
-            ...current_active_task,
+            ...active_task,
             taskSchema: updated_taskSchema,
         });
         target_parent.remove();
+        Event_Signal.publish("update_task_config_ui", {
+            ...active_task,
+            taskSchema: { ...updated_taskSchema },
+        });
     }
     catch (err) {
         console.error(err);
@@ -134,9 +141,9 @@ export async function update_task_schema_input(buffer) {
     console.log(buffer_keys);
     if (buffer_keys.length < 2)
         return; // if there are no new inputs then do nothing
-    const current_task = (await get_current_active_task());
+    const active_task = (await get_current_active_task());
     let updated_task_schema = {};
-    for (let [key, value] of Object.entries(current_task.taskSchema)) {
+    for (let [key, value] of Object.entries(active_task.taskSchema)) {
         switch (buffer_keys[1]) {
             case "key": {
                 if (buffer.old !== key) {
@@ -171,9 +178,12 @@ export async function update_task_schema_input(buffer) {
         }
     }
     try {
-        console.log(updated_task_schema);
         await update_task_local_storage({
-            ...current_task,
+            ...active_task,
+            taskSchema: updated_task_schema,
+        });
+        Event_Signal.publish("update_task_config_ui", {
+            ...active_task,
             taskSchema: updated_task_schema,
         });
     }

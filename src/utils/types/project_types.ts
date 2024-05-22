@@ -11,7 +11,6 @@ export type t_task = {
   taskID: string;
   title: string;
   websiteURL: string;
-  isMultipage: boolean;
   multipageConfig?: {
     starting_page: number;
     end_page: number;
