@@ -12,7 +12,7 @@ import {
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
-import { uid } from "./utils/packages/dist/index.mjs";
+import { uid } from "./utils/packages/uid/index.mjs";
 import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 import { t_task } from "./utils/types/project_types";
@@ -82,7 +82,13 @@ export function toggle_multipage_input(e: Event) {
 
 export async function add_field_handler() {
   try {
-    if (is_input_field_empty() === true) return;
+    if (
+      is_input_field_empty(
+        '.task-schema-input > input[class*="key"]:not([value])',
+        'Please fill up the empty "KEY" input, before adding another field.',
+      ) === true
+    )
+      return;
     const active_task = await get_current_active_task();
     if (active_task === null) {
       throw new Error("Task does not exist");
@@ -122,7 +128,7 @@ export async function remove_field_handler(e: Event) {
     "task-schema-input-container",
   ) as HTMLElement;
   const key_input = target_parent.querySelector(
-    "input#key",
+    "input.key",
   ) as HTMLInputElement;
   try {
     const active_task = (await get_current_active_task()) as t_task;
@@ -160,15 +166,15 @@ export async function get_started_btn_handler() {
   }
 }
 
-export function is_input_field_empty(): boolean | null {
-  const input_field = document.querySelector(
-    '.task-schema-input > input[id*="key"]:not([value])',
-  ) as HTMLInputElement;
+export function is_input_field_empty(
+  css_selector: string,
+  message: string,
+): boolean | null {
+  const input_field = document.querySelector(css_selector) as HTMLInputElement;
   if (input_field === null) return null;
   if (input_field.value === "") {
     create_popup_message({
-      message:
-        'Please fill up the empty "KEY" input, before adding another field.',
+      message: message,
       target: input_field,
     });
     return true;

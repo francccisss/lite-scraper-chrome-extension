@@ -62,7 +62,7 @@ export function toggle_multipage_input(e) {
 }
 export async function add_field_handler() {
     try {
-        if (is_input_field_empty() === true)
+        if (is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.') === true)
             return;
         const active_task = await get_current_active_task();
         if (active_task === null) {
@@ -92,7 +92,7 @@ export async function remove_field_handler(e) {
     if (!target.classList.contains("delete-field"))
         return;
     const target_parent = find_top_parent(target, "task-schema-input-container");
-    const key_input = target_parent.querySelector("input#key");
+    const key_input = target_parent.querySelector("input.key");
     try {
         const active_task = (await get_current_active_task());
         const updated_taskSchema = {
@@ -129,13 +129,13 @@ export async function get_started_btn_handler() {
         console.log(er);
     }
 }
-export function is_input_field_empty() {
-    const input_field = document.querySelector('.task-schema-input > input[id*="key"]:not([value])');
+export function is_input_field_empty(css_selector, message) {
+    const input_field = document.querySelector(css_selector);
     if (input_field === null)
         return null;
     if (input_field.value === "") {
         create_popup_message({
-            message: 'Please fill up the empty "KEY" input, before adding another field.',
+            message: message,
             target: input_field,
         });
         return true;

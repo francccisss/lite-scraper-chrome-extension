@@ -1,4 +1,4 @@
-import { uid } from "../utils/packages/dist/index.mjs";
+import { uid } from "../utils/packages/uid/index.mjs";
 import State_Manager from "../utils/state_manager.js";
 import { t_task } from "../utils/types/project_types";
 

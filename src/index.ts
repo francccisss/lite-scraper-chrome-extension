@@ -2,7 +2,6 @@ import Event_Signal from "./utils/pubsub.js";
 import {
   add_field_handler,
   remove_field_handler,
-  toggle_multipage_input,
   set_current_active_task_config,
   set_task_active,
   get_started_btn_handler,
@@ -21,9 +20,6 @@ import {
 } from "./services/server_session.js";
 const sidebar = document.getElementById("sidebar") as HTMLDivElement;
 const add_task_btn = document.getElementById("add-task") as HTMLButtonElement;
-const multipage_toggle_btn = document.getElementById(
-  "multipageToggle",
-) as HTMLButtonElement;
 const add_field_btn = document.getElementById(
   "add-field-btn",
 ) as HTMLButtonElement;
@@ -52,11 +48,10 @@ Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_task_config_ui", update_json_display);
 
-get_started_btn?.addEventListener("click", get_started_btn_handler);
-multipage_toggle_btn?.addEventListener("click", toggle_multipage_input);
-add_task_btn?.addEventListener("click", add_task);
-sidebar?.addEventListener("click", change_current_task);
-add_field_btn?.addEventListener("click", add_field_handler);
+get_started_btn.addEventListener("click", get_started_btn_handler);
+add_task_btn.addEventListener("click", add_task);
+sidebar.addEventListener("click", change_current_task);
+add_field_btn.addEventListener("click", add_field_handler);
 task_schema_container?.addEventListener("click", remove_field_handler);
 form.addEventListener("focusin", init_input_buffer);
 form.addEventListener("keyup", save_input_buffer);
