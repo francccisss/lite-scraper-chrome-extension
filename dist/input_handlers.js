@@ -109,7 +109,6 @@ export function is_input_field_empty(css_selector, message) {
         return true;
     }
     else {
-        console.log(input_field);
         return false;
     }
 }
