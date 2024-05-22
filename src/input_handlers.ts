@@ -57,22 +57,6 @@ export async function set_current_active_task_config() {
       return;
     }
     populate_task_config(current_active_task);
-    // if (
-    //   current_active_task.isMultipage &&
-    //   multipage_inputs().input_container !== null
-    // ) {
-    //   return;
-    // } else if (
-    //   current_active_task.isMultipage &&
-    //   multipage_inputs().input_container === null
-    // ) {
-    //   multipage_inputs().create();
-    // } else if (
-    //   !current_active_task.isMultipage &&
-    //   multipage_inputs().input_container !== null
-    // ) {
-    //   multipage_inputs().destroy();
-    // }
   } catch (err) {
     console.error(err);
   }

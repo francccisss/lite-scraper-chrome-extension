@@ -3,15 +3,13 @@ function remove_task_input_fields() {
     const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
     task_schema_input_containers.forEach((input) => input.remove());
 }
-export function populate_task_config({ websiteURL, isMultipage, taskSchema, title, taskID, }) {
+export function populate_task_config({ websiteURL, taskSchema, title, taskID, }) {
     const form = document.querySelector("form");
     const header = document.querySelector("#task-contents >h3");
     header.textContent = title;
     const websiteURL_input = form.querySelector("#websiteURL");
     const task_schema_container = document.getElementById("task-schema-container");
-    const multipage_toggle = document.querySelector(`input#multipageToggle`);
     websiteURL_input.value = websiteURL;
-    // multipage_toggle.checked = isMultipage;
     remove_task_input_fields();
     for (const [key, value] of Object.entries(taskSchema)) {
         task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
