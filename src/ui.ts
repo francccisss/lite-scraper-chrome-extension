@@ -38,7 +38,9 @@ export function populate_task_config({
       task_schema_container.children[1],
     );
   }
-  update_json_display(JSON.stringify({ websiteURL, taskID, taskSchema }));
+  update_json_display(
+    JSON.stringify({ websiteURL, taskID, taskSchema }, null, 4),
+  );
 }
 
 export function create_task_component({
@@ -189,5 +191,5 @@ export function update_json_display(sample_json: string = "JSon data") {
   const json_display = document.getElementById(
     "json-sample-display",
   ) as HTMLDivElement;
-  (json_display.firstChild as HTMLParagraphElement).textContent = sample_json;
+  json_display.innerHTML = `<pre>${sample_json}</pre>`;
 }
