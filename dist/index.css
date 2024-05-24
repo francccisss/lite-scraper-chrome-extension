@@ -43,7 +43,7 @@ button:not(button[disabled]) {
 }
 
 #welcome-box {
-  display: none;
+  display: flex;
   flex-direction: column;
   height: 42%;
   gap: 1em;
@@ -68,7 +68,7 @@ button:not(button[disabled]) {
 #task-list-container {
   height: 100%;
   flex: 1;
-  display: flex;
+  display: none;
 }
 
 .big-button {

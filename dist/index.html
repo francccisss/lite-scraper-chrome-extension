@@ -25,7 +25,7 @@
       </div>
       <section id="task-contents">
         <h3>Amazon phone items</h3>
-        <form>
+        <form method="post" action="https://localhost:3005/api/v1/scrape">
           <div class="form-input-container" id="web-url-container">
             <label for="websiteURL">Website URL :</label>
             <input id="websiteURL" class="websiteURL" name="websiteURL" type="text"
@@ -46,25 +46,23 @@
 
         <div id="json-sample-container">
           <div id="json-sample-display">
-            <p></p>
           </div>
           <button disabled id="download-data" class="big-button" type="button">
             Download
           </button>
         </div>
       </section>
-  </main>
-  </div>
-  <div id="welcome-box">
-    <h1>Lite <span>Scraper</span></h1>
-    <p>
-      A minimal user-friendly web scraping service for gathering insights
-      for your business.
-    </p>
-    <div id="welcome-box-btn-container" class="btn-container">
-      <button class="big-button" id="get-started-btn">Get Started</button>
     </div>
-  </div>
+    <div id="welcome-box">
+      <h1>Lite <span>Scraper</span></h1>
+      <p>
+        A minimal user-friendly web scraping service for gathering insights
+        for your business.
+      </p>
+      <div id="welcome-box-btn-container" class="btn-container">
+        <button class="big-button" id="get-started-btn">Get Started</button>
+      </div>
+    </div>
   </main>
 </body>
 
