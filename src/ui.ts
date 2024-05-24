@@ -4,6 +4,11 @@ import {
 } from "./input_handlers.js";
 import { t_task_ui, t_task } from "./utils/types/project_types.js";
 
+function on_empty_tasks() {
+  const task_contents = document.getElementById("task_contents") as HTMLElement;
+  task_contents.style.display = "none";
+}
+
 function remove_task_input_fields() {
   const task_schema_input_containers = document.querySelectorAll(
     ".task-schema-input-container",
@@ -62,7 +67,12 @@ export async function init_tasks_ui(tasks: Array<t_task>) {
   try {
     const sidebar = document.getElementById("sidebar") as HTMLElement;
     if (tasks === undefined) throw new Error("Unable to setup storage.");
-    if (tasks.length === 0) return; // try to render something
+    if (tasks.length === 0) on_empty_tasks();
+    const task_contents = document.getElementById(
+      "task-contents",
+    ) as HTMLElement;
+    console.log("tasks exist");
+    task_contents.style.display = "flex";
     tasks.forEach((task: t_task) => {
       sidebar.prepend(
         create_task_component({ taskID: task.taskID, title: task.title }),

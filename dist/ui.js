@@ -1,4 +1,8 @@
 import { set_current_active_task_config, set_task_active, } from "./input_handlers.js";
+function on_empty_tasks() {
+    const task_contents = document.getElementById("task_contents");
+    task_contents.style.display = "none";
+}
 function remove_task_input_fields() {
     const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
     task_schema_input_containers.forEach((input) => input.remove());
@@ -33,7 +37,10 @@ export async function init_tasks_ui(tasks) {
         if (tasks === undefined)
             throw new Error("Unable to setup storage.");
         if (tasks.length === 0)
-            return; // try to render something
+            on_empty_tasks();
+        const task_contents = document.getElementById("task-contents");
+        console.log("tasks exist");
+        task_contents.style.display = "flex";
         tasks.forEach((task) => {
             sidebar.prepend(create_task_component({ taskID: task.taskID, title: task.title }));
         });
