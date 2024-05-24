@@ -255,3 +255,11 @@ export function eval_input_buffer(e) {
         Event_Signal.publish("update_webURL_input", input_buffer);
     }
 }
+export async function scrape_request(e) {
+    e.preventDefault();
+    const is_empty = is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.');
+    if (is_empty)
+        return;
+    const active_task = await get_current_active_task();
+    console.log(active_task);
+}

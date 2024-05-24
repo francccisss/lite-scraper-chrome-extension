@@ -12,6 +12,7 @@ import {
   save_input_buffer,
   eval_input_buffer,
   change_current_task,
+  scrape_request,
 } from "./input_handlers.js";
 import { transition_signed_in, update_json_display } from "./ui.js";
 import {
@@ -56,3 +57,4 @@ task_schema_container.addEventListener("click", remove_field_handler);
 form.addEventListener("focusin", init_input_buffer);
 form.addEventListener("keyup", save_input_buffer);
 form.addEventListener("focusout", eval_input_buffer);
+form.addEventListener("submit", scrape_request);
