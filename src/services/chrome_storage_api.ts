@@ -3,46 +3,13 @@ import State_Manager from "../utils/state_manager.js";
 import { t_task } from "../utils/types/project_types";
 
 export async function set_storage(): Promise<{ [key: string]: any }> {
-  await chrome.storage.local.set({
-    tasks: [
-      {
-        title: "Amazon Phones",
-        taskID: uid(16),
-        websiteURL:
-          "https://www.amazon.ae/Mobile-Phones/b?ie=UTF8&node=15415001031",
-        taskSchema: {
-          item: ".item-name",
-          itemDescription: ".item-desc",
-          discount: ".item-discount",
-          price: ".item-price",
-          currency: ".item-price-currency",
-        },
-      },
-
-      {
-        title: "Epoch Converter",
-        taskID: uid(16),
-        websiteURL: "https://www.epochconverter.com/",
-        taskSchema: {
-          title: ".title",
-          description: ".desc",
-          dateCreated: "june 1",
-        },
-      },
-
-      {
-        title: "Haru",
-        taskID: uid(16),
-        websiteURL: "https://www.youtube.com/watch?v=Ki6_VnABBBQ",
-        taskSchema: {
-          youtubeTitle: ".yt-title",
-          description: ".desc",
-          subs: "#yt-subs",
-        },
-      },
-    ],
-    scrape_calls: 0,
-  });
+  const tasks = await chrome.storage.local.get("tasks");
+  if (tasks === undefined) {
+    const create_storage = await chrome.storage.local.set({
+      tasks: [],
+      scrape_calls: 0,
+    });
+  }
   const user_storage = await chrome.storage.local.get();
   return user_storage;
 }

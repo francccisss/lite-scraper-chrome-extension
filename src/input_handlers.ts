@@ -309,5 +309,16 @@ export async function scrape_request(e: Event) {
   );
   if (is_empty) return;
   const active_task = await get_current_active_task();
-  console.log(active_task);
+  if (active_task === null) return;
+
+  const post = await fetch(api_routes.post, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(active_task),
+  });
+  const resp = await post.json();
+  console.log(resp);
 }
