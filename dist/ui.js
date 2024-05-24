@@ -1,8 +1,4 @@
 import { set_current_active_task_config, set_task_active, } from "./input_handlers.js";
-function on_empty_tasks() {
-    const task_contents = document.getElementById("task_contents");
-    task_contents.style.display = "none";
-}
 function remove_task_input_fields() {
     const task_schema_input_containers = document.querySelectorAll(".task-schema-input-container");
     task_schema_input_containers.forEach((input) => input.remove());
@@ -31,11 +27,24 @@ export function create_task_component({ taskID, title, }) {
     task_container.append(task_title);
     return task_container;
 }
+function on_empty_tasks() {
+    const task_contents = document.getElementById("task-contents");
+    const task_list_container = document.getElementById("task-list-container");
+    task_contents.style.display = "none";
+    const text_container = document.createElement("div");
+    const text = document.createElement("p");
+    text_container.setAttribute("id", "on-tasks-empty-text-container");
+    text.setAttribute("id", "on-tasks-empty-text");
+    text.innerHTML = "Click on <span>Add Task</span> to get started.";
+    text_container.appendChild(text);
+    task_list_container.appendChild(text_container);
+    console.log("task empty");
+}
 export async function init_tasks_ui(tasks) {
     try {
         const sidebar = document.getElementById("sidebar");
         if (tasks === undefined)
-            throw new Error("Unable to setup storage.");
+            on_empty_tasks();
         if (tasks.length === 0)
             on_empty_tasks();
         const task_contents = document.getElementById("task-contents");

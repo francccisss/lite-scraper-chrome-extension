@@ -91,7 +91,7 @@ button:not(button[disabled]) {
 }
 
 #sidebar {
-  width: 12em;
+  min-width: 12em;
   background-color: var(--sb-black);
 }
 
@@ -371,5 +371,19 @@ form {
   scroll-behavior: smooth;
   pre {
     text-wrap: pretty;
+  }
+}
+
+#on-tasks-empty-text-container {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+#on-tasks-empty-text {
+  color: var(--white);
+  font-weight: 300;
+  span {
+    font-weight: 600;
+    color: var(--primary);
   }
 }
