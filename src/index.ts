@@ -41,13 +41,13 @@ Event_Signal.subscribe(
   transition_signed_in,
 );
 Event_Signal.subscribe(
-  "update_sidebar_tasks_ui",
+  "update_tasks_ui",
   set_task_active,
   set_current_active_task_config,
 );
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
-Event_Signal.subscribe("update_task_config_ui", update_json_display);
+Event_Signal.subscribe("update_json_ui", update_json_display);
 
 get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);

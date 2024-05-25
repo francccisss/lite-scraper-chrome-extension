@@ -1,11 +1,10 @@
-import { uid } from "../utils/packages/uid/index.mjs";
 import State_Manager from "../utils/state_manager.js";
 import { t_task } from "../utils/types/project_types";
 
 export async function set_storage(): Promise<{ [key: string]: any }> {
   const tasks = await chrome.storage.local.get("tasks");
   if (tasks === undefined) {
-    const create_storage = await chrome.storage.local.set({
+    await chrome.storage.local.set({
       tasks: [],
       scrape_calls: 0,
     });

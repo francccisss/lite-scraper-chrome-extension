@@ -1,5 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
-import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/uid/index.mjs";
@@ -9,7 +9,7 @@ export function change_current_task(e) {
     const target = e.target;
     if (target.classList.contains("task-item")) {
         if (!target.classList.contains("active")) {
-            Event_Signal.publish("update_sidebar_tasks_ui", target);
+            Event_Signal.publish("update_tasks_ui", target);
         }
     }
 }
@@ -30,11 +30,12 @@ export async function add_task() {
 }
 export function set_task_active(data) {
     const sidebar = document.getElementById("sidebar");
-    const task_list = Array.from(sidebar?.querySelectorAll("div.task-item"));
+    const task_list = Array.from(sidebar.querySelectorAll("div.task-item"));
     const current_active_task = task_list.find((i) => i.classList.contains("active"));
     current_active_task?.classList.remove("active");
     data.classList.add("active");
     State_Manager.set_state("current_active_task", data.dataset.task);
+    on_empty_tasks(false);
 }
 // triggered when a new task is clicked
 export async function set_current_active_task_config() {
@@ -88,7 +89,7 @@ export async function add_field_handler() {
             value: "",
         });
         task_schema_container.insertBefore(new_input_field, task_schema_container.children[task_schema_container.children.length - 1]);
-        Event_Signal.publish("update_task_config_ui", {
+        Event_Signal.publish("update_json_ui", {
             ...active_task,
             taskSchema: { ...active_task.taskSchema, "": "" },
         });
@@ -199,7 +200,7 @@ export async function update_task_schema_input(buffer) {
             ...active_task,
             taskSchema: updated_task_schema,
         });
-        Event_Signal.publish("update_task_config_ui", {
+        Event_Signal.publish("update_json_ui", {
             ...active_task,
             taskSchema: updated_task_schema,
         });
@@ -218,7 +219,7 @@ export async function update_website_url(buffer) {
             ...active_task,
             websiteURL: buffer.websiteURL,
         });
-        Event_Signal.publish("update_task_config_ui", {
+        Event_Signal.publish("update_json_ui", {
             ...active_task,
             websiteURL: buffer.websiteURL,
         });

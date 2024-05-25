@@ -58,30 +58,41 @@ export function create_task_component({
   return task_container;
 }
 
-function on_empty_tasks() {
+export function on_empty_tasks(is: boolean) {
   const task_contents = document.getElementById("task-contents") as HTMLElement;
   const task_list_container = document.getElementById(
     "task-list-container",
   ) as HTMLElement;
-  task_contents.style.display = "none";
-  const text_container = document.createElement("div");
-  const text = document.createElement("p");
+  if (is === true) {
+    task_contents.style.display = "none";
+    const text_container = document.createElement("div");
+    const text = document.createElement("p");
 
-  text_container.setAttribute("id", "on-tasks-empty-text-container");
-  text.setAttribute("id", "on-tasks-empty-text");
+    text_container.setAttribute("id", "on-tasks-empty-text-container");
+    text.setAttribute("id", "on-tasks-empty-text");
 
-  text.innerHTML = "Click on <span>Add Task</span> to get started.";
+    text.innerHTML = "Click on <span>Add Task</span> to get started.";
 
-  text_container.appendChild(text);
-  task_list_container.appendChild(text_container);
-  console.log("task empty");
+    text_container.appendChild(text);
+    task_list_container.appendChild(text_container);
+    console.log("task empty");
+    return;
+  }
+  const text_container = document.getElementById(
+    "on-tasks-empty-text-container",
+  );
+  if (text_container === null) return;
+  task_contents.style.display = "flex";
+  text_container.remove();
 }
 
 export async function init_tasks_ui(tasks: Array<t_task>) {
   try {
     const sidebar = document.getElementById("sidebar") as HTMLElement;
-    if (tasks === undefined) on_empty_tasks();
-    if (tasks.length === 0) on_empty_tasks();
+    if (tasks.length === 0) {
+      on_empty_tasks(true);
+      return;
+    }
     const task_contents = document.getElementById(
       "task-contents",
     ) as HTMLElement;

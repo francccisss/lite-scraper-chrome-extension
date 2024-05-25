@@ -31,7 +31,6 @@ export async function start_session() {
 
   try {
     const user_storage = await set_storage();
-    console.log(user_storage.tasks);
     init_tasks_ui(user_storage.tasks);
   } catch (err) {
     console.error(err);
