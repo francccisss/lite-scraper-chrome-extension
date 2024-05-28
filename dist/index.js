@@ -11,7 +11,7 @@ const form = document.querySelector("form");
 window.addEventListener("load", start_session);
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
-Event_Signal.subscribe("update_tasks_ui", set_task_active, set_current_active_task_config);
+Event_Signal.subscribe("change_task_ui", set_task_active, set_current_active_task_config);
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_json_ui", update_json_display);

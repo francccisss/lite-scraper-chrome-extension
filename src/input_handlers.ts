@@ -22,7 +22,7 @@ export function change_current_task(e: any) {
   const target = e.target as HTMLElement;
   if (target.classList.contains("task-item")) {
     if (!target.classList.contains("active")) {
-      Event_Signal.publish("update_tasks_ui", target);
+      Event_Signal.publish("change_task_ui", target);
     }
   }
 }

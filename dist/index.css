@@ -71,6 +71,42 @@ button:not(button[disabled]) {
   display: none;
 }
 
+#task-title-container {
+  display: flex;
+  flex: 1;
+  :last-child {
+    margin-left: auto;
+  }
+}
+
+#title-edit-delete-btn-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  button {
+    cursor: pointer;
+    border: none;
+    appearance: none;
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 0;
+  }
+
+  button:first-of-type {
+    background-image: url("./assets/edit.svg");
+  }
+
+  button:last-of-type {
+    background-color: transparent;
+    background-size: 30px;
+    background-image: url("./assets/trash.svg");
+  }
+}
+
 .big-button {
   cursor: pointer;
   border: 1px solid var(--primary);

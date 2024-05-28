@@ -19,7 +19,7 @@ export function populate_task_config({
 }: t_task) {
   const form = document.querySelector("form") as HTMLFormElement;
   const header = document.querySelector(
-    "#task-contents >h3",
+    "#task-contents div > h3",
   ) as HTMLHeadingElement;
   header.textContent = title;
   const websiteURL_input = form.querySelector(

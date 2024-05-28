@@ -41,7 +41,7 @@ Event_Signal.subscribe(
   transition_signed_in,
 );
 Event_Signal.subscribe(
-  "update_tasks_ui",
+  "change_task_ui",
   set_task_active,
   set_current_active_task_config,
 );

@@ -5,7 +5,7 @@ function remove_task_input_fields() {
 }
 export function populate_task_config({ websiteURL, taskSchema, title, taskID, }) {
     const form = document.querySelector("form");
-    const header = document.querySelector("#task-contents >h3");
+    const header = document.querySelector("#task-contents div > h3");
     header.textContent = title;
     const websiteURL_input = form.querySelector("#websiteURL");
     const task_schema_container = document.getElementById("task-schema-container");
