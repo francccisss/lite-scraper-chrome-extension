@@ -1,6 +1,6 @@
 import Event_Signal from "./utils/pubsub.js";
 import { add_field_handler, remove_field_handler, set_current_active_task_config, set_task_active, get_started_btn_handler, add_task, update_task_schema_input, update_website_url, init_input_buffer, save_input_buffer, eval_input_buffer, change_current_task, scrape_request, } from "./input_handlers.js";
-import { transition_signed_in, update_json_display } from "./ui.js";
+import { on_empty_tasks, transition_signed_in, update_json_display, } from "./ui.js";
 import { create_session_handler, start_session, } from "./services/server_session.js";
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
@@ -28,6 +28,8 @@ task_btns_container.addEventListener("click", (e) => {
             current_active_task = tasks_ui[0];
             current_active_task.remove();
             console.log("empty");
+            // do something once the ui is empty
+            on_empty_tasks(true);
         }
         else if (tasks_ui.length > 2) {
             // taking into account the add task button

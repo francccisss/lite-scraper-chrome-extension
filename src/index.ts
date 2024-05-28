@@ -13,8 +13,13 @@ import {
   eval_input_buffer,
   change_current_task,
   scrape_request,
+  delete_task,
 } from "./input_handlers.js";
-import { transition_signed_in, update_json_display } from "./ui.js";
+import {
+  on_empty_tasks,
+  transition_signed_in,
+  update_json_display,
+} from "./ui.js";
 import {
   create_session_handler,
   start_session,
@@ -55,40 +60,7 @@ Event_Signal.subscribe("update_json_ui", update_json_display);
 task_btns_container.addEventListener("click", (e) => {
   const target = e.target as HTMLButtonElement;
   if (target.id === "delete-task") {
-    const tasks_ui = Array.from(sidebar.children);
-    const task_items_length = tasks_ui.length - 1;
-    let current_active_task: Element;
-    let task_ui_index: number;
-    if (tasks_ui.length < 3) {
-      // taking into account the add task button
-      current_active_task = tasks_ui[0];
-      current_active_task.remove();
-      console.log("empty");
-      // do something once the ui is empty
-      //
-      //
-      //
-    } else if (tasks_ui.length > 2) {
-      // taking into account the add task button
-      let new_active_task: Element;
-      current_active_task = tasks_ui.find((task) =>
-        task.classList.contains("active"),
-      ) as Element;
-      task_ui_index = tasks_ui.findIndex((task) =>
-        task.classList.contains("active"),
-      );
-      if (task_ui_index === task_items_length - 1) {
-        console.log("last index");
-        new_active_task = tasks_ui[task_ui_index - 1];
-        Event_Signal.publish("change_task_ui", new_active_task);
-      } else if (task_ui_index < tasks_ui.length - 1) {
-        new_active_task = tasks_ui[task_ui_index + 1];
-        Event_Signal.publish("change_task_ui", new_active_task);
-      }
-      current_active_task.remove();
-    } else {
-      return;
-    }
+    delete_task(target);
   }
 });
 get_started_btn.addEventListener("click", get_started_btn_handler);
