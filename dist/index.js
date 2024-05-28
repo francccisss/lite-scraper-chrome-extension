@@ -8,6 +8,7 @@ const add_field_btn = document.getElementById("add-field-btn");
 const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 const form = document.querySelector("form");
+const task_btns_container = document.getElementById("title-edit-delete-btn-container");
 window.addEventListener("load", start_session);
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
@@ -15,6 +16,34 @@ Event_Signal.subscribe("change_task_ui", set_task_active, set_current_active_tas
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_json_ui", update_json_display);
+task_btns_container.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target.id === "delete-task") {
+        const tasks_ui = Array.from(sidebar.children);
+        let current_active_task_ui;
+        let task_ui_index;
+        let new_active_task;
+        if (tasks_ui.length < 2) {
+            current_active_task_ui = tasks_ui[0];
+        }
+        else if (tasks_ui.length > 1) {
+            current_active_task_ui = tasks_ui.find((task) => task.classList.contains("active"));
+            task_ui_index = tasks_ui.findIndex((task) => task.classList.contains("active"));
+            if (task_ui_index === tasks_ui.length - 1) {
+                new_active_task = tasks_ui[task_ui_index - 1];
+                new_active_task.classList.add("active");
+            }
+            if (task_ui_index < tasks_ui.length - 1) {
+                new_active_task = tasks_ui[task_ui_index + 1];
+                new_active_task.classList.add("active");
+            }
+        }
+        else {
+            return;
+        }
+        current_active_task_ui.remove();
+    }
+});
 get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);
 sidebar.addEventListener("click", change_current_task);

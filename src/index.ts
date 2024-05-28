@@ -31,6 +31,9 @@ const get_started_btn = document.getElementById(
   "get-started-btn",
 ) as HTMLButtonElement;
 const form = document.querySelector("form") as HTMLFormElement;
+const task_btns_container = document.getElementById(
+  "title-edit-delete-btn-container",
+) as HTMLSpanElement;
 
 window.addEventListener("load", start_session);
 
@@ -49,6 +52,37 @@ Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_json_ui", update_json_display);
 
+task_btns_container.addEventListener("click", (e) => {
+  const target = e.target as HTMLButtonElement;
+  if (target.id === "delete-task") {
+    const tasks_ui = Array.from(sidebar.children);
+    let current_active_task_ui: Element;
+    let task_ui_index: number;
+    let new_active_task: Element;
+    if (tasks_ui.length < 2) {
+      current_active_task_ui = tasks_ui[0];
+    } else if (tasks_ui.length > 1) {
+      current_active_task_ui = tasks_ui.find((task) =>
+        task.classList.contains("active"),
+      ) as Element;
+      task_ui_index = tasks_ui.findIndex((task) =>
+        task.classList.contains("active"),
+      );
+      if (task_ui_index === tasks_ui.length - 1) {
+        new_active_task = tasks_ui[task_ui_index - 1];
+        new_active_task.classList.add("active");
+      }
+      if (task_ui_index < tasks_ui.length - 1) {
+        new_active_task = tasks_ui[task_ui_index + 1];
+        new_active_task.classList.add("active");
+      }
+    } else {
+      return;
+    }
+
+    current_active_task_ui.remove();
+  }
+});
 get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);
 sidebar.addEventListener("click", change_current_task);
