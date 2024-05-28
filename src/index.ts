@@ -57,35 +57,38 @@ task_btns_container.addEventListener("click", (e) => {
   if (target.id === "delete-task") {
     const tasks_ui = Array.from(sidebar.children);
     const task_items_length = tasks_ui.length - 1;
-    let current_active_task_ui: Element;
+    let current_active_task: Element;
     let task_ui_index: number;
-    let new_active_task: Element;
     if (tasks_ui.length < 3) {
       // taking into account the add task button
-      current_active_task_ui = tasks_ui[0];
+      current_active_task = tasks_ui[0];
+      current_active_task.remove();
       console.log("empty");
+      // do something once the ui is empty
+      //
+      //
+      //
     } else if (tasks_ui.length > 2) {
       // taking into account the add task button
-      current_active_task_ui = tasks_ui.find((task) =>
+      let new_active_task: Element;
+      current_active_task = tasks_ui.find((task) =>
         task.classList.contains("active"),
       ) as Element;
       task_ui_index = tasks_ui.findIndex((task) =>
         task.classList.contains("active"),
       );
-      console.log({ task_ui_index, l: task_items_length });
       if (task_ui_index === task_items_length - 1) {
+        console.log("last index");
         new_active_task = tasks_ui[task_ui_index - 1];
-        new_active_task.classList.add("active");
-      }
-      if (task_ui_index < tasks_ui.length - 1) {
+        Event_Signal.publish("change_task_ui", new_active_task);
+      } else if (task_ui_index < tasks_ui.length - 1) {
         new_active_task = tasks_ui[task_ui_index + 1];
-        new_active_task.classList.add("active");
+        Event_Signal.publish("change_task_ui", new_active_task);
       }
+      current_active_task.remove();
     } else {
       return;
     }
-
-    current_active_task_ui.remove();
   }
 });
 get_started_btn.addEventListener("click", get_started_btn_handler);
