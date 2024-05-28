@@ -20,16 +20,21 @@ task_btns_container.addEventListener("click", (e) => {
     const target = e.target;
     if (target.id === "delete-task") {
         const tasks_ui = Array.from(sidebar.children);
+        const task_items_length = tasks_ui.length - 1;
         let current_active_task_ui;
         let task_ui_index;
         let new_active_task;
-        if (tasks_ui.length < 2) {
+        if (tasks_ui.length < 3) {
+            // taking into account the add task button
             current_active_task_ui = tasks_ui[0];
+            console.log("empty");
         }
-        else if (tasks_ui.length > 1) {
+        else if (tasks_ui.length > 2) {
+            // taking into account the add task button
             current_active_task_ui = tasks_ui.find((task) => task.classList.contains("active"));
             task_ui_index = tasks_ui.findIndex((task) => task.classList.contains("active"));
-            if (task_ui_index === tasks_ui.length - 1) {
+            console.log({ task_ui_index, l: task_items_length });
+            if (task_ui_index === task_items_length - 1) {
                 new_active_task = tasks_ui[task_ui_index - 1];
                 new_active_task.classList.add("active");
             }
