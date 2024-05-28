@@ -24,6 +24,7 @@ import {
   create_session_handler,
   start_session,
 } from "./services/server_session.js";
+import { delete_task_local_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar") as HTMLDivElement;
 const add_task_btn = document.getElementById("add-task") as HTMLButtonElement;
 const add_field_btn = document.getElementById(
@@ -53,6 +54,10 @@ Event_Signal.subscribe(
   set_task_active,
   set_current_active_task_config,
 );
+
+Event_Signal.subscribe("delete_task", async (data: any) => {
+  await delete_task_local_storage(data);
+});
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_json_ui", update_json_display);

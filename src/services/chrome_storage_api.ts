@@ -48,3 +48,18 @@ export async function update_task_local_storage(updated_data: t_task) {
   });
   await chrome.storage.local.set({ tasks: [...update_tasks] });
 }
+
+export async function delete_task_local_storage({
+  task_index,
+  task_element,
+}: {
+  task_index: number;
+  task_element: HTMLElement;
+}) {
+  const { tasks } = await chrome.storage.local.get("tasks");
+  const filtered_tasks = (tasks as Array<t_task>).filter(
+    (task) => task_element.dataset.task !== task.taskID,
+  );
+  console.log(filtered_tasks);
+  await chrome.storage.local.set({ tasks: [...filtered_tasks] });
+}

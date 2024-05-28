@@ -333,6 +333,10 @@ export function delete_task(target: HTMLButtonElement) {
   if (tasks_ui.length < 3) {
     // taking into account the add task button
     current_active_task = tasks_ui[0];
+    Event_Signal.publish("delete_task", {
+      task_index: 0,
+      task_element: current_active_task,
+    });
     current_active_task.remove();
     on_empty_tasks(true);
   } else if (tasks_ui.length > 2) {
@@ -344,6 +348,10 @@ export function delete_task(target: HTMLButtonElement) {
     task_ui_index = tasks_ui.findIndex((task) =>
       task.classList.contains("active"),
     );
+    Event_Signal.publish("delete_task", {
+      task_index: task_ui_index,
+      task_element: current_active_task,
+    });
     if (task_ui_index === task_items_length - 1) {
       new_active_task = tasks_ui[task_ui_index - 1];
       Event_Signal.publish("change_task_ui", new_active_task);
