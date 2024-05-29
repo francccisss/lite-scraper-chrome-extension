@@ -16,7 +16,7 @@ import {
   delete_task,
 } from "./input_handlers.js";
 import {
-  on_empty_tasks,
+  replace_title_to_input,
   transition_signed_in,
   update_json_display,
 } from "./ui.js";
@@ -67,7 +67,12 @@ task_btns_container.addEventListener("click", (e) => {
   if (target.id === "delete-task") {
     delete_task(target);
   }
+  if (target.id === "edit-task-title") {
+    console.log("title swap");
+    replace_title_to_input();
+  }
 });
+
 get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);
 sidebar.addEventListener("click", change_current_task);

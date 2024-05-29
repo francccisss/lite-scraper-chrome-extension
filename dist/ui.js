@@ -147,3 +147,23 @@ export function update_json_display(task) {
     const json_display = document.getElementById("json-sample-display");
     json_display.innerHTML = `<pre>${JSON.stringify(task, null, 4)}</pre>`;
 }
+export function replace_title_to_input() {
+    const input_title = document.getElementById("title-input");
+    if (input_title === null) {
+        const title = document.getElementById("task-title");
+        const input_title = document.createElement("input");
+        if (title.parentNode === null)
+            return;
+        input_title.value = title.textContent;
+        input_title.setAttribute("class", "big-input");
+        input_title.setAttribute("id", "title-input");
+        title.parentNode.insertBefore(input_title, title.parentNode.children[title.parentNode.children.length - 1]);
+        title.remove();
+        return;
+    }
+    const new_title = document.createElement("h3");
+    new_title.textContent = input_title.value;
+    new_title.setAttribute("id", "task-title");
+    input_title.parentNode.insertBefore(new_title, input_title.parentNode.children[input_title.parentNode.children.length - 1]);
+    input_title.remove();
+}

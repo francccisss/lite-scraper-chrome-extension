@@ -1,6 +1,6 @@
 import Event_Signal from "./utils/pubsub.js";
 import { add_field_handler, remove_field_handler, set_current_active_task_config, set_task_active, get_started_btn_handler, add_task, update_task_schema_input, update_website_url, init_input_buffer, save_input_buffer, eval_input_buffer, change_current_task, scrape_request, delete_task, } from "./input_handlers.js";
-import { transition_signed_in, update_json_display, } from "./ui.js";
+import { replace_title_to_input, transition_signed_in, update_json_display, } from "./ui.js";
 import { create_session_handler, start_session, } from "./services/server_session.js";
 import { delete_task_local_storage } from "./services/chrome_storage_api.js";
 const sidebar = document.getElementById("sidebar");
@@ -24,6 +24,10 @@ task_btns_container.addEventListener("click", (e) => {
     const target = e.target;
     if (target.id === "delete-task") {
         delete_task(target);
+    }
+    if (target.id === "edit-task-title") {
+        console.log("title swap");
+        replace_title_to_input();
     }
 });
 get_started_btn.addEventListener("click", get_started_btn_handler);

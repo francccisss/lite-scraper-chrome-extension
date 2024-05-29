@@ -226,3 +226,34 @@ export function update_json_display(task: t_task) {
   ) as HTMLDivElement;
   json_display.innerHTML = `<pre>${JSON.stringify(task, null, 4)}</pre>`;
 }
+
+export function replace_title_to_input() {
+  const input_title = document.getElementById(
+    "title-input",
+  ) as HTMLInputElement;
+  if (input_title === null) {
+    const title = document.getElementById("task-title") as HTMLHeadingElement;
+    const input_title = document.createElement("input") as HTMLInputElement;
+    if (title.parentNode === null) return;
+    input_title.value = title.textContent as string;
+    input_title.setAttribute("class", "big-input");
+    input_title.setAttribute("id", "title-input");
+    title.parentNode.insertBefore(
+      input_title,
+      title.parentNode.children[title.parentNode.children.length - 1],
+    );
+    title.remove();
+    return;
+  }
+  const new_title = document.createElement("h3");
+  new_title.textContent = input_title.value;
+  new_title.setAttribute("id", "task-title");
+
+  (input_title.parentNode as HTMLDivElement).insertBefore(
+    new_title,
+    (input_title.parentNode as HTMLDivElement).children[
+      (input_title.parentNode as HTMLDivElement).children.length - 1
+    ],
+  );
+  input_title.remove();
+}

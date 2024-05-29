@@ -193,6 +193,17 @@ button:not(button[disabled]) {
   }
 }
 
+input.big-input {
+  border: none;
+  border-radius: var(--input-rounded-corner);
+  color: white;
+  background-color: var(--task-border);
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-right: 1em;
+}
+
 form {
   input:not([type="checkbox"]) {
     appearance: none;
@@ -213,13 +224,7 @@ form {
       font-weight: 600;
     }
     input {
-      border: none;
-      border-radius: var(--input-rounded-corner);
-      color: white;
-      background-color: var(--task-border);
-      padding: 20px 10px 8px 10px;
-      box-sizing: border-box;
-      min-width: 100%;
+      padding: 20px 10px 8px 10px !important;
     }
   }
 
