@@ -242,18 +242,22 @@ export function save_input_buffer(e) {
         const input_buffer = State_Manager.get_state("input_buffer"); // Think of a way to only call this once.
         State_Manager.set_state("input_buffer", {
             ...input_buffer,
-            [target.className]: target.value,
+            [target.classList[0]]: target.value,
         });
     }
 }
 export function eval_input_buffer(e) {
     const target = e.target;
     const input_buffer = State_Manager.get_state("input_buffer");
+    console.log(input_buffer);
     if (target.classList.contains("key") || target.classList.contains("value")) {
         Event_Signal.publish("update_task_schema_input", input_buffer);
     }
-    if (target.id === "websiteURL") {
+    else if (target.id === "websiteURL") {
         Event_Signal.publish("update_webURL_input", input_buffer);
+    }
+    else if (target.id === "title-input") {
+        Event_Signal.publish("update_title_input", input_buffer);
     }
 }
 export async function scrape_request(e) {

@@ -3,6 +3,7 @@ import { add_field_handler, remove_field_handler, set_current_active_task_config
 import { replace_title_to_input, transition_signed_in, update_json_display, } from "./ui.js";
 import { create_session_handler, start_session, } from "./services/server_session.js";
 import { delete_task_local_storage } from "./services/chrome_storage_api.js";
+const task_content_inputs = document.getElementById("task-contents");
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
 const add_field_btn = document.getElementById("add-field-btn");
@@ -19,6 +20,9 @@ Event_Signal.subscribe("delete_task", async (data) => {
 });
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
+Event_Signal.subscribe("update_title_input", (data) => {
+    console.log(data);
+});
 Event_Signal.subscribe("update_json_ui", update_json_display);
 task_btns_container.addEventListener("click", (e) => {
     const target = e.target;
@@ -35,7 +39,7 @@ add_task_btn.addEventListener("click", add_task);
 sidebar.addEventListener("click", change_current_task);
 add_field_btn.addEventListener("click", add_field_handler);
 task_schema_container.addEventListener("click", remove_field_handler);
-form.addEventListener("focusin", init_input_buffer);
-form.addEventListener("keyup", save_input_buffer);
-form.addEventListener("focusout", eval_input_buffer);
+task_content_inputs.addEventListener("focusin", init_input_buffer);
+task_content_inputs.addEventListener("keyup", save_input_buffer);
+task_content_inputs.addEventListener("focusout", eval_input_buffer);
 form.addEventListener("submit", scrape_request);
