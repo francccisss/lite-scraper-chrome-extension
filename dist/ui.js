@@ -5,16 +5,33 @@ function remove_task_input_fields() {
 }
 export function populate_task_config({ websiteURL, taskSchema, title, taskID, }) {
     const form = document.querySelector("form");
-    const header = document.querySelector("#task-contents div > h3");
-    header.textContent = title;
     const websiteURL_input = form.querySelector("#websiteURL");
-    const task_schema_container = document.getElementById("task-schema-container");
     websiteURL_input.value = websiteURL;
+    reset_task_header(title);
     remove_task_input_fields();
+    create_task_input_fields(taskSchema);
+    update_json_display({ websiteURL, title, taskID, taskSchema });
+}
+// this resets the header for when the task title is currently replaced with an input.
+function reset_task_header(title) {
+    const header_parent = document.querySelector("#task-title-container");
+    const header = document.getElementById("task-title");
+    if (header === null) {
+        header_parent.removeChild(header_parent.children[0]);
+        const new_header = document.createElement("h3");
+        new_header.setAttribute("id", "task-title");
+        new_header.textContent = title;
+        header_parent.insertBefore(new_header, header_parent.children[header_parent.children.length - 1]);
+    }
+    else {
+        header.textContent = title;
+    }
+}
+function create_task_input_fields(taskSchema) {
+    const task_schema_container = document.getElementById("task-schema-container");
     for (const [key, value] of Object.entries(taskSchema)) {
         task_schema_container?.insertBefore(create_input_field({ key, value }), task_schema_container.children[1]);
     }
-    update_json_display({ websiteURL, title, taskID, taskSchema });
 }
 export function create_task_component({ taskID, title, }) {
     const task_container = document.createElement("div");
@@ -161,9 +178,9 @@ export function replace_title_to_input() {
         title.remove();
         return;
     }
-    const new_title = document.createElement("h3");
-    new_title.textContent = input_title.value;
-    new_title.setAttribute("id", "task-title");
-    input_title.parentNode.insertBefore(new_title, input_title.parentNode.children[input_title.parentNode.children.length - 1]);
+    const title = document.createElement("h3");
+    title.textContent = input_title.value;
+    title.setAttribute("id", "task-title");
+    input_title.parentNode.insertBefore(title, input_title.parentNode.children[input_title.parentNode.children.length - 1]);
     input_title.remove();
 }
