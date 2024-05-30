@@ -172,7 +172,7 @@ export function replace_title_to_input() {
         if (title.parentNode === null)
             return;
         input_title.value = title.textContent;
-        input_title.setAttribute("class", "big-input");
+        input_title.setAttribute("class", "title-input big-input");
         input_title.setAttribute("id", "title-input");
         title.parentNode.insertBefore(input_title, title.parentNode.children[title.parentNode.children.length - 1]);
         title.remove();

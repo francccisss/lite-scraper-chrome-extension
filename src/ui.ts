@@ -257,7 +257,7 @@ export function replace_title_to_input() {
     const input_title = document.createElement("input") as HTMLInputElement;
     if (title.parentNode === null) return;
     input_title.value = title.textContent as string;
-    input_title.setAttribute("class", "big-input");
+    input_title.setAttribute("class", "title-input big-input");
     input_title.setAttribute("id", "title-input");
     title.parentNode.insertBefore(
       input_title,

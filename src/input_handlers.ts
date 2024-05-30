@@ -259,14 +259,31 @@ export async function update_website_url(buffer: {
   if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
   const active_task = (await get_current_active_task()) as t_task;
   try {
-    await update_task_local_storage({
+    const update_task = {
       ...active_task,
       websiteURL: buffer.websiteURL,
-    });
-    Event_Signal.publish("update_json_ui", {
+    };
+    await update_task_local_storage(update_task);
+    Event_Signal.publish("update_json_ui", update_task);
+  } catch (err) {
+    console.error(err);
+  }
+}
+export async function update_task_title(buffer: {
+  old: string;
+  "title-input": string;
+}) {
+  console.log("update task title");
+  const buffer_keys = Object.keys(buffer);
+  if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
+  const active_task = (await get_current_active_task()) as t_task;
+  try {
+    const update_task = {
       ...active_task,
-      websiteURL: buffer.websiteURL,
-    });
+      title: buffer["title-input"],
+    };
+    await update_task_local_storage(update_task);
+    Event_Signal.publish("update_json_ui", update_task);
   } catch (err) {
     console.error(err);
   }

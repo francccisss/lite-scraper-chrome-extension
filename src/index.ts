@@ -14,6 +14,7 @@ import {
   change_current_task,
   scrape_request,
   delete_task,
+  update_task_title,
 } from "./input_handlers.js";
 import {
   replace_title_to_input,
@@ -63,9 +64,7 @@ Event_Signal.subscribe("delete_task", async (data: any) => {
 });
 Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
-Event_Signal.subscribe("update_title_input", (data: any) => {
-  console.log(data);
-});
+Event_Signal.subscribe("update_title_input", update_task_title);
 Event_Signal.subscribe("update_json_ui", update_json_display);
 
 task_btns_container.addEventListener("click", (e) => {
