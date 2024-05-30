@@ -273,7 +273,6 @@ export function eval_input_buffer(e) {
         Event_Signal.publish("update_webURL_input", input_buffer);
     }
     else if (target.id === "title-input") {
-        console.log("title-input");
         Event_Signal.publish("update_title_input", input_buffer);
     }
 }

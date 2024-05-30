@@ -164,23 +164,38 @@ export function update_json_display(task) {
     const json_display = document.getElementById("json-sample-display");
     json_display.innerHTML = `<pre>${JSON.stringify(task, null, 4)}</pre>`;
 }
-export function replace_title_to_input() {
+export function replace_title_to_input(off) {
     const input_title = document.getElementById("title-input");
+    if (off === null) {
+        if (input_title === null)
+            return;
+        create_task_title(input_title.value);
+        input_title.remove();
+        return;
+    }
     if (input_title === null) {
         const title = document.getElementById("task-title");
-        const input_title = document.createElement("input");
-        if (title.parentNode === null)
-            return;
-        input_title.value = title.textContent;
-        input_title.setAttribute("class", "title-input big-input");
-        input_title.setAttribute("id", "title-input");
-        title.parentNode.insertBefore(input_title, title.parentNode.children[title.parentNode.children.length - 1]);
+        create_title_input(title.textContent);
         title.remove();
         return;
     }
-    const title = document.createElement("h3");
-    title.textContent = input_title.value;
-    title.setAttribute("id", "task-title");
-    input_title.parentNode.insertBefore(title, input_title.parentNode.children[input_title.parentNode.children.length - 1]);
+    create_task_title(input_title.value);
     input_title.remove();
+}
+function create_task_title(existing_text) {
+    const title = document.createElement("h3");
+    const parent = document.getElementById("task-title-container");
+    title.textContent = existing_text;
+    title.setAttribute("id", "task-title");
+    parent.insertBefore(title, parent.children[parent.children.length - 1]);
+}
+function create_title_input(existing_text) {
+    const parent = document.getElementById("task-title-container");
+    const input_title = document.createElement("input");
+    if (parent === null)
+        return;
+    input_title.value = existing_text;
+    input_title.setAttribute("class", "title-input big-input");
+    input_title.setAttribute("id", "title-input");
+    parent.insertBefore(input_title, parent.children[parent.children.length - 1]);
 }

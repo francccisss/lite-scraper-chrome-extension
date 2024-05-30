@@ -73,7 +73,6 @@ task_btns_container.addEventListener("click", (e) => {
     delete_task(target);
   }
   if (target.id === "edit-task-title") {
-    console.log("title swap");
     replace_title_to_input();
   }
 });
