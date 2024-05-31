@@ -15,7 +15,6 @@ export async function set_storage(): Promise<{ [key: string]: any }> {
 
 export async function add_task_local_storage(new_task: t_task) {
   const { tasks } = await chrome.storage.local.get("tasks");
-  console.log(tasks);
   await chrome.storage.local.set({ tasks: [new_task, ...tasks] });
 }
 
@@ -41,7 +40,6 @@ export async function update_task_local_storage(updated_data: t_task) {
   const { tasks } = await chrome.storage.local.get("tasks");
   const update_tasks = (tasks as Array<t_task>).map((task) => {
     if (task.taskID === current_active_task) {
-      console.log({ ...task, ...updated_data });
       return { ...task, ...updated_data };
     }
     return task;
@@ -60,6 +58,5 @@ export async function delete_task_local_storage({
   const filtered_tasks = (tasks as Array<t_task>).filter(
     (task) => task_element.dataset.task !== task.taskID,
   );
-  console.log(filtered_tasks);
   await chrome.storage.local.set({ tasks: [...filtered_tasks] });
 }

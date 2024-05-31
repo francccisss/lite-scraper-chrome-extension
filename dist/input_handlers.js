@@ -157,6 +157,7 @@ export async function get_started_btn_handler() {
 }
 export async function update_task_schema_input(buffer) {
     const buffer_keys = Object.keys(buffer);
+    console.log(buffer);
     if (buffer_keys.length < 2)
         return; // if there are no new inputs then do nothing
     const active_task = (await get_current_active_task());
@@ -171,7 +172,6 @@ export async function update_task_schema_input(buffer) {
                     };
                     break;
                 }
-                console.log("replace key");
                 updated_task_schema = {
                     ...updated_task_schema,
                     [buffer.key]: value,
@@ -186,7 +186,6 @@ export async function update_task_schema_input(buffer) {
                     };
                     break;
                 }
-                console.log("replace value");
                 updated_task_schema = {
                     ...updated_task_schema,
                     [key]: buffer.value,
@@ -195,6 +194,7 @@ export async function update_task_schema_input(buffer) {
             }
         }
     }
+    console.log("buffer update");
     try {
         await update_task_local_storage({
             ...active_task,
@@ -266,7 +266,6 @@ export function save_input_buffer(e) {
 export function eval_input_buffer(e) {
     const target = e.target;
     const input_buffer = State_Manager.get_state("input_buffer");
-    console.log(input_buffer);
     if (target.classList.contains("key") || target.classList.contains("value")) {
         Event_Signal.publish("update_task_schema_input", input_buffer);
     }
@@ -297,7 +296,7 @@ export async function scrape_request(e) {
     const resp = await post.json();
     console.log(resp);
 }
-export function delete_task(target) {
+export function delete_task() {
     const sidebar = document.getElementById("sidebar");
     const tasks_ui = Array.from(sidebar.children);
     const task_items_length = tasks_ui.length - 1;

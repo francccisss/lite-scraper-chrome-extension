@@ -76,7 +76,7 @@ Event_Signal.subscribe("update_active_task_sidebar", update_tasks_ui);
 task_btns_container.addEventListener("click", (e) => {
   const target = e.target as HTMLButtonElement;
   if (target.id === "delete-task") {
-    delete_task(target);
+    delete_task();
   }
   if (target.id === "edit-task-title") {
     replace_title_to_input();

@@ -213,7 +213,6 @@ export async function update_task_schema_input(buffer: {
           };
           break;
         }
-        console.log("replace key");
         updated_task_schema = {
           ...updated_task_schema,
           [buffer.key as string]: value,
@@ -228,7 +227,6 @@ export async function update_task_schema_input(buffer: {
           };
           break;
         }
-        console.log("replace value");
         updated_task_schema = {
           ...updated_task_schema,
           [key]: buffer.value,
@@ -237,6 +235,7 @@ export async function update_task_schema_input(buffer: {
       }
     }
   }
+  console.log("buffer update");
   try {
     await update_task_local_storage({
       ...active_task,
@@ -314,7 +313,6 @@ export function save_input_buffer(e: any) {
 export function eval_input_buffer(e: any) {
   const target = e.target as HTMLInputElement;
   const input_buffer = State_Manager.get_state("input_buffer");
-  console.log(input_buffer);
   if (target.classList.contains("key") || target.classList.contains("value")) {
     Event_Signal.publish("update_task_schema_input", input_buffer);
   } else if (target.id === "websiteURL") {
@@ -346,7 +344,7 @@ export async function scrape_request(e: Event) {
   const resp = await post.json();
   console.log(resp);
 }
-export function delete_task(target: HTMLButtonElement) {
+export function delete_task() {
   const sidebar = document.getElementById("sidebar") as HTMLDivElement;
   const tasks_ui = Array.from(sidebar.children);
   const task_items_length = tasks_ui.length - 1;
