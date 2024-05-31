@@ -276,6 +276,7 @@ export function eval_input_buffer(e) {
     else if (target.id === "title-input") {
         Event_Signal.publish("update_title_input", input_buffer);
     }
+    target.blur();
 }
 export async function scrape_request(e) {
     e.preventDefault();

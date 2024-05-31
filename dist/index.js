@@ -11,6 +11,7 @@ const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 const form = document.querySelector("form");
 const task_btns_container = document.getElementById("title-edit-delete-btn-container");
+const scrape_button = document.getElementById("scrape-button");
 window.addEventListener("load", start_session);
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
@@ -40,4 +41,9 @@ task_schema_container.addEventListener("click", remove_field_handler);
 task_content_inputs.addEventListener("focusin", init_input_buffer);
 task_content_inputs.addEventListener("keyup", save_input_buffer);
 task_content_inputs.addEventListener("focusout", eval_input_buffer);
-form.addEventListener("submit", scrape_request);
+task_content_inputs.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+        eval_input_buffer(e);
+    }
+});
+scrape_button.addEventListener("click", scrape_request);
