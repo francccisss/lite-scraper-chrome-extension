@@ -65,6 +65,11 @@ export function on_empty_tasks(is) {
     task_contents.style.display = "flex";
     text_container.remove();
 }
+export async function update_tasks_ui(updated_task_data) {
+    const sidebar = document.getElementById("sidebar");
+    const active_task_ui = sidebar.querySelector("div > .active");
+    active_task_ui.children[1].textContent = updated_task_data.title;
+}
 export async function init_tasks_ui(tasks) {
     try {
         const sidebar = document.getElementById("sidebar");
@@ -73,7 +78,6 @@ export async function init_tasks_ui(tasks) {
             return;
         }
         const task_contents = document.getElementById("task-contents");
-        console.log("tasks exist");
         task_contents.style.display = "flex";
         tasks.forEach((task) => {
             sidebar.prepend(create_task_component({ taskID: task.taskID, title: task.title }));

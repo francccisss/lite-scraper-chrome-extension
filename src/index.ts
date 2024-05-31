@@ -20,6 +20,7 @@ import {
   replace_title_to_input,
   transition_signed_in,
   update_json_display,
+  update_tasks_ui,
 } from "./ui.js";
 import {
   create_session_handler,
@@ -66,6 +67,7 @@ Event_Signal.subscribe("update_task_schema_input", update_task_schema_input);
 Event_Signal.subscribe("update_webURL_input", update_website_url);
 Event_Signal.subscribe("update_title_input", update_task_title);
 Event_Signal.subscribe("update_json_ui", update_json_display);
+Event_Signal.subscribe("update_active_task_sidebar", update_tasks_ui);
 
 task_btns_container.addEventListener("click", (e) => {
   const target = e.target as HTMLButtonElement;

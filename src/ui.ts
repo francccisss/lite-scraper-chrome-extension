@@ -2,6 +2,7 @@ import {
   set_current_active_task_config,
   set_task_active,
 } from "./input_handlers.js";
+import State_Manager from "./utils/state_manager.js";
 import { t_task_ui, t_task } from "./utils/types/project_types.js";
 
 function remove_task_input_fields() {
@@ -107,6 +108,14 @@ export function on_empty_tasks(is: boolean) {
   text_container.remove();
 }
 
+export async function update_tasks_ui(updated_task_data: t_task) {
+  const sidebar = document.getElementById("sidebar") as HTMLElement;
+  const active_task_ui = sidebar.querySelector(
+    "div > .active",
+  ) as HTMLDivElement;
+  active_task_ui.children[1].textContent = updated_task_data.title;
+}
+
 export async function init_tasks_ui(tasks: Array<t_task>) {
   try {
     const sidebar = document.getElementById("sidebar") as HTMLElement;
@@ -117,7 +126,6 @@ export async function init_tasks_ui(tasks: Array<t_task>) {
     const task_contents = document.getElementById(
       "task-contents",
     ) as HTMLElement;
-    console.log("tasks exist");
     task_contents.style.display = "flex";
     tasks.forEach((task: t_task) => {
       sidebar.prepend(

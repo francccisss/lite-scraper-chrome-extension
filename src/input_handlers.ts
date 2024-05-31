@@ -10,6 +10,7 @@ import {
   create_task_component,
   create_popup_message,
   on_empty_tasks,
+  update_tasks_ui,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -284,6 +285,7 @@ export async function update_task_title(buffer: {
     };
     await update_task_local_storage(update_task);
     Event_Signal.publish("update_json_ui", update_task);
+    Event_Signal.publish("update_active_task_sidebar", update_task);
   } catch (err) {
     console.error(err);
   }

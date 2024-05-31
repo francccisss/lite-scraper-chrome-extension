@@ -239,6 +239,7 @@ export async function update_task_title(buffer) {
         };
         await update_task_local_storage(update_task);
         Event_Signal.publish("update_json_ui", update_task);
+        Event_Signal.publish("update_active_task_sidebar", update_task);
     }
     catch (err) {
         console.error(err);
