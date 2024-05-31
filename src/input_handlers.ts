@@ -10,7 +10,6 @@ import {
   create_task_component,
   create_popup_message,
   on_empty_tasks,
-  update_tasks_ui,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -21,10 +20,17 @@ import { t_task } from "./utils/types/project_types";
 
 export function change_current_task(e: any) {
   const target = e.target as HTMLElement;
+  console.log(target);
   if (target.classList.contains("task-item")) {
     if (!target.classList.contains("active")) {
       Event_Signal.publish("change_task_ui", target);
+      return;
     }
+  }
+  const parent = find_top_parent(target, "task-item");
+  if (parent === null) return;
+  if (!parent.classList.contains("active")) {
+    Event_Signal.publish("change_task_ui", parent);
   }
 }
 

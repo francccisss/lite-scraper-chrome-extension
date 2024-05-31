@@ -7,10 +7,18 @@ import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 export function change_current_task(e) {
     const target = e.target;
+    console.log(target);
     if (target.classList.contains("task-item")) {
         if (!target.classList.contains("active")) {
             Event_Signal.publish("change_task_ui", target);
+            return;
         }
+    }
+    const parent = find_top_parent(target, "task-item");
+    if (parent === null)
+        return;
+    if (!parent.classList.contains("active")) {
+        Event_Signal.publish("change_task_ui", parent);
     }
 }
 export async function add_task() {
@@ -157,7 +165,6 @@ export async function get_started_btn_handler() {
 }
 export async function update_task_schema_input(buffer) {
     const buffer_keys = Object.keys(buffer);
-    console.log(buffer);
     if (buffer_keys.length < 2)
         return; // if there are no new inputs then do nothing
     const active_task = (await get_current_active_task());
