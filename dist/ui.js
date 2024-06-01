@@ -203,3 +203,4 @@ function create_title_input(existing_text) {
     input_title.setAttribute("id", "title-input");
     parent.insertBefore(input_title, parent.children[parent.children.length - 1]);
 }
+export function set_loading(target, is_loading) { }

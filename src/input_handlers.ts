@@ -329,6 +329,13 @@ export function eval_input_buffer(e: any) {
   target.blur();
 }
 
+type t_scrape_response = {
+  is_downloadable: boolean;
+  Message: string;
+  session_expired: boolean;
+  [key: string]: any;
+};
+
 export async function scrape_request(e: Event) {
   e.preventDefault();
   const is_empty = is_input_field_empty(
@@ -339,16 +346,29 @@ export async function scrape_request(e: Event) {
   const active_task = await get_current_active_task();
   if (active_task === null) return;
 
-  const post = await fetch(api_routes.post, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(active_task),
-  });
-  const resp = await post.json();
-  console.log(resp);
+  try {
+    const post = await fetch(api_routes.post, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(active_task),
+    });
+    const {
+      task,
+      taskID,
+      is_downloadable,
+      session_expired,
+      Message,
+    }: t_scrape_response = await post.json();
+
+    if (session_expired || is_downloadable === false) throw new Error(Message);
+    console.log({ ...task, taskID, is_downloadable, Message });
+  } catch (err) {
+    console.error(err);
+    console.log("error");
+  }
 }
 export function delete_task() {
   const sidebar = document.getElementById("sidebar") as HTMLDivElement;
