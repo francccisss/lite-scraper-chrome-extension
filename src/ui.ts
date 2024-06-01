@@ -224,18 +224,17 @@ export function transition_signed_in(data: any) {
   }
 }
 
-export function create_popup_message({
-  message,
-  target,
-}: {
-  [key: string]: any;
-  message: string;
-  target: HTMLInputElement;
-}) {
+export function create_popup_message(
+  message: string,
+  target: HTMLElement,
+  color: string = "#e85551",
+) {
   console.log(message);
   const popup_container = document.createElement("span");
   popup_container.setAttribute("id", "popup-message-reveal");
   target.before(popup_container);
+  popup_container.style.borderColor = color;
+  popup_container.style.color = color;
   popup_container.textContent = message;
   const computed_style = getComputedStyle(popup_container);
   const animation_duration = computed_style.animationDuration.split(",");
@@ -299,4 +298,13 @@ function create_title_input(existing_text: string) {
   parent.insertBefore(input_title, parent.children[parent.children.length - 1]);
 }
 
-export function set_loading(target: HTMLButtonElement, is_loading: boolean) {}
+export function set_loading(
+  target: HTMLButtonElement,
+  is_loading: boolean,
+  color: string,
+  message?: string,
+) {
+  target.disabled = is_loading;
+  target.textContent = is_loading ? "Processing Request..." : "Scrape";
+  create_popup_message(message || "Processing..", target, color);
+}

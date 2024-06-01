@@ -10,6 +10,7 @@ import {
   create_task_component,
   create_popup_message,
   on_empty_tasks,
+  set_loading,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -144,10 +145,7 @@ export function is_input_field_empty(
   const input_field = document.querySelector(css_selector) as HTMLInputElement;
   if (input_field === null) return false;
   if (input_field.value === "") {
-    create_popup_message({
-      message: message,
-      target: input_field,
-    });
+    create_popup_message(message, input_field);
     return true;
   } else {
     return false;
@@ -347,6 +345,7 @@ export async function scrape_request(e: Event) {
   if (active_task === null) return;
 
   try {
+    set_loading(e.target as HTMLButtonElement, true, "#e76f51");
     const post = await fetch(api_routes.post, {
       method: "POST",
       mode: "cors",
@@ -363,11 +362,21 @@ export async function scrape_request(e: Event) {
       Message,
     }: t_scrape_response = await post.json();
 
-    if (session_expired || is_downloadable === false) throw new Error(Message);
+    if (session_expired || is_downloadable === false) {
+      set_loading(e.target as HTMLButtonElement, false, "#e85551", Message);
+      throw new Error(Message);
+    }
+    set_loading(
+      e.target as HTMLButtonElement,
+      false,
+      "#2a9d8f",
+      "Scrape Success",
+    );
     console.log({ ...task, taskID, is_downloadable, Message });
   } catch (err) {
     console.error(err);
     console.log("error");
+    set_loading(e.target as HTMLButtonElement, false, "#e85551", err as string);
   }
 }
 export function delete_task() {

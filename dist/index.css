@@ -367,10 +367,11 @@ form {
   position: absolute;
   font-size: 0.8rem;
   padding: 0.8rem;
-  border: 2px solid var(--red);
+  /* border: 2px solid var(--red); */
+  /* color: var(--red); */
+  border: 2px solid;
   background-color: var(--black);
   border-radius: 3px;
-  color: var(--red);
   z-index: 99;
   animation: animate_pop_up ease-out 2500ms normal forwards;
 }

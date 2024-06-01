@@ -1,5 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
-import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, set_loading, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/uid/index.mjs";
@@ -111,10 +111,7 @@ export function is_input_field_empty(css_selector, message) {
     if (input_field === null)
         return false;
     if (input_field.value === "") {
-        create_popup_message({
-            message: message,
-            target: input_field,
-        });
+        create_popup_message(message, input_field);
         return true;
     }
     else {
@@ -293,6 +290,7 @@ export async function scrape_request(e) {
     if (active_task === null)
         return;
     try {
+        set_loading(e.target, true, "#e76f51");
         const post = await fetch(api_routes.post, {
             method: "POST",
             mode: "cors",
@@ -302,13 +300,17 @@ export async function scrape_request(e) {
             body: JSON.stringify(active_task),
         });
         const { task, taskID, is_downloadable, session_expired, Message, } = await post.json();
-        if (session_expired || is_downloadable === false)
+        if (session_expired || is_downloadable === false) {
+            set_loading(e.target, false, "#e85551", Message);
             throw new Error(Message);
+        }
+        set_loading(e.target, false, "#2a9d8f", "Success");
         console.log({ ...task, taskID, is_downloadable, Message });
     }
     catch (err) {
         console.error(err);
         console.log("error");
+        set_loading(e.target, false, "#e85551", err);
     }
 }
 export function delete_task() {
