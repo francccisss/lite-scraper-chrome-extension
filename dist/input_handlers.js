@@ -1,5 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
-import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, set_loading, } from "./ui.js";
+import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/uid/index.mjs";
@@ -111,7 +111,7 @@ export function is_input_field_empty(css_selector, message) {
     if (input_field === null)
         return false;
     if (input_field.value === "") {
-        create_popup_message(message, input_field);
+        create_popup_message(message, input_field, "none", "#e85551");
         return true;
     }
     else {
@@ -304,7 +304,7 @@ export async function scrape_request(e) {
             set_loading(e.target, false, "#e85551", Message);
             throw new Error(Message);
         }
-        set_loading(e.target, false, "#2a9d8f", "Success");
+        set_loading(e.target, false, "#2a9d8f", "Scrape Success");
         console.log({ ...task, taskID, is_downloadable, Message });
     }
     catch (err) {
@@ -351,4 +351,10 @@ export function delete_task() {
     else {
         return;
     }
+}
+function set_loading(target, is_loading, color, message) {
+    target.disabled = is_loading;
+    target.textContent = is_loading ? "Processing Request..." : "Scrape";
+    const main = document.getElementById("task-contents");
+    create_popup_message(message || "Processing..", main, "right", color);
 }

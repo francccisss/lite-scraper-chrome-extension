@@ -10,7 +10,6 @@ import {
   create_task_component,
   create_popup_message,
   on_empty_tasks,
-  set_loading,
 } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -145,7 +144,7 @@ export function is_input_field_empty(
   const input_field = document.querySelector(css_selector) as HTMLInputElement;
   if (input_field === null) return false;
   if (input_field.value === "") {
-    create_popup_message(message, input_field);
+    create_popup_message(message, input_field, "none", "#e85551");
     return true;
   } else {
     return false;
@@ -418,4 +417,21 @@ export function delete_task() {
   } else {
     return;
   }
+}
+
+function set_loading(
+  target: HTMLButtonElement,
+  is_loading: boolean,
+  color: string,
+  message?: string,
+) {
+  target.disabled = is_loading;
+  target.textContent = is_loading ? "Processing Request..." : "Scrape";
+  const main = document.getElementById("task-contents");
+  create_popup_message(
+    message || "Processing..",
+    main as HTMLElement,
+    "right",
+    color,
+  );
 }

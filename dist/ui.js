@@ -148,13 +148,16 @@ export function transition_signed_in(data) {
         task_list_container.style.display = "flex";
     }
 }
-export function create_popup_message(message, target, color = "#e85551") {
+export function create_popup_message(message, target, position, color = "#e85551") {
     console.log(message);
     const popup_container = document.createElement("span");
     popup_container.setAttribute("id", "popup-message-reveal");
     target.before(popup_container);
     popup_container.style.borderColor = color;
     popup_container.style.color = color;
+    if (position !== "none") {
+        popup_container.style[position] = "0px";
+    }
     popup_container.textContent = message;
     const computed_style = getComputedStyle(popup_container);
     const animation_duration = computed_style.animationDuration.split(",");
@@ -204,9 +207,4 @@ function create_title_input(existing_text) {
     input_title.setAttribute("class", "title-input big-input");
     input_title.setAttribute("id", "title-input");
     parent.insertBefore(input_title, parent.children[parent.children.length - 1]);
-}
-export function set_loading(target, is_loading, color, message) {
-    target.disabled = is_loading;
-    target.textContent = is_loading ? "Processing Request..." : "Scrape";
-    create_popup_message(message || "Processing..", target, color);
 }
