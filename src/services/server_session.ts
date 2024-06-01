@@ -9,7 +9,6 @@ export function create_session_handler(data: any) {
   ) as HTMLElement;
   if (data.can_sign_in) {
     State_Manager.set_state("current_session", data);
-    console.log(State_Manager.get_state("current_session"));
     return;
   }
   get_started_btn.setAttribute("disabled", "true");

@@ -16,11 +16,10 @@ import { find_top_parent } from "./utils/find_top_parent.js";
 import { uid } from "./utils/packages/uid/index.mjs";
 import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
-import { t_task } from "./utils/types/project_types";
+import { t_scrape_response, t_task } from "./utils/types/project_types";
 
 export function change_current_task(e: any) {
   const target = e.target as HTMLElement;
-  console.log(target);
   if (target.classList.contains("task-item")) {
     if (!target.classList.contains("active")) {
       Event_Signal.publish("change_task_ui", target);
@@ -69,7 +68,6 @@ export async function set_current_active_task_config() {
   try {
     const current_active_task = await get_current_active_task();
     if (current_active_task === null) {
-      console.log("Dont render anything");
       console.error("Task Does not exist.");
       return;
     }
@@ -102,7 +100,6 @@ export async function add_field_handler() {
     '.task-schema-input > input[class*="key"]:not([value])',
     'Please fill up the empty "KEY" input, before adding another field.',
   );
-  console.log(is_empty);
 
   if (is_empty) return;
   try {
@@ -193,7 +190,6 @@ export async function get_started_btn_handler() {
   } catch (er) {
     Event_Signal.publish("create_session", { can_sign_in: false });
     console.error("Unable to create a new session");
-    console.log(er);
   }
 }
 
@@ -238,7 +234,6 @@ export async function update_task_schema_input(buffer: {
       }
     }
   }
-  console.log("buffer update");
   try {
     await update_task_local_storage({
       ...active_task,
@@ -276,7 +271,6 @@ export async function update_task_title(buffer: {
   old: string;
   "title-input": string;
 }) {
-  console.log("update task title");
   const buffer_keys = Object.keys(buffer);
   if (buffer_keys.length < 2) return; // if there are no new inputs then do nothing
   const active_task = (await get_current_active_task()) as t_task;
@@ -326,13 +320,6 @@ export function eval_input_buffer(e: any) {
   target.blur();
 }
 
-type t_scrape_response = {
-  is_downloadable: boolean;
-  Message: string;
-  session_expired: boolean;
-  [key: string]: any;
-};
-
 export async function scrape_request(e: Event) {
   e.preventDefault();
   const is_empty = is_input_field_empty(
@@ -374,7 +361,6 @@ export async function scrape_request(e: Event) {
     console.log({ ...task, taskID, is_downloadable, Message });
   } catch (err) {
     console.error(err);
-    console.log("error");
     set_loading(e.target as HTMLButtonElement, false, "#e85551", err as string);
   }
 }

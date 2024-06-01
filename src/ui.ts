@@ -97,7 +97,6 @@ export function on_empty_tasks(is: boolean) {
 
     text_container.appendChild(text);
     task_list_container.appendChild(text_container);
-    console.log("task empty");
     return;
   }
   const text_container = document.getElementById(
@@ -135,7 +134,7 @@ export async function init_tasks_ui(tasks: Array<t_task>) {
     set_task_active(sidebar.children[0] as HTMLElement);
     set_current_active_task_config();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -230,7 +229,6 @@ export function create_popup_message(
   position: "left" | "right" | "none",
   color: string = "#e85551",
 ) {
-  console.log(message);
   const popup_container = document.createElement("span");
   popup_container.setAttribute("id", "popup-message-reveal");
   target.before(popup_container);

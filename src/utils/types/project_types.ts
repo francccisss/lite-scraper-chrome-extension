@@ -24,3 +24,10 @@ export interface t_local_storage extends t_any {
   tasks: Array<t_task>;
   scrape_calls: number;
 }
+
+export type t_scrape_response = {
+  is_downloadable: boolean;
+  Message: string;
+  session_expired: boolean;
+  [key: string]: any;
+};
