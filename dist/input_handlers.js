@@ -7,7 +7,6 @@ import Event_Signal from "./utils/pubsub.js";
 import State_Manager from "./utils/state_manager.js";
 export function change_current_task(e) {
     const target = e.target;
-    console.log(target);
     if (target.classList.contains("task-item")) {
         if (!target.classList.contains("active")) {
             Event_Signal.publish("change_task_ui", target);
@@ -50,7 +49,6 @@ export async function set_current_active_task_config() {
     try {
         const current_active_task = await get_current_active_task();
         if (current_active_task === null) {
-            console.log("Dont render anything");
             console.error("Task Does not exist.");
             return;
         }
@@ -79,7 +77,6 @@ export async function add_field_handler() {
     // look for an input that is an input with a class of key
     // that has no value.
     const is_empty = is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.');
-    console.log(is_empty);
     if (is_empty)
         return;
     try {
@@ -144,8 +141,10 @@ export async function remove_field_handler(e) {
         console.error(err);
     }
 }
-export async function get_started_btn_handler() {
+export async function get_started_btn_handler(e) {
+    const target = e.target;
     try {
+        set_loading(false, "Logging in...", target, true);
         Event_Signal.publish("create_session", { can_sign_in: false });
         const create_session = await fetch(`${api_routes.index}`, {
             credentials: "include",
@@ -153,11 +152,12 @@ export async function get_started_btn_handler() {
         const parse_response = await create_session.json();
         Event_Signal.publish("create_session", parse_response);
         Event_Signal.unsubscribe("create_session");
+        set_loading(false, "Login Success Please Wait.", target, false);
     }
     catch (er) {
         Event_Signal.publish("create_session", { can_sign_in: false });
         console.error("Unable to create a new session");
-        console.log(er);
+        set_loading(false, "Get Started", target, false);
     }
 }
 export async function update_task_schema_input(buffer) {
@@ -198,7 +198,6 @@ export async function update_task_schema_input(buffer) {
             }
         }
     }
-    console.log("buffer update");
     try {
         await update_task_local_storage({
             ...active_task,
@@ -231,7 +230,6 @@ export async function update_website_url(buffer) {
     }
 }
 export async function update_task_title(buffer) {
-    console.log("update task title");
     const buffer_keys = Object.keys(buffer);
     if (buffer_keys.length < 2)
         return; // if there are no new inputs then do nothing
@@ -290,7 +288,7 @@ export async function scrape_request(e) {
     if (active_task === null)
         return;
     try {
-        set_loading(e.target, true, "#e76f51");
+        set_loading(true, "Processing Request...", e.target, true, "#e76f51");
         const post = await fetch(api_routes.post, {
             method: "POST",
             mode: "cors",
@@ -301,16 +299,15 @@ export async function scrape_request(e) {
         });
         const { task, taskID, is_downloadable, session_expired, Message, } = await post.json();
         if (session_expired || is_downloadable === false) {
-            set_loading(e.target, false, "#e85551", Message);
+            set_loading(true, "Scrape", e.target, false, "#e85551", Message);
             throw new Error(Message);
         }
-        set_loading(e.target, false, "#2a9d8f", "Scrape Success");
+        set_loading(true, "Scrape", e.target, false, "#2a9d8f", "Scrape Success");
         console.log({ ...task, taskID, is_downloadable, Message });
     }
     catch (err) {
         console.error(err);
-        console.log("error");
-        set_loading(e.target, false, "#e85551", err);
+        set_loading(true, "Scrape", e.target, false, "#e85551", err);
     }
 }
 export function delete_task() {
@@ -352,9 +349,11 @@ export function delete_task() {
         return;
     }
 }
-function set_loading(target, is_loading, color, message) {
+export function set_loading(popup, button_text, target, is_loading, color, message) {
     target.disabled = is_loading;
-    target.textContent = is_loading ? "Processing Request..." : "Scrape";
+    target.textContent = button_text;
     const main = document.getElementById("task-contents");
-    create_popup_message(message || "Processing..", main, "right", color);
+    if (popup) {
+        create_popup_message(message || "Processing..", main, "right", color);
+    }
 }

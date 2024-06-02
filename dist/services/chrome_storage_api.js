@@ -35,7 +35,6 @@ export async function update_task_local_storage(updated_data) {
     const { tasks } = await chrome.storage.local.get("tasks");
     const update_tasks = tasks.map((task) => {
         if (task.taskID === current_active_task) {
-            console.log({ ...task, ...updated_data });
             return { ...task, ...updated_data };
         }
         return task;

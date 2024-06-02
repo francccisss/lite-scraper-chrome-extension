@@ -41,7 +41,6 @@ const task_schema_container = document.getElementById(
 const get_started_btn = document.getElementById(
   "get-started-btn",
 ) as HTMLButtonElement;
-const form = document.querySelector("form") as HTMLFormElement;
 const task_btns_container = document.getElementById(
   "title-edit-delete-btn-container",
 ) as HTMLSpanElement;
@@ -85,7 +84,7 @@ task_btns_container.addEventListener("click", (e) => {
 
 get_started_btn.addEventListener("click", get_started_btn_handler);
 add_task_btn.addEventListener("click", add_task);
-sidebar.addEventListener("click", change_current_task, { capture: true });
+sidebar.addEventListener("click", change_current_task);
 add_field_btn.addEventListener("click", add_field_handler);
 task_schema_container.addEventListener("click", remove_field_handler);
 task_content_inputs.addEventListener("focusin", init_input_buffer);

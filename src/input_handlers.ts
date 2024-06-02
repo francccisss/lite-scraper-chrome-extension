@@ -178,8 +178,10 @@ export async function remove_field_handler(e: Event) {
   }
 }
 
-export async function get_started_btn_handler() {
+export async function get_started_btn_handler(e: any) {
+  const target = e.target as HTMLButtonElement;
   try {
+    set_loading(false, "Logging in...", target, true);
     Event_Signal.publish("create_session", { can_sign_in: false });
     const create_session = await fetch(`${api_routes.index}`, {
       credentials: "include",
@@ -187,9 +189,12 @@ export async function get_started_btn_handler() {
     const parse_response = await create_session.json();
     Event_Signal.publish("create_session", parse_response);
     Event_Signal.unsubscribe("create_session");
+
+    set_loading(false, "Login Success Please Wait.", target, false);
   } catch (er) {
     Event_Signal.publish("create_session", { can_sign_in: false });
     console.error("Unable to create a new session");
+    set_loading(false, "Get Started", target, false);
   }
 }
 
@@ -331,7 +336,13 @@ export async function scrape_request(e: Event) {
   if (active_task === null) return;
 
   try {
-    set_loading(e.target as HTMLButtonElement, true, "#e76f51");
+    set_loading(
+      true,
+      "Processing Request...",
+      e.target as HTMLButtonElement,
+      true,
+      "#e76f51",
+    );
     const post = await fetch(api_routes.post, {
       method: "POST",
       mode: "cors",
@@ -349,10 +360,19 @@ export async function scrape_request(e: Event) {
     }: t_scrape_response = await post.json();
 
     if (session_expired || is_downloadable === false) {
-      set_loading(e.target as HTMLButtonElement, false, "#e85551", Message);
+      set_loading(
+        true,
+        "Scrape",
+        e.target as HTMLButtonElement,
+        false,
+        "#e85551",
+        Message,
+      );
       throw new Error(Message);
     }
     set_loading(
+      true,
+      "Scrape",
       e.target as HTMLButtonElement,
       false,
       "#2a9d8f",
@@ -361,7 +381,14 @@ export async function scrape_request(e: Event) {
     console.log({ ...task, taskID, is_downloadable, Message });
   } catch (err) {
     console.error(err);
-    set_loading(e.target as HTMLButtonElement, false, "#e85551", err as string);
+    set_loading(
+      true,
+      "Scrape",
+      e.target as HTMLButtonElement,
+      false,
+      "#e85551",
+      err as string,
+    );
   }
 }
 export function delete_task() {
@@ -405,19 +432,23 @@ export function delete_task() {
   }
 }
 
-function set_loading(
+export function set_loading(
+  popup: boolean,
+  button_text: string,
   target: HTMLButtonElement,
   is_loading: boolean,
-  color: string,
+  color?: string,
   message?: string,
 ) {
   target.disabled = is_loading;
-  target.textContent = is_loading ? "Processing Request..." : "Scrape";
+  target.textContent = button_text;
   const main = document.getElementById("task-contents");
-  create_popup_message(
-    message || "Processing..",
-    main as HTMLElement,
-    "right",
-    color,
-  );
+  if (popup) {
+    create_popup_message(
+      message || "Processing..",
+      main as HTMLElement,
+      "right",
+      color,
+    );
+  }
 }
