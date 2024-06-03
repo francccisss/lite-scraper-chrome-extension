@@ -48,7 +48,7 @@ task_content_inputs.addEventListener("keyup", (e) => {
     }
 });
 scrape_button.addEventListener("click", scrape_request);
-download_button.addEventListener("click", () => {
+download_button.addEventListener("click", (e) => {
     const current_active_taskID = State_Manager.get_state("current_active_task");
-    download_scraped_data(current_active_taskID);
+    download_scraped_data(current_active_taskID, e);
 });

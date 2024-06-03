@@ -422,14 +422,6 @@ export async function scrape_request(e: Event) {
     }: t_scrape_response = await post.json();
 
     if (session_expired || is_downloadable === false) {
-      set_loading(
-        true,
-        "Scrape",
-        e.target as HTMLButtonElement,
-        false,
-        "#e85551",
-        Message,
-      );
       throw new Error(Message);
     }
     set_loading(
@@ -454,8 +446,15 @@ export async function scrape_request(e: Event) {
   }
 }
 
-export async function download_scraped_data(taskID: string) {
+export async function download_scraped_data(taskID: string, e: Event) {
   try {
+    set_loading(
+      true,
+      "Processing Request...",
+      e.target as HTMLButtonElement,
+      true,
+      "#e76f51",
+    );
     const get = await fetch(`${api_routes.download}/${taskID}`, {
       method: "GET",
       mode: "cors",
@@ -465,9 +464,28 @@ export async function download_scraped_data(taskID: string) {
     });
     const { Message, is_downloadable, task_data }: t_scrape_response =
       await get.json();
+    if (is_downloadable === false) {
+      throw new Error(Message);
+    }
     await download_data(task_data, "task.json");
-    console.log(task_data);
+
+    set_loading(
+      true,
+      "Download",
+      e.target as HTMLButtonElement,
+      false,
+      "#e76f51",
+      "Success",
+    );
   } catch (err) {
+    set_loading(
+      true,
+      "Download",
+      e.target as HTMLButtonElement,
+      false,
+      "#e85551",
+      err as string,
+    );
     console.error(err);
   }
 }

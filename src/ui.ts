@@ -229,6 +229,9 @@ export function create_popup_message(
   position: "left" | "right" | "none",
   color: string = "#e85551",
 ) {
+  if (document.getElementById("popup-message-reveal") !== null) {
+    document.getElementById("popup-message-reveal")?.remove();
+  }
   const popup_container = document.createElement("span");
   popup_container.setAttribute("id", "popup-message-reveal");
   target.before(popup_container);

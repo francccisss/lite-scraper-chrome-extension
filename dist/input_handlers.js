@@ -347,7 +347,6 @@ export async function scrape_request(e) {
         });
         const { task, taskID, is_downloadable, session_expired, Message, } = await post.json();
         if (session_expired || is_downloadable === false) {
-            set_loading(true, "Scrape", e.target, false, "#e85551", Message);
             throw new Error(Message);
         }
         set_loading(true, "Scrape", e.target, false, "#2a9d8f", "Scrape Success");
@@ -358,9 +357,9 @@ export async function scrape_request(e) {
         set_loading(true, "Scrape", e.target, false, "#e85551", err);
     }
 }
-export async function download_scraped_data(taskID) {
-    console.log(taskID);
+export async function download_scraped_data(taskID, e) {
     try {
+        set_loading(true, "Processing Request...", e.target, true, "#e76f51");
         const get = await fetch(`${api_routes.download}/${taskID}`, {
             method: "GET",
             mode: "cors",
@@ -369,10 +368,14 @@ export async function download_scraped_data(taskID) {
             },
         });
         const { Message, is_downloadable, task_data } = await get.json();
+        if (is_downloadable === false) {
+            throw new Error(Message);
+        }
         await download_data(task_data, "task.json");
-        console.log(task_data);
+        set_loading(true, "Download", e.target, false, "#e76f51", "Success");
     }
     catch (err) {
+        set_loading(true, "Download", e.target, false, "#e85551", err);
         console.error(err);
     }
 }
