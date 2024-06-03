@@ -15,6 +15,7 @@ import {
   scrape_request,
   delete_task,
   update_task_title,
+  download_scraped_data,
 } from "./input_handlers.js";
 import {
   replace_title_to_input,
@@ -27,6 +28,7 @@ import {
   start_session,
 } from "./services/server_session.js";
 import { delete_task_local_storage } from "./services/chrome_storage_api.js";
+import State_Manager from "./utils/state_manager.js";
 const task_content_inputs = document.getElementById(
   "task-contents",
 ) as HTMLDivElement;
@@ -49,6 +51,9 @@ const scrape_button = document.getElementById(
   "scrape-button",
 ) as HTMLButtonElement;
 
+const download_button = document.getElementById(
+  "download-btn",
+) as HTMLButtonElement;
 window.addEventListener("load", start_session);
 
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
@@ -96,3 +101,7 @@ task_content_inputs.addEventListener("keyup", (e) => {
   }
 });
 scrape_button.addEventListener("click", scrape_request);
+download_button.addEventListener("click", () => {
+  const current_active_taskID = State_Manager.get_state("current_active_task");
+  download_scraped_data(current_active_taskID);
+});

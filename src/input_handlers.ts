@@ -3,6 +3,7 @@ import {
   get_current_active_task,
   update_task_local_storage,
 } from "./services/chrome_storage_api.js";
+import download_data from "./services/download_data.js";
 import {
   create_input_field,
   multipage_inputs,
@@ -325,6 +326,67 @@ export function eval_input_buffer(e: any) {
   target.blur();
 }
 
+export function delete_task() {
+  const sidebar = document.getElementById("sidebar") as HTMLDivElement;
+  const tasks_ui = Array.from(sidebar.children);
+  const task_items_length = tasks_ui.length - 1;
+  let current_active_task: Element;
+  let task_ui_index: number;
+  if (tasks_ui.length < 3) {
+    // taking into account the add task button
+    current_active_task = tasks_ui[0];
+    Event_Signal.publish("delete_task", {
+      task_index: 0,
+      task_element: current_active_task,
+    });
+    current_active_task.remove();
+    on_empty_tasks(true);
+  } else if (tasks_ui.length > 2) {
+    // taking into account the add task button
+    let new_active_task: Element;
+    current_active_task = tasks_ui.find((task) =>
+      task.classList.contains("active"),
+    ) as Element;
+    task_ui_index = tasks_ui.findIndex((task) =>
+      task.classList.contains("active"),
+    );
+    Event_Signal.publish("delete_task", {
+      task_index: task_ui_index,
+      task_element: current_active_task,
+    });
+    if (task_ui_index === task_items_length - 1) {
+      new_active_task = tasks_ui[task_ui_index - 1];
+      Event_Signal.publish("change_task_ui", new_active_task);
+    } else if (task_ui_index < tasks_ui.length - 1) {
+      new_active_task = tasks_ui[task_ui_index + 1];
+      Event_Signal.publish("change_task_ui", new_active_task);
+    }
+    current_active_task.remove();
+  } else {
+    return;
+  }
+}
+
+export function set_loading(
+  popup: boolean,
+  button_text: string,
+  target: HTMLButtonElement,
+  is_loading: boolean,
+  color?: string,
+  message?: string,
+) {
+  target.disabled = is_loading;
+  target.textContent = button_text;
+  const main = document.getElementById("task-contents");
+  if (popup) {
+    create_popup_message(
+      message || "Processing..",
+      main as HTMLElement,
+      "right",
+      color,
+    );
+  }
+}
 export async function scrape_request(e: Event) {
   e.preventDefault();
   const is_empty = is_input_field_empty(
@@ -391,64 +453,21 @@ export async function scrape_request(e: Event) {
     );
   }
 }
-export function delete_task() {
-  const sidebar = document.getElementById("sidebar") as HTMLDivElement;
-  const tasks_ui = Array.from(sidebar.children);
-  const task_items_length = tasks_ui.length - 1;
-  let current_active_task: Element;
-  let task_ui_index: number;
-  if (tasks_ui.length < 3) {
-    // taking into account the add task button
-    current_active_task = tasks_ui[0];
-    Event_Signal.publish("delete_task", {
-      task_index: 0,
-      task_element: current_active_task,
-    });
-    current_active_task.remove();
-    on_empty_tasks(true);
-  } else if (tasks_ui.length > 2) {
-    // taking into account the add task button
-    let new_active_task: Element;
-    current_active_task = tasks_ui.find((task) =>
-      task.classList.contains("active"),
-    ) as Element;
-    task_ui_index = tasks_ui.findIndex((task) =>
-      task.classList.contains("active"),
-    );
-    Event_Signal.publish("delete_task", {
-      task_index: task_ui_index,
-      task_element: current_active_task,
-    });
-    if (task_ui_index === task_items_length - 1) {
-      new_active_task = tasks_ui[task_ui_index - 1];
-      Event_Signal.publish("change_task_ui", new_active_task);
-    } else if (task_ui_index < tasks_ui.length - 1) {
-      new_active_task = tasks_ui[task_ui_index + 1];
-      Event_Signal.publish("change_task_ui", new_active_task);
-    }
-    current_active_task.remove();
-  } else {
-    return;
-  }
-}
 
-export function set_loading(
-  popup: boolean,
-  button_text: string,
-  target: HTMLButtonElement,
-  is_loading: boolean,
-  color?: string,
-  message?: string,
-) {
-  target.disabled = is_loading;
-  target.textContent = button_text;
-  const main = document.getElementById("task-contents");
-  if (popup) {
-    create_popup_message(
-      message || "Processing..",
-      main as HTMLElement,
-      "right",
-      color,
-    );
+export async function download_scraped_data(taskID: string) {
+  try {
+    const get = await fetch(`${api_routes.download}/${taskID}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const { Message, is_downloadable, task_data }: t_scrape_response =
+      await get.json();
+    await download_data(task_data, "task.json");
+    console.log(task_data);
+  } catch (err) {
+    console.error(err);
   }
 }

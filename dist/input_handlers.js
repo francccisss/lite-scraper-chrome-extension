@@ -1,4 +1,5 @@
 import { add_task_local_storage, get_current_active_task, update_task_local_storage, } from "./services/chrome_storage_api.js";
+import download_data from "./services/download_data.js";
 import { create_input_field, multipage_inputs, populate_task_config, create_task_component, create_popup_message, on_empty_tasks, } from "./ui.js";
 import api_routes from "./utils/api_routes.js";
 import { find_top_parent } from "./utils/find_top_parent.js";
@@ -279,37 +280,6 @@ export function eval_input_buffer(e) {
     }
     target.blur();
 }
-export async function scrape_request(e) {
-    e.preventDefault();
-    const is_empty = is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.');
-    if (is_empty)
-        return;
-    const active_task = await get_current_active_task();
-    if (active_task === null)
-        return;
-    try {
-        set_loading(true, "Processing Request...", e.target, true, "#e76f51");
-        const post = await fetch(api_routes.post, {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(active_task),
-        });
-        const { task, taskID, is_downloadable, session_expired, Message, } = await post.json();
-        if (session_expired || is_downloadable === false) {
-            set_loading(true, "Scrape", e.target, false, "#e85551", Message);
-            throw new Error(Message);
-        }
-        set_loading(true, "Scrape", e.target, false, "#2a9d8f", "Scrape Success");
-        console.log({ ...task, taskID, is_downloadable, Message });
-    }
-    catch (err) {
-        console.error(err);
-        set_loading(true, "Scrape", e.target, false, "#e85551", err);
-    }
-}
 export function delete_task() {
     const sidebar = document.getElementById("sidebar");
     const tasks_ui = Array.from(sidebar.children);
@@ -355,5 +325,54 @@ export function set_loading(popup, button_text, target, is_loading, color, messa
     const main = document.getElementById("task-contents");
     if (popup) {
         create_popup_message(message || "Processing..", main, "right", color);
+    }
+}
+export async function scrape_request(e) {
+    e.preventDefault();
+    const is_empty = is_input_field_empty('.task-schema-input > input[class*="key"]:not([value])', 'Please fill up the empty "KEY" input, before adding another field.');
+    if (is_empty)
+        return;
+    const active_task = await get_current_active_task();
+    if (active_task === null)
+        return;
+    try {
+        set_loading(true, "Processing Request...", e.target, true, "#e76f51");
+        const post = await fetch(api_routes.post, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(active_task),
+        });
+        const { task, taskID, is_downloadable, session_expired, Message, } = await post.json();
+        if (session_expired || is_downloadable === false) {
+            set_loading(true, "Scrape", e.target, false, "#e85551", Message);
+            throw new Error(Message);
+        }
+        set_loading(true, "Scrape", e.target, false, "#2a9d8f", "Scrape Success");
+        console.log({ ...task, taskID, is_downloadable, Message });
+    }
+    catch (err) {
+        console.error(err);
+        set_loading(true, "Scrape", e.target, false, "#e85551", err);
+    }
+}
+export async function download_scraped_data(taskID) {
+    console.log(taskID);
+    try {
+        const get = await fetch(`${api_routes.download}/${taskID}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const { Message, is_downloadable, task_data } = await get.json();
+        await download_data(task_data, "task.json");
+        console.log(task_data);
+    }
+    catch (err) {
+        console.error(err);
     }
 }

@@ -1,8 +1,9 @@
 import Event_Signal from "./utils/pubsub.js";
-import { add_field_handler, remove_field_handler, set_current_active_task_config, set_task_active, get_started_btn_handler, add_task, update_task_schema_input, update_website_url, init_input_buffer, save_input_buffer, eval_input_buffer, change_current_task, scrape_request, delete_task, update_task_title, } from "./input_handlers.js";
+import { add_field_handler, remove_field_handler, set_current_active_task_config, set_task_active, get_started_btn_handler, add_task, update_task_schema_input, update_website_url, init_input_buffer, save_input_buffer, eval_input_buffer, change_current_task, scrape_request, delete_task, update_task_title, download_scraped_data, } from "./input_handlers.js";
 import { replace_title_to_input, transition_signed_in, update_json_display, update_tasks_ui, } from "./ui.js";
 import { create_session_handler, start_session, } from "./services/server_session.js";
 import { delete_task_local_storage } from "./services/chrome_storage_api.js";
+import State_Manager from "./utils/state_manager.js";
 const task_content_inputs = document.getElementById("task-contents");
 const sidebar = document.getElementById("sidebar");
 const add_task_btn = document.getElementById("add-task");
@@ -11,6 +12,7 @@ const task_schema_container = document.getElementById("task-schema-container");
 const get_started_btn = document.getElementById("get-started-btn");
 const task_btns_container = document.getElementById("title-edit-delete-btn-container");
 const scrape_button = document.getElementById("scrape-button");
+const download_button = document.getElementById("download-btn");
 window.addEventListener("load", start_session);
 Event_Signal.subscribe("load_existing_session", transition_signed_in);
 Event_Signal.subscribe("create_session", create_session_handler, transition_signed_in);
@@ -46,3 +48,7 @@ task_content_inputs.addEventListener("keyup", (e) => {
     }
 });
 scrape_button.addEventListener("click", scrape_request);
+download_button.addEventListener("click", () => {
+    const current_active_taskID = State_Manager.get_state("current_active_task");
+    download_scraped_data(current_active_taskID);
+});
