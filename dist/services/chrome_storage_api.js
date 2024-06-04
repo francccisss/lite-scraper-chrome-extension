@@ -1,7 +1,7 @@
 import State_Manager from "../utils/state_manager.js";
 export async function set_storage() {
-    const tasks = await chrome.storage.local.get("tasks");
-    if (tasks === undefined) {
+    const storage = await chrome.storage.local.get();
+    if (Object.keys(storage).length === 0) {
         await chrome.storage.local.set({
             tasks: [],
             scrape_calls: 0,

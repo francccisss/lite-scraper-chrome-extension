@@ -24,7 +24,13 @@ class PubSub {
     if (!Object.keys(this.events).find((e) => e === event)) {
       return;
     }
-    this.events[event].forEach((cb) => cb(data));
+    this.events[event].forEach(async (cb) => {
+      function is_async(fn: (data: any) => void) {
+        return Object.prototype.toString.call(fn) === "[object AsyncFunction]";
+      }
+      if (is_async(cb)) await cb(data);
+      cb(data);
+    });
   }
 
   unsubscribe(event: string) {

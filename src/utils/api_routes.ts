@@ -1,4 +1,4 @@
-const url = "https://localhost:3005";
+const url = "https://localhost:3000";
 const scraper_api = "api/v1/scraper";
 export default {
   index: `${url}/`,

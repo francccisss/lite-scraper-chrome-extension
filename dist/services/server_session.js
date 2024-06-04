@@ -1,4 +1,5 @@
 import { init_tasks_ui } from "../ui.js";
+import api_routes from "../utils/api_routes.js";
 import Event_Signal from "../utils/pubsub.js";
 import State_Manager from "../utils/state_manager.js";
 import { set_storage } from "./chrome_storage_api.js";
@@ -12,7 +13,7 @@ export function create_session_handler(data) {
 }
 export async function start_session() {
     chrome.cookies.get({
-        url: "https://localhost:3005/",
+        url: api_routes.index,
         name: "connect.sid",
     }, async (cookie) => {
         const eval_cookie = cookie !== null ? true : false;

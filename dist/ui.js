@@ -72,7 +72,9 @@ export async function update_tasks_ui(updated_task_data) {
 export async function init_tasks_ui(tasks) {
     try {
         const sidebar = document.getElementById("sidebar");
+        console.log(tasks);
         if (tasks.length === 0) {
+            console.log("no tasks");
             on_empty_tasks(true);
             return;
         }

@@ -6,10 +6,10 @@
   "permissions": [
     "storage",
     "cookies",
-    "https://localhost:3005/"
+    "https://localhost:3000/"
   ],
   "host_permissions": [
-    "https://localhost:3005/"
+    "https://localhost:3000/"
   ],
   "action": {
     "default_popup": "/dist/index.html"
