@@ -6,10 +6,10 @@
   "permissions": [
     "storage",
     "cookies",
-    "https://cosmic-briefly-polliwog.ngrok-free.app/"
+    "https://localhost:3000/"
   ],
   "host_permissions": [
-    "https://cosmic-briefly-polliwog.ngrok-free.app/"
+    "https://localhost:3000/"
   ],
   "action": {
     "default_popup": "/dist/index.html"
