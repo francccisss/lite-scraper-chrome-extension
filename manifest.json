@@ -6,10 +6,10 @@
   "permissions": [
     "storage",
     "cookies",
-    "https://lite-scraper-api.onrender.com/"
+    "https://cosmic-briefly-polliwog.ngrok-free.app/"
   ],
   "host_permissions": [
-    "https://lite-scraper-api.onrender.com/"
+    "https://cosmic-briefly-polliwog.ngrok-free.app/"
   ],
   "action": {
     "default_popup": "/dist/index.html"

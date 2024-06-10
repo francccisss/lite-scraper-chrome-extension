@@ -1,4 +1,4 @@
-const url = "https://lite-scraper-api.onrender.com";
+const url = "https://cosmic-briefly-polliwog.ngrok-free.app";
 const scraper_api = "api/v1/scraper";
 export default {
   index: `${url}/`,
