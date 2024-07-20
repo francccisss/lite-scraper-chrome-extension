@@ -1,4 +1,4 @@
-# web-scraping-service-chrome-extension
+# web-scraping-service-chrome-extension (Currently Down)
 A Front-end chrome extension for consuming the web scraping service API. This is a minimal user-friendly web scraping service for gathering insights for businesses and a tool for all kinds of developers.
 
 ### How it works
